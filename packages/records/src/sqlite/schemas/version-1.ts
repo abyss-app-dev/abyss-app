@@ -63,9 +63,7 @@ export const BaseAgentGraphTable = `
         createdAt INTEGER NOT NULL,
         updatedAt INTEGER NOT NULL,
         name TEXT NOT NULL,
-        description TEXT NOT NULL,
-        nodesData TEXT NOT NULL,
-        edgesData TEXT NOT NULL
+        serialzedData TEXT NOT NULL
     )
 `;
 
