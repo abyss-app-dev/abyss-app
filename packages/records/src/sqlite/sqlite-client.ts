@@ -15,6 +15,7 @@ import { DatabaseSubscriptionLayer } from './database-subscription';
 import type { ReferencedSqliteTable } from './reference-table';
 import { migrations } from './schemas/migrations';
 import { type BaseSqliteRecord, type DBSidecarType, DefaultSidecar, type SqliteTables } from './sqlite.type';
+import { randomId } from '../utils/ids';
 
 export class SQliteClient {
     // Disk locations
@@ -91,8 +92,8 @@ export class SQliteClient {
 
     // Artifacts
 
-    public createLogStreamArtifact(id: string) {
-        return LogStream.fromClient(id, this);
+    public createLogStreamArtifact() {
+        return LogStream.fromClient(randomId(), this);
     }
 
     // Describe tables

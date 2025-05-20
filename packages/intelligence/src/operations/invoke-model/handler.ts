@@ -1,6 +1,6 @@
-import { ReferencedMessageRecord } from '@abyss/records';
+import { MessageType, NewRecord } from '@abyss/records';
 import { invokeModelAgainstThread } from '../../models/handler';
-import { Logger } from '../../utils/logs';
+import { randomId } from '../../utils/ids';
 import type { InvokeModelParams } from './types';
 
 /**
@@ -12,15 +12,40 @@ import type { InvokeModelParams } from './types';
 export async function invokeModelHandler(options: InvokeModelParams) {
     const { modelConnection, thread } = options;
 
-    const log = Logger.base.child('invokeModel');
-    log.debug(`Invoking model ${modelConnection.id} against thread ${thread.id}`);
-
-    // Load data
-    const modelRecord = await modelConnection.get();
-    const threadRecord = await thread.get();
+    const log = thread.client.createLogStreamArtifact();
+    log.log(`Invoking model ${modelConnection.id} against thread ${thread.id}`);
 
     // Block the thread to prevent other messages from being added to it while we invoke the model
-    thread.withBlock(modelConnection.id, async () => {
-        // const response = await invokeModelAgainstThread(modelConnection, threadData);
+    await thread.withBlock(modelConnection.id, async () => {
+        const response = await invokeModelAgainstThread({ log, modelConnection, thread });
+        log.log(`Model ${modelConnection.id} invoked against thread ${thread.id}`);
+
+        // Add the response to the thread
+        const newMessages: NewRecord<MessageType>[] = [];
+        for (const block of response.parsed) {
+            if (block.type === 'text') {
+                newMessages.push({
+                    type: 'text',
+                    senderId: modelConnection.id,
+                    payloadData: {
+                        content: block.content,
+                    },
+                });
+            } else if (block.type === 'tool') {
+                log.log(`Output in the form of a tool call, but we don't support that in the direct invocation of a model.`, block.content);
+                newMessages.push({
+                    type: 'text',
+                    senderId: modelConnection.id,
+                    payloadData: {
+                        content: `TOOL CALL REJECTED: ${JSON.stringify(block.content)}`,
+                    },
+                });
+            }
+        }
+
+        log.log(`Adding ${newMessages.length} new messages to thread ${thread.id}`);
+        await thread.addMessagePartials(...newMessages);
     });
+
+    return {log};
 }

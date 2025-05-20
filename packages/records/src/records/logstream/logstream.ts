@@ -31,7 +31,7 @@ export class LogStream {
             const dataObj = safeSerialize(data);
             const dataString = JSON.stringify(dataObj, null, 2);
             const dataStringFormat = dataString.replaceAll('\n', '\n        ');
-            return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message} \n${dataStringFormat}`;
+            return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message} \n        ${dataStringFormat}`;
         }
         return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message}`;
     }
