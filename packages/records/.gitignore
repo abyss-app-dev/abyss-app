@@ -1,0 +1,5 @@
+.env
+dist
+plan.md
+test
+.test-artifacts

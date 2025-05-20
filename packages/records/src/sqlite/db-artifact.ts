@@ -1,0 +1,32 @@
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { appendFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import type { SQliteClient } from './sqlite-client';
+
+export class DBArtifact {
+    private fullPath: string;
+    private folderPath: string;
+    private grouping: string;
+    private id: string;
+    private client: SQliteClient;
+
+    constructor(client: SQliteClient, grouping: string, id: string) {
+        this.grouping = grouping;
+        this.id = id;
+        this.client = client;
+
+        this.fullPath = join(this.client.path, this.grouping, this.id);
+        this.folderPath = join(this.client.path, this.grouping);
+
+        mkdirSync(this.folderPath, { recursive: true });
+
+        if (!existsSync(this.fullPath)) {
+            writeFileSync(this.fullPath, '');
+        }
+    }
+
+    public appendString(string: string) {
+        const path = this.fullPath;
+        void appendFile(path, string);
+    }
+}

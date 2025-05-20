@@ -1,0 +1,73 @@
+---
+description: 
+globs: *.spec.md
+alwaysApply: false
+---
+There are .spec.md files in this repo. they describe the structure of test files.
+
+If you have a .spec.md file like this:
+
+```
+# Tool Definition Tests
+Tests are in ./tool-definition.test.ts
+
+Useful Utilties: ...
+
+### Tool Definition Table Reference
+ - when we create a new tool definition
+   - we should be able to get a reference to it through table.ref(id)
+   - it will infer the shortName from the name
+```
+
+This could translate to a file like below
+
+```
+import { describe, expect, test } from 'vitest';
+import { buildCleanDB } from '../../sqlite/sqlite-client.mock';
+
+describe('Tool Definition Table Reference', () => {
+    describe('when we create a new tool definition', () => {
+        test('can get a reference to a tool definition through table.ref(id)', async () => {
+            const client = await buildCleanDB();
+            const toolDefinition = await client.tables.toolDefinition.newToolDefinition({
+                name: 'test',
+                description: 'test',
+                handlerType: 'abyss',
+                inputSchemaData: [],
+                outputSchemaData: [],
+            });
+            const ref = client.tables.toolDefinition.ref(toolDefinition.id);
+            const result = await ref.get();
+            expect(result.name).toEqual('test');
+        });
+
+        test('infers shortName from the name when creating a tool definition', async () => {
+            const client = await buildCleanDB();
+            const toolDefinition = await client.tables.toolDefinition.newToolDefinition({
+                name: 'Test tool definition',
+                description: 'test',
+                handlerType: 'abyss',
+                inputSchemaData: [],
+                outputSchemaData: [],
+            });
+            expect(toolDefinition.shortName).toContain('test-tool-definition-');
+        });
+    });
+});
+
+```
+
+
+Key Notes:
+- "###" indicates new top level describe block
+- any leaf node MUST be its own test case
+- any intermediate node much be a nested describe block
+- Useful Utilties might give you a note on what .mocking.ts file contents you might need
+
+Additionally:
+- all tests are 3 sections. (initial-state, action, verification)
+- Dont comment these sections or otherwise format them, but just consider these three parts
+- ideally a test is exactly 3 lines without any comments or gaps. we dont achieve this often, but if you can, look to move common setup into some sort of .mocking.ts file to keep test highly readable. 
+
+Your goal:
+- if you have such a file, consider the associated test file, and refactor it, add any missing test cases, remove additional cases, the md should be the source of truth

@@ -1,0 +1,101 @@
+@import "./themes.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.menuDragSection {
+    -webkit-app-region: drag;
+}
+
+* {
+    @apply appearance-none outline-none;
+}
+*:focus {
+    @apply appearance-none outline-none;
+}
+
+/* Markdown styles */
+.markdown {
+    @apply text-text-300;
+}
+
+.markdown h1 {
+    @apply text-2xl font-bold mb-4 mt-6;
+}
+
+.markdown h2 {
+    @apply text-xl font-bold mb-3 mt-5;
+}
+
+.markdown h3 {
+    @apply text-lg font-bold mb-2 mt-4;
+}
+
+.markdown p {
+    @apply mb-4;
+}
+
+.markdown ul {
+    @apply list-disc ml-6 mb-4;
+}
+
+.markdown ol {
+    @apply list-decimal ml-6 mb-4;
+}
+
+.markdown li {
+    @apply mb-1;
+}
+
+.markdown code {
+    @apply bg-background-transparent px-1 py-0.5 rounded-sm text-sm;
+}
+
+.markdown pre {
+    @apply bg-background-transparent p-4 rounded-sm mb-4 overflow-x-auto;
+}
+
+.markdown pre code {
+    @apply bg-transparent p-0;
+}
+
+.markdown blockquote {
+    @apply border-l-4 border-background-transparent pl-4 italic my-4;
+}
+
+.markdown a {
+    @apply text-primary-300 hover:underline;
+}
+
+.markdown table {
+    @apply w-full border-collapse mb-4;
+}
+
+.markdown th,
+.markdown td {
+    @apply border border-background-transparent px-4 py-2;
+}
+
+.markdown th {
+    @apply bg-background-transparent;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-background-500) transparent;
+}
+
+/* Invert utility class for images */
+.invert {
+    filter: invert(1);
+}
+
+/* Dark mode specific inversion */
+[data-theme="abyss"] .invert {
+    filter: invert(1);
+}
+
+/* Light mode specific inversion */
+[data-theme="ethereal"] .invert {
+    filter: invert(0);
+}
