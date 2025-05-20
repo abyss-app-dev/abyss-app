@@ -47,5 +47,5 @@ export async function invokeModelHandler(options: InvokeModelParams) {
         await thread.addMessagePartials(...newMessages);
     });
 
-    return {log};
+    return { log };
 }

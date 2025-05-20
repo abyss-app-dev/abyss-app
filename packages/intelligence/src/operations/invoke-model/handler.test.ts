@@ -40,5 +40,4 @@ test('invokeModelAgainstThread', async () => {
         thread: threadRef,
         modelConnection: modelConnectionRef,
     });
-    
 });
