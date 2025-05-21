@@ -9,7 +9,6 @@ import { ListTablesPage } from './pages/database/database.page';
 import { ViewTableRecordPage } from './pages/database/record.page';
 import { ViewTablePage } from './pages/database/table.page';
 import { DocumentsPage } from './pages/documents/documents.page';
-import { LogListPage } from './pages/logs/log-list';
 import { LogViewPage } from './pages/logs/log-view';
 import { MainPage } from './pages/main/main';
 import { MetricsPage } from './pages/metrics/metrics.page';
@@ -40,13 +39,13 @@ export function App() {
                         <Route path="/database/id/:id/record/:recordId" element={<ViewTableRecordPage />} />
                         <Route path="/metrics" element={<MetricsPage />} />
                         <Route path="/metrics/graph/:metricName" element={<MetricsChartPage />} />
+                        <Route path="/models" element={<ModelProfileMainPage />} />
+                        <Route path="/models/create" element={<ModelProfileCreatePage />} />
+                        <Route path="/models/id/:id" element={<ModelProfileViewPage />} />
                     </Route>
                     {/* 
                         <Route path="/logs/id/:id" element={<LogViewPage />} />
                         <Route path="/logs" element={<LogListPage />} />
-                        <Route path="/models" element={<ModelProfileMainPage />} />
-                        <Route path="/models/create" element={<ModelProfileCreatePage />} />
-                        <Route path="/models/id/:id" element={<ModelProfileViewPage />} />
                         <Route path="/documents" element={<DocumentsPage />} />
                         <Route path="/snapshots/id/:id" element={<ViewSnapshotPage />} />
                         <Route path="/tools" element={<ToolsPage />} />

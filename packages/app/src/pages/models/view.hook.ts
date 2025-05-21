@@ -1,12 +1,11 @@
-import type { ModelConnectionType } from '@abyss/records';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
-import { useDatabaseRecord } from '../../state/database-connection';
 
 export function useModelProfileView() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const modelProfile = useDatabaseRecord<ModelConnectionType>('modelConnection', id || '');
+    const modelProfile = useDatabase.modelConnection.record(id || '');
 
     const handleDelete = async () => {
         if (!id) return;
@@ -17,7 +16,7 @@ export function useModelProfileView() {
     const handleUpdateData = (data: Record<string, any>) => {
         if (!id || !modelProfile) return;
         const newData = { ...modelProfile, ...data };
-        Database.tables.modelConnection.ref(id).update(newData);
+        Database.tables.modelConnection.ref(id).update(newData.data || {});
     };
 
     const handleUpdateConfig = (configData: Record<string, any>) => {

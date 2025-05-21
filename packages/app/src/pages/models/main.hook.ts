@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useScanTableModelConnections } from '../../state/database-access-utils';
+import { useDatabase } from '@/state/database-access-utils';
 
 export function useModelProfileMain() {
-    const modelProfiles = useScanTableModelConnections();
+    const modelProfiles = useDatabase.modelConnection.scan();
     const navigate = useNavigate();
 
     const handleCreateNew = () => {

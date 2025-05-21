@@ -6,14 +6,14 @@ export function ModelProfileViewPage() {
     const { modelProfile, handleDelete, handleUpdateData, handleUpdateConfig, breadcrumbs } = useModelProfileView();
 
     return (
-        <PageCrumbed title={`Model Profile: ${modelProfile?.name || ''}`} breadcrumbs={breadcrumbs}>
+        <PageCrumbed title={`Model Profile: ${modelProfile.data?.name || ''}`} breadcrumbs={breadcrumbs}>
             <IconSection title="Profile Information" icon={Box} action={<Button variant="secondary" icon={Trash} onClick={handleDelete} />}>
                 <LabelValue
                     data={{
-                        name: modelProfile?.name || '',
-                        description: modelProfile?.description || '',
-                        provider: modelProfile?.providerId || '',
-                        modelId: modelProfile?.modelId || '',
+                        name: modelProfile.data?.name || '',
+                        description: modelProfile.data?.description || '',
+                        provider: modelProfile.data?.providerId || '',
+                        modelId: modelProfile.data?.modelId || '',
                     }}
                 />
             </IconSection>

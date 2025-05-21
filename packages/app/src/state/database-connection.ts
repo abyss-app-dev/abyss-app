@@ -38,7 +38,7 @@ export function useDatabaseSubscription<T>(callback: (database: SQliteClient) =>
 export type UseDatabaseTableSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseTableSubscription<T>>;
 export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table: T, listeners: unknown[] = []) {
     // biome-ignore lint/suspicious/noExplicitAny: This is a helper function to avoid linting errors
-    const query = useQuery(() => Database.tables[table].list() as any);
+    const query = useQuery(() => Database.tables[table].list() as unknown as Promise<SqliteTableRecordType[T][]>);
     useEffect(() => {
         let unsubscribeCallback: () => void = () => {};
         Database.tables[table]
