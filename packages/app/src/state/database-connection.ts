@@ -21,7 +21,6 @@ function useQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
     };
 
     // Initial query
-    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
         fetchData();
     }, []);
@@ -32,7 +31,6 @@ function useQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
 export type UseDatabaseSubscription<T> = ReturnType<typeof useDatabaseSubscription<T>>;
 export function useDatabaseSubscription<T>(callback: (database: SQliteClient) => Promise<T>, listeners: unknown[] = []) {
     const query = useQuery(callback);
-    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => Database.subscribeDatabase(() => query.refetch()), [...listeners]);
     return query;
 }
@@ -41,7 +39,6 @@ export type UseDatabaseTableSubscription<T extends keyof SqliteTables> = ReturnT
 export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table: T, listeners: unknown[] = []) {
     // biome-ignore lint/suspicious/noExplicitAny: This is a helper function to avoid linting errors
     const query = useQuery(() => Database.tables[table].list() as any);
-    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
         let unsubscribeCallback: () => void;
         Database.tables[table]
@@ -57,7 +54,6 @@ export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table
 export type UseDatabaseRecordSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseRecordSubscription<T>>;
 export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(table: T, recordId: string, listeners: unknown[] = []) {
     const query = useQuery(() => Database.tables[table].get(recordId) as Promise<SqliteTableRecordType[T]>);
-    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
         let unsubscribeCallback: () => void;
         Database.tables[table]

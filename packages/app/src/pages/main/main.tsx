@@ -11,7 +11,6 @@ export function MainPage() {
     const [contentOpacity, setContentOpacity] = useState(1);
     const { setSidebarFadeable } = useSidebarFadeStore();
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
         setSidebarFadeable(true);
     }, []);
