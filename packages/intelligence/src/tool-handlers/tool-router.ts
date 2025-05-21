@@ -1,62 +1,15 @@
-import {
-    type ReferencedChatThreadRecord,
-    ReferencedMessageRecord,
-    type SQliteClient,
-    type ToolCallRequestPartial,
-    type ToolDefinitionType,
-} from '@abyss/records';
-import { DocumentCreateToolHandler } from './system/document-create';
-import { HelloWorldToolHandler } from './system/hello-world';
-import { LabelChatToolHandler } from './system/label-chat';
+import type { ToolDefinitionType } from '@abyss/records';
+import type { ToolHandler } from './tool-handler';
 
-function getToolHandler(toolDefinition: ToolDefinitionType) {
-    // If its one of ours
+export function getToolHandler(toolDefinition: ToolDefinitionType): ToolHandler {
     if (toolDefinition.handlerType === 'abyss') {
         switch (toolDefinition.id) {
             case 'toolDefinition::helloworld-tool':
-                return new HelloWorldToolHandler(toolDefinition);
-            case 'toolDefinition::labelchat-tool':
-                return new LabelChatToolHandler(toolDefinition);
-            case 'toolDefinition::document-create-tool':
-                return new DocumentCreateToolHandler(toolDefinition);
-            default:
                 throw new Error(`No tool handler found for tool definition ${toolDefinition.id}`);
         }
     }
 
-    throw new Error(`No tool handler found for tool definition ${toolDefinition.id}`);
-}
-
-export async function runUnproccessedToolCalls(callerId: string, chatRef: ReferencedChatThreadRecord, sqliteClient: SQliteClient) {
-    const thread = await chatRef.getThread();
-    const unprocessedToolCalls = await thread.getUnprocessedToolCalls();
-    const activeToolDefinitions = await thread.getAllActiveToolDefinitions();
-    const messages = await Promise.all(Object.values(unprocessedToolCalls).map(call => call.get()));
-
-    for (const toolCall of messages) {
-        const toolCallData = toolCall as ToolCallRequestPartial;
-        try {
-            const activeToolDefinition = activeToolDefinitions.find(t => t.id === toolCallData.payloadData.toolId);
-            if (!activeToolDefinition) {
-                throw new Error(
-                    `Tool definition ${toolCallData.payloadData.toolId} not found in the current context, it either doesnt exist or was removed.`
-                );
-            }
-            const toolDefinition = await sqliteClient.tables.toolDefinition.get(toolCallData.payloadData.toolId);
-            const toolHandler = getToolHandler(toolDefinition);
-            await toolHandler.execute(callerId, chatRef, toolCallData.payloadData, sqliteClient);
-        } catch (error) {
-            const messageRecord = await chatRef.client.tables.message.create({
-                type: 'tool-call-response',
-                payloadData: {
-                    toolCallId: toolCallData.payloadData.toolCallId,
-                    shortName: toolCallData.payloadData.shortName,
-                    status: 'failed',
-                    result: (error as Error).message,
-                },
-                senderId: 'system',
-            });
-            await chatRef.addMessages(new ReferencedMessageRecord(messageRecord.id, chatRef.client));
-        }
-    }
+    throw new Error(
+        `No tool handler found for tool definition, there is no way for Abyss to resolve this tool at this time ${toolDefinition.id}`
+    );
 }

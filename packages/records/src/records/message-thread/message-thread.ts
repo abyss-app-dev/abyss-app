@@ -3,7 +3,7 @@ import { ReferencedSqliteTable } from '../../sqlite/reference-table';
 import type { NewRecord } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import { ReferencedMessageRecord } from '../message/message';
-import type { MessageType } from '../message/message.type';
+import type { MessageType, ToolCallRequestPartial } from '../message/message.type';
 import { ReferencedToolDefinitionRecord } from '../tool-definition/tool-definition';
 import type { MessageThreadTurn, MessageThreadType } from './message-thread.type';
 
@@ -144,7 +144,7 @@ export class ReferencedMessageThreadRecord extends ReferencedSqliteRecord<Messag
         return missingDocuments;
     }
 
-    public async getUnprocessedToolCalls() {
+    public async getUnprocessedToolCalls(): Promise<ToolCallRequestPartial[]> {
         const messages = await this.getAllMessages();
         const getUnprocessedToolCalls: Record<string, ReferencedMessageRecord> = {};
         for (const message of messages) {
@@ -155,6 +155,8 @@ export class ReferencedMessageThreadRecord extends ReferencedSqliteRecord<Messag
                 delete getUnprocessedToolCalls[message.payloadData.toolCallId];
             }
         }
-        return getUnprocessedToolCalls;
+        const unprocessedToolCalls = Object.values(getUnprocessedToolCalls);
+        const unprocessedToolCallsData = await Promise.all(unprocessedToolCalls.map(t => t.get()));
+        return unprocessedToolCallsData.map(t => t as ToolCallRequestPartial);
     }
 }

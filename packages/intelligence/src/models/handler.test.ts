@@ -4,7 +4,7 @@ import { invokeModelAgainstThread } from './handler';
 
 test('invokeModelAgainstThread', async () => {
     const db = await buildTestDB();
-    const log = db.createLogStreamArtifact('test');
+    const log = db.createLogStreamArtifact();
 
     // Sample thread
     const thread = await db.tables.messageThread.new();

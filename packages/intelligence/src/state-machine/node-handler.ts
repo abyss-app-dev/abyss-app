@@ -1,15 +1,16 @@
 import { randomId } from '../utils/ids';
-import type { NodeExecutionResult, ResolveNodeData } from './type-base.type';
-import type { GraphNodeDefinition } from './type-definition.type';
+import { mapGlobalPortsToLocalPorts, mapLocalPortsToGlobalPorts } from './map-ports';
+import type { GraphNodeDefinition, GraphNodePartialDefinition } from './type-definition.type';
+import type { NodeExecutionResult, ResolveNodeData } from './type-execution.type';
 
+// A node handler is a class that handles the execution of a node in the state machine
+// It takes in port data and returns resultant port data
 export abstract class NodeHandler {
     private id: string;
-    private type: 'static' | 'trigger' | 'dynamic';
     private static registry: Record<string, NodeHandler> = {};
 
-    constructor(id: string, type: 'static' | 'trigger' | 'dynamic') {
+    constructor(id: string) {
         this.id = id;
-        this.type = type;
         NodeHandler.registry[id] = this;
     }
 
@@ -18,38 +19,33 @@ export abstract class NodeHandler {
     }
 
     // Definition
-    public getDefinition(id: string = randomId()): GraphNodeDefinition {
-        return {
-            id,
+    public getDefinition(name?: string): GraphNodeDefinition {
+        const definitionPartial = this._getDefinition();
+        const completeDefinition: GraphNodeDefinition = {
+            id: `${this.id}::${name ?? randomId()}`,
             type: this.id,
-            ...this._getDefinition(),
+            ...definitionPartial,
+            ports: [],
         };
-    }
-    protected abstract _getDefinition(): Omit<GraphNodeDefinition, 'id' | 'type'>;
-
-    public isSignalPort(portId: string): boolean {
-        const definition = this._getDefinition();
-        const port = definition.inputPorts[portId];
-        if (!port) {
-            return false;
+        for (const port of definitionPartial.ports) {
+            completeDefinition.ports.push({
+                ...port,
+                id: `${this.id}::${port.id}::${name ?? randomId()}`,
+            });
         }
-        return port.type === 'signal';
+        return completeDefinition;
     }
-
-    public isStaticData(): boolean {
-        return this.type === 'static';
-    }
-
-    public getAllPortIds(): string[] {
-        return Object.keys(this._getDefinition().inputPorts);
-    }
+    protected abstract _getDefinition(): GraphNodePartialDefinition;
 
     // Resolution
     async resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
-        const resolution = await this._resolve(data);
-        return resolution;
+        const inputPorts = mapGlobalPortsToLocalPorts(data.inputPorts);
+        const resolution = await this._resolve({ ...data, inputPorts });
+        const outputPorts = mapLocalPortsToGlobalPorts(resolution.ports, data.node);
+        return {
+            ports: outputPorts,
+        };
     }
-    protected _resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
-        throw new Error('Not implemented');
-    }
+
+    protected abstract _resolve(data: ResolveNodeData): Promise<NodeExecutionResult>;
 }

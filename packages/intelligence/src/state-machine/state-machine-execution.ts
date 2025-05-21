@@ -1,267 +1,171 @@
-import type { AgentGraphType, ReferencedLogStreamRecord, SQliteClient } from '@abyss/records';
-import { Log } from '../utils/logs';
-import { NodeHandler } from './node-handler';
+import type { LogStream, SQliteClient } from '@abyss/records';
 import './node-handlers';
-import type { PortTriggerData } from './type-base.type';
-import type { GraphInputEvent } from './type-input.type';
+import { mapLocalPortsToGlobalPorts } from './map-ports';
+import { NodeHandler } from './node-handler';
+import type { AgentGraphDefinition } from './type-definition.type';
+import type { PortStates, StateMachineExecutionOptions } from './type-execution.type';
 
-export class StateMachineExecution {
-    private static maxInvokeCount = 100;
+export class StateMachineRuntime {
+    // Guard the state machine to prevent infinite loops
+    private static MAX_INVOKES = 100;
     private invokeCount = 0;
 
-    // References
-    public readonly graph: AgentGraphType;
-    private executionRecord: ReferencedLogStreamRecord;
-    private database: SQliteClient;
+    // Graph itself
+    public readonly definition: AgentGraphDefinition;
+    private readonly database: SQliteClient;
+
+    // Logging
+    private readonly logStream: LogStream;
+    private readonly nodeExecutions: string[] = [];
 
     // Execution
-    private evaluationQueue: string[] = [];
-    private portValues: Record<string, Record<string, PortTriggerData<any>>> = {};
-    private staticNodesEvaluated: Set<string> = new Set();
+    private nodeEvaluationQueue: string[] = [];
+    private portValues: PortStates = {};
 
-    constructor(graph: AgentGraphType, executionRecord: ReferencedLogStreamRecord, database: SQliteClient) {
-        this.graph = graph;
-        this.executionRecord = executionRecord;
-        this.database = database;
+    constructor(params: StateMachineExecutionOptions) {
+        this.definition = params.definition;
+        this.logStream = params.logStream.child('agent-graph');
+        this.database = params.database;
     }
 
-    // Private utilites
-
-    private _setPortValue(nodeId: string, portId: string, value: PortTriggerData<any>) {
-        if (!this.portValues[nodeId]) {
-            this.portValues[nodeId] = {};
-        }
-        this.portValues[nodeId][portId] = value;
-
-        // If the port is connected to another node, set the value of that port
-        const connections = this._getConnectionsOutofPort(nodeId, portId);
-        connections.forEach(c => {
-            this._setPortValue(c.targetNodeId, c.targetPortId, {
-                portId: c.targetPortId,
-                dataType: value.dataType,
-                inputValue: value.inputValue,
-            });
-        });
-
-        // If this port is an input signal, add the node to the evaluation queue
-        const node = this._getNode(nodeId);
-        const nodeDefinition = NodeHandler.getById(node?.nodeId as string);
-        if (nodeDefinition?.isSignalPort(portId)) {
-            this.executionRecord.log('state-machine', `Signal value changed, adding node ${nodeId} (${node?.nodeId}) to evaluation queue`);
-            this._addEvaluationQueue(nodeId);
-        }
-
-        // If the target node is a static node, and its not been evaluated, and it has all its input ports resolved, add it to the evaluation queue
-        if (nodeDefinition?.isStaticData() && !this.staticNodesEvaluated.has(nodeId) && this._nodeHasAllInputPortsResolved(nodeId)) {
-            this.executionRecord.log(
-                'state-machine',
-                `Static data node fufilled all dependencies, adding ${nodeId} (${node?.nodeId}) to evaluation queue`
+    private checkItteration() {
+        if (this.invokeCount > StateMachineRuntime.MAX_INVOKES) {
+            this.logStream.error(
+                `Max invoke count reached, agent graphs can only invoke nodes ${StateMachineRuntime.MAX_INVOKES} times before stopping to prevent infinite loops`
             );
-            this.staticNodesEvaluated.add(nodeId);
-            this._addEvaluationQueue(nodeId);
+            throw new Error('Max invoke count reached');
+        }
+        this.invokeCount++;
+    }
+
+    private getNodeDefinition(nodeId: string) {
+        const node = this.definition.nodes.find(n => n.id === nodeId);
+        if (!node) {
+            throw new Error(`Node ${nodeId} not found, but was expected to be resolved`);
+        }
+        return node;
+    }
+
+    private getNodeForPort(portId: string) {
+        return this.definition.nodes.find(n => n.ports.some(p => p.id === portId));
+    }
+
+    private getPortDefinition(portId: string) {
+        const node = this.getNodeForPort(portId);
+        if (node) {
+            return node.ports.find(p => p.id === portId);
         }
     }
 
-    private _addEvaluationQueue(nodeId: string) {
-        if (this.evaluationQueue.includes(nodeId)) {
+    private getConnectedOutputsToInputPort(portId: string) {
+        const connections = this.definition.edges.filter(e => e.sourcePortId === portId);
+        return connections.map(c => c.targetPortId);
+    }
+
+    private consumePortStates(portStates: PortStates) {
+        for (const [portId, newValue] of Object.entries(portStates)) {
+            this.consumePortValue(portId, newValue);
+        }
+    }
+
+    private consumePortValue(portId: string, newValue: unknown | undefined) {
+        const previousValue = this.portValues[portId];
+        this.portValues[portId] = newValue;
+
+        const portDefinition = this.getPortDefinition(portId);
+        const connectedInputPorts = this.getConnectedOutputsToInputPort(portId);
+
+        this.logStream.log(`Consuming port value ${portId} with new value`);
+
+        // If we are an output port connected to other inputs, set their values
+        if (connectedInputPorts.length > 0 && portDefinition?.direction === 'output') {
+            connectedInputPorts.forEach(input => {
+                this.logStream.log(`Port ${input} is connected to ${portId}, propagating value`);
+                this.consumePortValue(input, newValue);
+            });
+        }
+
+        // If the value entering this port has changed, and it is a signal, if we can find the node, queue it for execution
+        if (portDefinition?.direction === 'input' && newValue !== previousValue && newValue) {
+            if (portDefinition?.connectionType === 'signal') {
+                const node = this.getNodeForPort(portId);
+                if (node) {
+                    this.logStream.log(`Port ${portId} is a signal and is for node ${node.id}, queueing it for execution`);
+                    this.queueNodeExecution(node.id);
+                }
+            }
+        }
+    }
+
+    private queueNodeExecution(nodeId: string) {
+        if (this.nodeEvaluationQueue.includes(nodeId)) {
             return;
         }
-        Log.log('state-machine', `Queue now is [${[...this.evaluationQueue, nodeId].join(', ')}]`);
-        this.evaluationQueue.push(nodeId);
+        this.logStream.log(`Queueing node ${nodeId} for execution`);
+        this.nodeEvaluationQueue.push(nodeId);
     }
 
-    private _getPortDataForNode(nodeId: string) {
-        return Object.values(this.portValues[nodeId] ?? {});
+    private getPortDataForNode(nodeId: string) {
+        const node = this.definition.nodes.find(n => n.id === nodeId);
+        const nodeData: PortStates = {};
+        for (const port of node?.ports ?? []) {
+            nodeData[port.id] = this.portValues[port.id];
+        }
+        return nodeData;
     }
 
-    private _getPortMap(portData: PortTriggerData<any>[]) {
-        return portData.reduce(
-            (acc, p) => {
-                acc[p.portId] = p.inputValue;
-                return acc;
-            },
-            {} as Record<string, any>
-        );
+    private async resolveNode(nodeId: string) {
+        this.logStream.log(`Executing node ${nodeId}`);
+        this.nodeExecutions.push(nodeId);
+        const node = this.getNodeDefinition(nodeId);
+        const ports = this.getPortDataForNode(nodeId);
+        const nodeHandler = NodeHandler.getById(node.type);
+        if (!nodeHandler) {
+            throw new Error(`Node handler for type ${node.type} not found`);
+        }
+        const result = await nodeHandler.resolve({
+            execution: this,
+            node: node,
+            inputPorts: ports,
+            database: this.database,
+            logStream: this.logStream.child(`node-${nodeId}`),
+        });
+        this.logStream.log(`Node ${nodeId} executed`);
+        return result;
     }
 
-    private _getConnectionsOutofPort(nodeId: string, portId: string) {
-        return this.graph.edgesData.filter(e => e.sourceNodeId === nodeId && e.sourcePortId === portId);
-    }
+    private async progressEvaluationQueue() {
+        this.checkItteration();
+        const nextNode = this.nodeEvaluationQueue.shift();
+        if (!nextNode) {
+            this.logStream.log('No more nodes to evaluate, state machine execution complete');
+            return;
+        }
+        const result = await this.resolveNode(nextNode);
+        this.consumePortStates(result.ports);
 
-    private _getNode(nodeId: string) {
-        return this.graph.nodesData.find(n => n.id === nodeId);
-    }
-
-    private _nodeLacksInputPorts(nodeId: string) {
-        const node = this._getNode(nodeId);
-        const nodeDefinition = NodeHandler.getById(node?.nodeId as string);
-        return nodeDefinition?.getAllPortIds().length == 0;
-    }
-
-    private _nodeHasAllInputPortsResolved(nodeId: string) {
-        const node = this._getNode(nodeId);
-        const nodeDefinition = NodeHandler.getById(node?.nodeId as string);
-        return nodeDefinition?.getAllPortIds().every(p => this.portValues[nodeId]?.[p]);
-    }
-
-    private _getNodeDefinition(nodeId: string) {
-        const node = this._getNode(nodeId);
-        return NodeHandler.getById(node?.nodeId as string);
+        this.logStream.log(`Node ${nextNode} resolved, checking for more nodes to evaluate`);
+        await this.progressEvaluationQueue();
     }
 
     // Invoke
 
-    public async invoke(inputNode: string, portData: PortTriggerData<any>[], eventRef: GraphInputEvent) {
-        return this.wrapSqliteMetric('agent-graph', {}, async () => {
-            try {
-                await this.executionRecord.log('state-machine', `Invoking state machine`, {
-                    inputNode,
-                    machine: this,
-                });
-                await this._evaluateStaticNodes();
-                await this.executionRecord.log('state-machine', `Processed source event ${eventRef.type}, tracing results across graph`);
-                await this._invoke(inputNode, portData);
-                await this.executionRecord.log('state-machine', `Completed state machine execution`);
-                await this.executionRecord.success();
-            } catch (error) {
-                await this.executionRecord.error(
-                    'state-machine',
-                    `Failed to invoke state machine execution error: ${error}, stack: ${error instanceof Error ? error.stack : undefined}`
-                );
-                await this.executionRecord.fail();
-            }
-        });
-    }
-
-    private async _invoke(inputNode: string, portData: PortTriggerData<any>[]) {
-        Log.log('state-machine', `Consuming input node ${inputNode} and its port data`);
-        portData.forEach(p => this._setPortValue(inputNode, p.portId, p));
-        await this._progressEvaluationQueue();
-    }
-
-    private async _evaluateStaticNodes() {
-        Log.log('state-machine', `Evaluating static nodes`);
-        // Queue up all nodes that dont have any input ports
-        const staticNodes = this.graph.nodesData.filter(n => this._getNodeDefinition(n.id).isStaticData());
-        await this.executionRecord.log('state-machine', 'Evaluating all static nodes first before processing source event', {
-            staticNodes,
-        });
-        for (const node of staticNodes) {
-            const noInputPorts = this._nodeLacksInputPorts(node.id);
-            if (noInputPorts) {
-                this.staticNodesEvaluated.add(node.id);
-                this._addEvaluationQueue(node.id);
-            }
-        }
-        // Evaluate all nodes in the queue and all nodes they connect to
-        await this._progressEvaluationQueue();
-        Log.log('state-machine', `Evaluated static nodes`);
-    }
-
-    private async _progressEvaluationQueue() {
-        if (this.evaluationQueue.length === 0) {
-            Log.log('state-machine', `Evaluation queue is empty, no more nodes to evaluate`);
-            return;
-        }
-        const nodeId = this.evaluationQueue.shift();
-        if (!nodeId) {
-            return;
-        }
-        const node = this._getNode(nodeId);
-        if (!node) {
-            throw new Error(`Node ${nodeId} not found`);
-        }
-        this.invokeCount++;
-        if (this.invokeCount > StateMachineExecution.maxInvokeCount) {
-            throw new Error('Max invoke count reached');
-        }
-
-        Log.log('state-machine', `Invoking node ${nodeId} (${node.nodeId})`);
-        Log.log('state-machine', `Queue now is [${[...this.evaluationQueue].join(', ')}]`);
-
+    public async signal(nodeId: string, portData: PortStates) {
         try {
-            // Get port data
-            const ports = this._getPortDataForNode(nodeId);
-            const portMap = this._getPortMap(ports);
-            const definition = this._getNodeDefinition(nodeId);
+            await this.logStream.log('Invoking state machine', { inputNode: nodeId });
 
-            // Begin node resolution
-            await this.executionRecord.log('state-machine', `Beginning node resolution for node ${nodeId} (${node.nodeId})`, {
-                portMap,
-            });
+            // Set all the values we got as input
+            const targetNode = this.getNodeDefinition(nodeId);
+            const globalPortData = mapLocalPortsToGlobalPorts(portData, targetNode);
+            this.consumePortStates(globalPortData);
 
-            // Resolve node
-            const result = await this._resolveNode(nodeId, definition, ports);
+            // Progress the evaluation queue
+            await this.progressEvaluationQueue();
 
-            // Complete node resolution
-            const outputMap = this._getPortMap(result.portData);
-            await this.executionRecord.log('state-machine', `Completed node resolution for node ${nodeId} (${node.nodeId})`, {
-                outputMap,
-            });
+            this.logStream.log(`State machine execution complete after ${this.nodeExecutions.length} node executions`);
         } catch (error) {
-            Log.error(
-                'state-machine',
-                `Failed to resolve node ${nodeId} (${node.nodeId}), error: ${error}, stack: ${
-                    error instanceof Error ? error.stack : undefined
-                }`
-            );
-            await this.executionRecord.error(
-                'state-machine',
-                `Failed to resolve node ${nodeId} (${node.nodeId}), error: ${error}, stack: ${
-                    error instanceof Error ? error.stack : undefined
-                }`
-            );
+            await this.logStream.error('Failed to invoke state machine', { error: error as Error });
             throw error;
         }
-
-        if (this.evaluationQueue.length > 0) {
-            await this._progressEvaluationQueue();
-        }
-    }
-
-    private async _resolveNode(nodeId: string, node: NodeHandler, portData: PortTriggerData<any>[]) {
-        return this.wrapSqliteMetric(
-            'graph-node',
-            {
-                nodeType: node.getDefinition().type,
-            },
-            async () => {
-                const result = await node.resolve({
-                    execution: this,
-                    node: node.getDefinition(),
-                    portData: portData,
-                    resolvePort: (id: string) => portData.find(p => p.portId === id)?.inputValue,
-                    parameters: this._getNode(nodeId)?.parameters ?? {},
-                    database: this.database,
-                });
-                result.portData.forEach(p => this._setPortValue(nodeId, p.portId, p));
-                return result;
-            }
-        );
-    }
-
-    // Metrics
-
-    publishMetricObject(values: Record<string, number>, dimensions: Record<string, string>) {
-        const dimensionData = {
-            ...dimensions,
-            executionId: this.executionRecord.id,
-            graphId: this.graph.id,
-            graphName: this.graph.name,
-        };
-        this.database.tables.metric.publishMetricObject(values, dimensionData);
-    }
-
-    async wrapSqliteMetric<T>(metric: string, dimensions: Record<string, string>, handler: () => Promise<T> | T): Promise<T> {
-        return this.database.tables.metric.wrapSqliteMetric(
-            metric,
-            {
-                ...dimensions,
-                executionId: this.executionRecord.id,
-                graphId: this.graph.id,
-                graphName: this.graph.name,
-            },
-            handler
-        );
     }
 }

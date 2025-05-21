@@ -1,5 +1,5 @@
 import { buildTestDB, ReferencedMessageThreadRecord, ReferencedModelConnectionRecord } from '@abyss/records';
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
 import { invokeModelHandler } from './handler';
 
 test('invokeModelAgainstThread', async () => {

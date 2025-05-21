@@ -1,6 +1,5 @@
-import { MessageType, NewRecord } from '@abyss/records';
+import type { MessageType, NewRecord } from '@abyss/records';
 import { invokeModelAgainstThread } from '../../models/handler';
-import { randomId } from '../../utils/ids';
 import type { InvokeModelParams } from './types';
 
 /**

@@ -550,9 +550,8 @@ describe('Message Thread Record', () => {
                 await threadRef.addMessages(msgRef1, responseRef1, msgRef2);
 
                 const unprocessedToolCalls = await threadRef.getUnprocessedToolCalls();
-                expect(Object.keys(unprocessedToolCalls).length).toBe(1);
-                expect(unprocessedToolCalls.call2).toBeDefined();
-                expect(unprocessedToolCalls.call2.id).toBe(createdMsg2.id);
+                expect(unprocessedToolCalls.length).toBe(1);
+                expect(unprocessedToolCalls[0].id).toBe(createdMsg2.id);
             });
         });
     });
