@@ -37,8 +37,8 @@ export const IconOption: React.FC<IconOptionProps> = ({ title, icon: Icon, child
         <button
             type="button"
             className={`
-                flex items-center p-2 rounded-md text-text-200 bg-background-200
-                ${isClickable ? 'cursor-pointer hover:bg-background-300' : ''}
+                flex items-center p-2 rounded-md text-text-200 w-full text-left
+                ${isClickable ? 'cursor-pointer hover:bg-background-400' : ''}
                 ${isDisabled ? 'opacity-50 cursor-not-allowed bg-background-300' : ''}
                 ${className || ''}
             `}
@@ -47,7 +47,7 @@ export const IconOption: React.FC<IconOptionProps> = ({ title, icon: Icon, child
             <Icon size={24} className="mr-4 text-primary-500" />
             <div className="flex-1">
                 <h3 className="text-sm xl:text-lg mb-1">{title}</h3>
-                <div className="text-xs xl:text-sm">{children}</div>
+                <div className="text-xs xl:text-sm opacity-50">{children}</div>
             </div>
         </button>
     );

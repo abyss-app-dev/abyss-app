@@ -19,12 +19,9 @@ interface AbyssAnimationProps {
     initialDynamicStars?: number;
 }
 
-export function AbyssAnimation({
-    initialStaticStars = 30,
-    initialDynamicStars = 100,
-}: AbyssAnimationProps) {
+export function AbyssAnimation({ initialStaticStars = 30, initialDynamicStars = 100 }: AbyssAnimationProps) {
     // --- Parameter Tuning ---
-    const FRICTION = 0.990; // Increased friction further to slow them down more gently
+    const FRICTION = 0.99; // Increased friction further to slow them down more gently
     const BASE_ACCELERATION = 0.0008; // Renamed to BASE_ACCELERATION
     const MAX_LINE_DISTANCE = 70; // Increased: stars need to be fairly close to connect
     const MAX_CONNECTIONS_PER_DOT = 4; // Slightly reduced, can help performance and clarity
@@ -68,14 +65,16 @@ export function AbyssAnimation({
             id,
             x: starX,
             y: starY,
-            size: isStatic ? (1.5 + Math.random() * 1) : (1 + Math.random() * 1.2), // Slightly smaller dynamic
-            opacity: isStatic ? (0.7 + Math.random() * 0.3) : (MIN_STAR_OPACITY_AT_EDGE + Math.random() * (MAX_STAR_OPACITY_AT_EDGE - MIN_STAR_OPACITY_AT_EDGE)),
+            size: isStatic ? 1.5 + Math.random() * 1 : 1 + Math.random() * 1.2, // Slightly smaller dynamic
+            opacity: isStatic
+                ? 0.7 + Math.random() * 0.3
+                : MIN_STAR_OPACITY_AT_EDGE + Math.random() * (MAX_STAR_OPACITY_AT_EDGE - MIN_STAR_OPACITY_AT_EDGE),
             dx: 0,
             dy: 0,
             fadeOut: false,
             connections: new Map<number, number>(),
             isStatic,
-            accelerationFactor: isStatic ? 0 : (0.5 + Math.random() * 4.5), // Assign a random acceleration factor for dynamic stars
+            accelerationFactor: isStatic ? 0 : 0.5 + Math.random() * 4.5, // Assign a random acceleration factor for dynamic stars
         };
     };
 
@@ -84,7 +83,7 @@ export function AbyssAnimation({
             .filter(s => s.id !== star.id && !s.fadeOut)
             .map(s => ({
                 star: s,
-                distance: calculateDistance(star.x, star.y, s.x, s.y)
+                distance: calculateDistance(star.x, star.y, s.x, s.y),
             }))
             .sort((a, b) => a.distance - b.distance)
             .slice(0, n)
@@ -136,8 +135,8 @@ export function AbyssAnimation({
                 // Use BASE_ACCELERATION and multiply by star.accelerationFactor
                 const accelerationMagnitude = BASE_ACCELERATION * star.accelerationFactor * (distanceToTarget / 50 + 0.1);
 
-                star.dx += distX * accelerationMagnitude / (distanceToTarget || 1); // Normalized direction
-                star.dy += distY * accelerationMagnitude / (distanceToTarget || 1);
+                star.dx += (distX * accelerationMagnitude) / (distanceToTarget || 1); // Normalized direction
+                star.dy += (distY * accelerationMagnitude) / (distanceToTarget || 1);
 
                 star.dx *= FRICTION;
                 star.dy *= FRICTION;
@@ -222,12 +221,15 @@ export function AbyssAnimation({
     return (
         <div className="w-full h-full relative " ref={containerRef}>
             <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-                <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }} aria-label="Star connections">
+                <svg
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+                    aria-label="Star connections"
+                >
                     <title>Star connection network visualization</title>
-                    {starsForRender.map((star1) =>
+                    {starsForRender.map(star1 =>
                         Array.from(star1.connections.entries()).map(([star2Id, lineOpacity]) => {
                             const star2 = starsForRender.find(s => s.id === star2Id);
-                            if (!star2 || star1.id === star2.id ) return null;
+                            if (!star2 || star1.id === star2.id) return null;
                             if (star1.id >= star2.id) return null; // Draw each line once
 
                             // Only render line if opacity is high enough to be visible
