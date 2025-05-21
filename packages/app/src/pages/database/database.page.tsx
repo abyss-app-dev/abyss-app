@@ -3,7 +3,7 @@ import { Folder, Table, TableIcon } from 'lucide-react';
 import { useDatabasePage } from './database.hook';
 
 export function ListTablesPage() {
-    const { pageTitle, pageBreadcrumbs,  allTables, openDbFolder, openDbTable } = useDatabasePage();
+    const { pageTitle, pageBreadcrumbs, allTables, openDbFolder, openDbTable } = useDatabasePage();
 
     return (
         <PageCrumbed title={pageTitle} breadcrumbs={pageBreadcrumbs} loading={allTables === undefined}>

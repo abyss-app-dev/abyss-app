@@ -12,6 +12,7 @@ export function ModelProfileMainPage() {
                 title="Connected Models"
                 icon={Box}
                 action={<Button variant="secondary" icon={Plus} onClick={handleCreateNew} tooltip="New Connection" />}
+                subtitle="Models registered here are accessable to Abyss and consumable for agent orchestrations"
             >
                 {modelProfiles.data && modelProfiles.data.length > 0 ? (
                     <TileGrid>

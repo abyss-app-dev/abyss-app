@@ -4,7 +4,7 @@ import { AnthropicLogo, GeminiLogo, OpenAILogo } from '../../library/logos';
 import { AnthropicConfig } from './connectors/anthropic';
 import { GeminiConfig } from './connectors/gemini';
 import { OpenAIConfig } from './connectors/openai';
-import { useModelProfileCreate } from './create.hook';
+import { useModelProfileCreate } from './edit.hook';
 
 const Providers = [
     {
@@ -22,26 +22,20 @@ const Providers = [
         icon: <AnthropicLogo logo="Anthropic" className="w-6 h-6" />,
         component: AnthropicConfig,
     },
-];
+] as const;
 
-export function ModelProfileCreatePage() {
-    const {
-        selectedProvider,
-        setSelectedProvider,
-        selectedModel,
-        setSelectedModel,
-        name,
-        setName,
-        data,
-        setData,
-        handleCreateConnection,
-        breadcrumbs,
-    } = useModelProfileCreate();
+export function ModelProfileEditPage() {
+    const { modelMetadata, saveHandler, breadcrumbs } = useModelProfileCreate();
+    const selectedProviderConfig = Providers.find(provider => provider.name === modelMetadata.providerId);
+
+    const handleProviderSelect = (providerName: string) => {
+        saveHandler({ providerId: providerName, modelId: '', connectionData: {} });
+    };
 
     return (
-        <PageCrumbed title="Create Model Profile" breadcrumbs={breadcrumbs}>
+        <PageCrumbed title={modelMetadata.id ? 'Edit Model Profile' : 'Create Model Profile'} breadcrumbs={breadcrumbs}>
             <IconSection title="Name" subtitle="The name for your model profile" icon={Box}>
-                <Input label="Name" value={name} onChange={setName} />
+                <Input label="Name" value={modelMetadata.name} onChange={value => saveHandler({ name: value })} />
             </IconSection>
 
             <IconSection title="Provider" subtitle="Select the provider for your model connection" icon={Globe}>
@@ -49,9 +43,9 @@ export function ModelProfileCreatePage() {
                     {Providers.map(provider => (
                         <Button
                             key={provider.name}
-                            onClick={() => setSelectedProvider(provider.name)}
+                            onClick={() => handleProviderSelect(provider.name)}
                             variant="primary"
-                            isInactive={selectedProvider !== provider.name}
+                            isInactive={modelMetadata.providerId !== provider.name}
                             className="gap-4"
                         >
                             {provider.icon}
@@ -64,23 +58,19 @@ export function ModelProfileCreatePage() {
             <IconSection
                 title="Provider Configuration"
                 subtitle={
-                    selectedProvider
-                        ? `Configure the ${selectedProvider} provider. Configuration data is stored locally on your machine.`
+                    modelMetadata.providerId
+                        ? `Configure the ${modelMetadata.providerId} provider. Configuration data is stored locally on your machine.`
                         : 'Select a provider to continue'
                 }
                 icon={Settings}
             >
-                <div className={selectedProvider ? 'flex flex-col gap-4' : 'hidden'}>
-                    {selectedProvider &&
-                        Providers.find(provider => provider.name === selectedProvider)?.component({
-                            selectedModel,
-                            onModelChange: setSelectedModel,
-                            config: data,
-                            onConfigChange: setData,
-                        })}
-                    <Button className="max-w-[300px]" onClick={handleCreateConnection}>
-                        Create Profile
-                    </Button>
+                <div className={modelMetadata.providerId ? 'flex flex-col gap-4' : 'hidden'}>
+                    {selectedProviderConfig?.component({
+                        selectedModel: modelMetadata.modelId || '',
+                        onModelChange: (modelId: string) => saveHandler({ modelId }),
+                        config: (modelMetadata.connectionData || {}) as Record<string, unknown>,
+                        onConfigChange: (config: Record<string, unknown>) => saveHandler({ connectionData: config }),
+                    })}
                 </div>
             </IconSection>
         </PageCrumbed>

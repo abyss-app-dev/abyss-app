@@ -13,9 +13,8 @@ import { LogViewPage } from './pages/logs/log-view';
 import { MainPage } from './pages/main/main';
 import { MetricsPage } from './pages/metrics/metrics.page';
 import { MetricsChartPage } from './pages/metrics/metrics-chart.page';
-import { ModelProfileCreatePage } from './pages/models/create.page';
+import {  ModelProfileEditPage } from './pages/models/edit.page';
 import { ModelProfileMainPage } from './pages/models/main.page';
-import { ModelProfileViewPage } from './pages/models/view.page';
 import { SettingsPage } from './pages/settings/settings.page';
 import { ViewSnapshotPage } from './pages/snapshots/view-snapshot.page';
 import { ToolsPage } from './pages/tools/tools.page';
@@ -40,8 +39,8 @@ export function App() {
                         <Route path="/metrics" element={<MetricsPage />} />
                         <Route path="/metrics/graph/:metricName" element={<MetricsChartPage />} />
                         <Route path="/models" element={<ModelProfileMainPage />} />
-                        <Route path="/models/create" element={<ModelProfileCreatePage />} />
-                        <Route path="/models/id/:id" element={<ModelProfileViewPage />} />
+                        <Route path="/models/create" element={<ModelProfileEditPage />} />
+                        <Route path="/models/id/:id" element={<ModelProfileEditPage />} />
                     </Route>
                     {/* 
                         <Route path="/logs/id/:id" element={<LogViewPage />} />

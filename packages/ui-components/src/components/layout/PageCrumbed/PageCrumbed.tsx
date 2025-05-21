@@ -3,7 +3,7 @@ import React from 'react';
 
 export interface Breadcrumb {
     name: string | undefined;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 export interface PageCrumbedProps {
@@ -54,17 +54,17 @@ export const PageCrumbed: React.FC<PageCrumbedProps> = ({ children, title, subti
                         {breadcrumbs.map((crumb, index) => (
                             <React.Fragment key={index}>
                                 {index > 0 && <span>/</span>}
-                                <button
-                                    type="button"
-                                    onClick={crumb.onClick}
-                                    className={`hover:underline capitalize ${
-                                        index === breadcrumbs.length - 1
-                                            ? 'text-text-600 pointer-events-none'
-                                            : 'font-bold hover:text-primary-500'
-                                    }`}
-                                >
-                                    {crumb.name || 'unknown'}
-                                </button>
+                                    <button
+                                        type="button"
+                                        onClick={crumb.onClick}
+                                        className={`capitalize ${
+                                            index === breadcrumbs.length - 1 || !crumb.onClick
+                                                ? 'text-text-600 pointer-events-none'
+                                                : 'font-bold hover:text-primary-500 hover:underline'
+                                        }`}
+                                    >
+                                        {crumb.name || 'unknown'}
+                                    </button>
                             </React.Fragment>
                         ))}
                     </div>

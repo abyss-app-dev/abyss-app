@@ -67,8 +67,11 @@ export class DatabaseSubscriptionLayer {
         const id = randomId();
         this.subscribersToRecords[table][recordId][id] = callback;
 
-        const record = await client.tables[table as keyof typeof client.tables].get(recordId);
-        callback(record);
+        const exists = await client.tables[table as keyof typeof client.tables].exists(recordId);
+        if (exists) {
+            const record = await client.tables[table as keyof typeof client.tables].get(recordId);
+            callback(record);
+        }
 
         return () => this.removeRecordSubscriber(table, recordId, id);
     }

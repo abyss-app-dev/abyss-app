@@ -53,11 +53,16 @@ export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table
 
 export type UseDatabaseRecordSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseRecordSubscription<T>>;
 export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(table: T, recordId: string, listeners: unknown[] = []) {
-    const query = useQuery(() => Database.tables[table].get(recordId) as Promise<SqliteTableRecordType[T]>);
+    const query = useQuery<SqliteTableRecordType[T] | null>(async () => {
+        if (recordId) {
+            return Database.tables[table].get(recordId) as Promise<SqliteTableRecordType[T]>;
+        }
+        return null;
+    });
     useEffect(() => {
         let unsubscribeCallback: () => void = () => {};
         Database.tables[table]
-            .subscribeRecord(recordId, data => query.setData(data as SqliteTableRecordType[T]))
+            .subscribeRecord(recordId, data => query.setData(data as SqliteTableRecordType[T] | null))
             .then(unsubscribe => {
                 unsubscribeCallback = unsubscribe;
             });
