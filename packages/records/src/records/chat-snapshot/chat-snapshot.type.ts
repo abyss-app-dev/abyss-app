@@ -1,6 +1,6 @@
 import type { BaseSqliteRecord } from '../../sqlite/sqlite.type';
 
-export interface ChatSnapshot extends BaseSqliteRecord {
+export interface ChatSnapshotType extends BaseSqliteRecord {
     messagesData: ChatSnapshotMessage[];
 }
 

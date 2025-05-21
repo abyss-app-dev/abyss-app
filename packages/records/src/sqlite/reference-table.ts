@@ -128,6 +128,10 @@ export class ReferencedSqliteTable<IRecordType extends BaseSqliteRecord = BaseSq
     }
 
     async subscribe(callback: () => void) {
-        return this.client.events.subscribeTable(this.tableId, callback);
+        return await this.client.events.subscribeTable(this.tableId, callback);
+    }
+
+    async subscribeRecord(id: string, callback: (record: IRecordType) => void) {
+        return await this.client.events.subscribeRecord(this.client, this.tableId, id, callback as (record: BaseSqliteRecord) => void);
     }
 }

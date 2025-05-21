@@ -1,11 +1,12 @@
 import { ReferencedSqliteRecord } from '../../sqlite/reference-record';
 import { ReferencedSqliteTable } from '../../sqlite/reference-table';
+import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
-import type { ChatSnapshot } from './chat-snapshot.type';
+import type { ChatSnapshotType } from './chat-snapshot.type';
 
-export class ReferencedChatSnapshotTable extends ReferencedSqliteTable<ChatSnapshot> {
+export class ReferencedChatSnapshotTable extends ReferencedSqliteTable<ChatSnapshotType> {
     constructor(client: SQliteClient) {
-        super('chatSnapshot', 'A point in time record of a conversation as it was serialized for an LLM', client);
+        super(SqliteTable.chatSnapshot, 'A point in time record of a conversation as it was serialized for an LLM', client);
     }
 
     public ref(id: string) {
@@ -13,8 +14,8 @@ export class ReferencedChatSnapshotTable extends ReferencedSqliteTable<ChatSnaps
     }
 }
 
-export class ReferencedChatSnapshotRecord extends ReferencedSqliteRecord<ChatSnapshot> {
+export class ReferencedChatSnapshotRecord extends ReferencedSqliteRecord<ChatSnapshotType> {
     constructor(id: string, client: SQliteClient) {
-        super('chatSnapshot', id, client);
+        super(SqliteTable.chatSnapshot, id, client);
     }
 }

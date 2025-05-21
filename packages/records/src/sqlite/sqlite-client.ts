@@ -11,11 +11,11 @@ import { ReferencedMetricTable } from '../records/metric/metric';
 import { ReferencedModelConnectionTable } from '../records/model-connection/model-connection';
 import { ReferencedSettingsTable } from '../records/settings/settings';
 import { ReferencedToolDefinitionTable } from '../records/tool-definition/tool-definition';
+import { randomId } from '../utils/ids';
 import { DatabaseSubscriptionLayer } from './database-subscription';
 import type { ReferencedSqliteTable } from './reference-table';
 import { migrations } from './schemas/migrations';
 import { type BaseSqliteRecord, type DBSidecarType, DefaultSidecar, type SqliteTables } from './sqlite.type';
-import { randomId } from '../utils/ids';
 
 export class SQliteClient {
     // Disk locations

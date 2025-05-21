@@ -1,12 +1,12 @@
 import { ReferencedSqliteRecord } from '../../sqlite/reference-record';
 import { ReferencedSqliteTable } from '../../sqlite/reference-table';
+import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import type { DatabaseDocumentType } from './document.type';
 import { RichDocument } from './richDocument';
-
 export class ReferencedDocumentTable extends ReferencedSqliteTable<DatabaseDocumentType> {
     constructor(client: SQliteClient) {
-        super('document', 'A document', client);
+        super(SqliteTable.document, 'A document', client);
     }
 
     public ref(id: string) {
@@ -33,7 +33,7 @@ export class ReferencedDocumentTable extends ReferencedSqliteTable<DatabaseDocum
 
 export class ReferencedDocumentRecord extends ReferencedSqliteRecord<DatabaseDocumentType> {
     constructor(id: string, client: SQliteClient) {
-        super('document', id, client);
+        super(SqliteTable.document, id, client);
     }
 
     public async getRichDocument() {

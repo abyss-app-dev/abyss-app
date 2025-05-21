@@ -1,6 +1,7 @@
 import { ReferencedSqliteRecord } from '../../sqlite/reference-record';
 import { ReferencedSqliteTable } from '../../sqlite/reference-table';
 import type { NewRecord } from '../../sqlite/sqlite.type';
+import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import { ReferencedMessageRecord } from '../message/message';
 import type { MessageType, ToolCallRequestPartial } from '../message/message.type';
@@ -9,7 +10,7 @@ import type { MessageThreadTurn, MessageThreadType } from './message-thread.type
 
 export class ReferencedMessageThreadTable extends ReferencedSqliteTable<MessageThreadType> {
     constructor(client: SQliteClient) {
-        super('messageThread', 'A thread of messages with different types of content', client);
+        super(SqliteTable.messageThread, 'A thread of messages with different types of content', client);
     }
 
     public ref(id: string) {
@@ -26,7 +27,7 @@ export class ReferencedMessageThreadTable extends ReferencedSqliteTable<MessageT
 
 export class ReferencedMessageThreadRecord extends ReferencedSqliteRecord<MessageThreadType> {
     constructor(id: string, client: SQliteClient) {
-        super('messageThread', id, client);
+        super(SqliteTable.messageThread, id, client);
     }
 
     //

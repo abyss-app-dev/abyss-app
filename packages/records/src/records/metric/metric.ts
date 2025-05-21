@@ -1,11 +1,12 @@
 import { ReferencedSqliteRecord } from '../../sqlite/reference-record';
 import { ReferencedSqliteTable } from '../../sqlite/reference-table';
+import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import type { MetricType } from './metric.type';
 
 export class ReferencedMetricTable extends ReferencedSqliteTable<MetricType> {
     constructor(client: SQliteClient) {
-        super('metric', 'A metric with dimensions and a numeric value', client);
+        super(SqliteTable.metric, 'A metric with dimensions and a numeric value', client);
     }
 
     public ref(id: string) {
@@ -111,6 +112,6 @@ export class ReferencedMetricTable extends ReferencedSqliteTable<MetricType> {
 
 export class ReferencedMetricRecord extends ReferencedSqliteRecord<MetricType> {
     constructor(id: string, client: SQliteClient) {
-        super('metric', id, client);
+        super(SqliteTable.metric, id, client);
     }
 }

@@ -1,5 +1,6 @@
 import { ReferencedSqliteRecord } from '../../sqlite/reference-record';
 import { ReferencedSqliteTable } from '../../sqlite/reference-table';
+import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import type { SettingsType } from './settings.type';
 
@@ -7,7 +8,7 @@ export class ReferencedSettingsTable extends ReferencedSqliteTable<SettingsType>
     private static DEFAULT_ID = 'settings::default';
 
     constructor(client: SQliteClient) {
-        super('settings', 'Application settings', client);
+        super(SqliteTable.settings, 'Application settings', client);
     }
 
     async default() {
@@ -36,6 +37,6 @@ export class ReferencedSettingsTable extends ReferencedSqliteTable<SettingsType>
 
 export class ReferencedSettingsRecord extends ReferencedSqliteRecord<SettingsType> {
     constructor(id: string, client: SQliteClient) {
-        super('settings', id, client);
+        super(SqliteTable.settings, id, client);
     }
 }

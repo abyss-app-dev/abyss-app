@@ -1,5 +1,3 @@
-import { RichDocument } from './richDocument';
-
 export interface BaseCell {
     id: string;
     editedAt: number;

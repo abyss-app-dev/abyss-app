@@ -1,11 +1,12 @@
 import { ReferencedSqliteRecord } from '../../sqlite/reference-record';
 import { ReferencedSqliteTable } from '../../sqlite/reference-table';
+import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
-import { AgentGraphType } from './agent-graph.type';
+import type { AgentGraphType } from './agent-graph.type';
 
 export class ReferencedAgentGraphTable extends ReferencedSqliteTable<AgentGraphType> {
     constructor(client: SQliteClient) {
-        super('agentGraph', 'A graph representing an agent workflow with nodes and edges', client);
+        super(SqliteTable.agentGraph, 'A graph representing an agent workflow with nodes and edges', client);
     }
 
     public ref(id: string) {
@@ -15,6 +16,6 @@ export class ReferencedAgentGraphTable extends ReferencedSqliteTable<AgentGraphT
 
 export class ReferencedAgentGraphRecord extends ReferencedSqliteRecord<AgentGraphType> {
     constructor(id: string, client: SQliteClient) {
-        super('agentGraph', id, client);
+        super(SqliteTable.agentGraph, id, client);
     }
 }
