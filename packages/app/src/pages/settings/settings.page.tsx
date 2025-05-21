@@ -1,10 +1,9 @@
 import { IconSection, PageCrumbed, SelectDropdown } from '@abyss/ui-components';
-import { Download, PaintBucket } from 'lucide-react';
-import { AppUpdaterStatus } from '../../state/app-updater';
+import { PaintBucket } from 'lucide-react';
 import { useSettingsPage } from './settings.hook';
 
 export function SettingsPage() {
-    const { breadcrumbs, record, onChangeAppTheme  } = useSettingsPage();
+    const { breadcrumbs, record, onChangeAppTheme } = useSettingsPage();
 
     return (
         <PageCrumbed title={'Abyss Settings'} breadcrumbs={breadcrumbs} loading={record === undefined}>

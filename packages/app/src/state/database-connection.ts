@@ -1,4 +1,4 @@
-import type { SQliteClient, SqliteTableRecordType, SqliteTables } from '@abyss/records';
+import type { SQliteClient, SqliteTable, SqliteTableRecordType, SqliteTables } from '@abyss/records';
 import { useEffect, useState } from 'react';
 import { Database } from '../main';
 
@@ -64,4 +64,22 @@ export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(tabl
         return () => unsubscribeCallback();
     }, [table, recordId, ...listeners]);
     return query;
+}
+
+export function useDatabaseTableQuery<T extends keyof SqliteTables, ResponseType>(
+    table: T,
+    query: (table: SqliteTables[T]) => Promise<ResponseType>,
+    listeners: unknown[] = []
+) {
+    const usedQuery = useQuery(() => query(Database.tables[table]));
+    useEffect(() => {
+        let unsubscribeCallback: () => void = () => {};
+        Database.tables[table]
+            .subscribe(() => usedQuery.refetch())
+            .then(unsubscribe => {
+                unsubscribeCallback = unsubscribe;
+            });
+        return () => unsubscribeCallback();
+    }, [table, ...listeners]);
+    return usedQuery;
 }

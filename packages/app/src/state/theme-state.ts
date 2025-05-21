@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Database } from '../main';
-import { useDatabase } from './database-access-utils';
+import { useDatabase, useDatabaseSettings } from './database-access-utils';
 
 export async function applyTheme() {
     const userSettings = await Database.tables.settings.default();
@@ -8,7 +8,7 @@ export async function applyTheme() {
 }
 
 export async function useTheme() {
-    const userSettings = useDatabase.settings.record('default');
+    const userSettings = useDatabaseSettings();
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', userSettings?.data?.theme || 'abyss');
     }, [userSettings?.data?.theme]);

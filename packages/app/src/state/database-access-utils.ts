@@ -1,7 +1,13 @@
 // General access
 
 import { SqliteTable, type SqliteTables } from '@abyss/records';
-import type { UseDatabaseRecordSubscription, UseDatabaseTableSubscription } from './database-connection';
+import {
+    type UseDatabaseRecordSubscription,
+    type UseDatabaseTableSubscription,
+    useDatabaseRecordSubscription,
+    useDatabaseTableQuery,
+    useDatabaseTableSubscription,
+} from './database-connection';
 
 type TableNamesAsStrings = keyof SqliteTables;
 type UseDatabase = {
@@ -23,3 +29,7 @@ for (const tableKey of tableKeys) {
         record: (id: string) => useDatabaseRecordSubscription<typeof tableKey>(tableKey, id),
     };
 }
+
+/// Custom Accessors
+
+export const useDatabaseSettings = () => useDatabaseTableQuery(SqliteTable.settings, async table => table.default());
