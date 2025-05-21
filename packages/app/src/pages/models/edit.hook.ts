@@ -54,6 +54,7 @@ export function useModelProfileCreate() {
     const breadcrumbs = [
         { name: 'Home', onClick: () => navigate('/') },
         { name: 'Models', onClick: () => navigate('/models') },
+        { name: modelMetadata.id || 'new' },
         { name: modelMetadata.id ? 'Edit' : 'Create' },
     ];
 

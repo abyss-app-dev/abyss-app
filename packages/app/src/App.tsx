@@ -13,7 +13,7 @@ import { LogViewPage } from './pages/logs/log-view';
 import { MainPage } from './pages/main/main';
 import { MetricsPage } from './pages/metrics/metrics.page';
 import { MetricsChartPage } from './pages/metrics/metrics-chart.page';
-import {  ModelProfileEditPage } from './pages/models/edit.page';
+import { ModelProfileEditPage } from './pages/models/edit.page';
 import { ModelProfileMainPage } from './pages/models/main.page';
 import { SettingsPage } from './pages/settings/settings.page';
 import { ViewSnapshotPage } from './pages/snapshots/view-snapshot.page';
