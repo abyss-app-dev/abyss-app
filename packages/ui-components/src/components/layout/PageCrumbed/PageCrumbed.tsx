@@ -2,7 +2,7 @@ import { Loader2 } from 'lucide-react';
 import React from 'react';
 
 export interface Breadcrumb {
-    name: string;
+    name: string | undefined;
     onClick: () => void;
 }
 
@@ -63,7 +63,7 @@ export const PageCrumbed: React.FC<PageCrumbedProps> = ({ children, title, subti
                                             : 'font-bold hover:text-primary-500'
                                     }`}
                                 >
-                                    {crumb.name}
+                                    {crumb.name || 'unknown'}
                                 </button>
                             </React.Fragment>
                         ))}

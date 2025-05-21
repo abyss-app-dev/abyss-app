@@ -11,8 +11,8 @@ export function useRecordPage() {
     const breadcrumbs = [
         { name: 'Home', onClick: () => navigate('/') },
         { name: 'Database', onClick: () => navigate('/database') },
-        { name: id!, onClick: () => navigate(`/database/id/${id}`) },
-        { name: recordId!, onClick: () => navigate(`/database/id/${id}/record/${recordId}`) },
+        { name: id, onClick: () => navigate(`/database/id/${id}`) },
+        { name: recordId, onClick: () => navigate(`/database/id/${id}/record/${recordId}`) },
     ];
 
     return {

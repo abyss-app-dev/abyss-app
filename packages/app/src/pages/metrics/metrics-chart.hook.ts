@@ -142,7 +142,7 @@ export function useMetricsChart() {
     const breadcrumbs = [
         { name: 'Home', onClick: navigateToHome },
         { name: 'Metrics', onClick: navigateToMetrics },
-        { name: metricName!, onClick: navigateToMetricChart },
+        { name: metricName, onClick: navigateToMetricChart },
     ];
 
     // Process data for the chart using useMemo
@@ -199,7 +199,6 @@ export function useMetricsChart() {
                     case 'min':
                         aggregatedValue = Math.min(...datapoints.map(point => point.value));
                         break;
-                    case 'average':
                     default:
                         aggregatedValue = datapoints.reduce((sum, point) => sum + point.value, 0) / datapoints.length;
                         break;

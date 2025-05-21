@@ -2,7 +2,7 @@ import { LabelValue, PageCrumbed } from '@abyss/ui-components';
 import { useRecordPage } from './record.hook';
 
 export function ViewTableRecordPage() {
-    const { record, breadcrumbs, type } = useRecordPage();
+    const { record, breadcrumbs } = useRecordPage();
     const { ...data } = record.data || {};
 
     return (

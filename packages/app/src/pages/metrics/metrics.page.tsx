@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useMetrics } from './metrics.hook';
 
 export function MetricsPage() {
-    const { uniqueMetricNames, renderableRows, navigate, filteredRenderableMetricNames, search, setSearch } = useMetrics();
+    const { renderableRows, navigate, filteredRenderableMetricNames, search, setSearch } = useMetrics();
     return (
         <PageCrumbed
             title="Metrics"
@@ -49,7 +49,7 @@ export function MetricsPage() {
                                         View in Graph
                                     </Link>
                                 ),
-                            })) as Record<string, any>[]
+                            })) as unknown as Record<string, unknown>[]
                         }
                     />
                 </div>

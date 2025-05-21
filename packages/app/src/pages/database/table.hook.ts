@@ -11,7 +11,7 @@ export function useTable() {
     const breadcrumbs = [
         { name: 'Home', onClick: () => navigate('/') },
         { name: 'Database', onClick: () => navigate('/database') },
-        { name: id!, onClick: () => navigate(`/database/id/${id}`) },
+        { name: id, onClick: () => navigate(`/database/id/${id}`) },
     ];
 
     const onPurgeTable = () => {
@@ -19,7 +19,7 @@ export function useTable() {
     };
 
     const onOpenRecordStr = (record: string) => {
-        const [recordTable, recordId] = record.toString().split('::');
+        const [recordTable] = record.toString().split('::');
         navigate(`/database/id/${recordTable}/record/${record}`);
     };
 

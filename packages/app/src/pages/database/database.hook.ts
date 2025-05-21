@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useDatabaseSettings, useDatabaseTables } from '../../state/database-access-utils';
+import { useDatabaseTables } from '../../state/database-access-utils';
 
 export function useDatabasePage() {
     const navigate = useNavigate();
@@ -13,7 +13,6 @@ export function useDatabasePage() {
     ];
 
     // Data fetching
-    const userSettings = useDatabaseSettings();
     const allTables = useDatabaseTables();
 
     // Actions
@@ -25,7 +24,6 @@ export function useDatabasePage() {
     return {
         pageTitle,
         pageBreadcrumbs,
-        userSettings,
         allTables,
         openDbFolder,
         navigate,
