@@ -1,59 +1,25 @@
-import type {
-    AgentGraphType,
-    ChatThreadType,
-    LogStreamType,
-    ModelConnectionType,
-    SettingsType,
-    SqliteTables,
-    ToolDefinitionType,
-} from '@abyss/records';
-import type { DocumentType } from '@abyss/records/dist/records/document/document.type';
-import { useDatabaseQuery, useDatabaseRecord, useDatabaseTableQuery } from './database-connection';
-
 // General access
 
-export function useDatabaseTableScan<T>(table: keyof SqliteTables) {
-    return useDatabaseTableQuery<T[]>(table, async database => database.tables[table].list() as unknown as Promise<T[]>);
-}
+import { SqliteTable, type SqliteTables } from '@abyss/records';
+import type { UseDatabaseRecordSubscription, UseDatabaseTableSubscription } from './database-connection';
 
-export function useDatabaseTables() {
-    return useDatabaseQuery(async database => database.describeTables());
-}
+type TableNamesAsStrings = keyof SqliteTables;
+type UseDatabase = {
+    [K in TableNamesAsStrings]: {
+        scan: () => UseDatabaseTableSubscription<K>;
+        record: (id: string) => UseDatabaseRecordSubscription<K>;
+    };
+};
 
-export function useDatabaseSettings() {
-    return useDatabaseRecord<SettingsType>('settings', 'settings::default');
-}
+export const useDatabase = {} as UseDatabase;
 
-export function useDatabaseDocuments() {
-    return useDatabaseTableScan<DocumentType>('document');
-}
+const tableKeys = Object.keys(SqliteTable) as TableNamesAsStrings[];
 
-// Specific access
-
-export function useScanTableModelConnections() {
-    return useDatabaseTableScan<ModelConnectionType>('modelConnection');
-}
-
-export function useScanTableToolDefinitions() {
-    return useDatabaseTableScan<ToolDefinitionType>('toolDefinition');
-}
-
-export function useScanTableAgents() {
-    return useDatabaseTableScan<AgentGraphType>('agentGraph');
-}
-
-export function useScanTableChats() {
-    return useDatabaseTableScan<ChatThreadType>('chatThread');
-}
-
-export function useScanLogOfType(type: string) {
-    return useDatabaseTableQuery<LogStreamType[]>('logStream', async database => database.tables.logStream.scanOfType(type));
-}
-
-export function useScanLogs() {
-    return useDatabaseTableScan<LogStreamType>('logStream');
-}
-
-export function useScanTableTools() {
-    return useDatabaseTableScan<ToolDefinitionType>('toolDefinition');
+for (const tableKey of tableKeys) {
+    useDatabase[tableKey] = {
+        //@ts-ignore
+        scan: () => useDatabaseTableSubscription<typeof tableKey>(tableKey),
+        //@ts-ignore
+        record: (id: string) => useDatabaseRecordSubscription<typeof tableKey>(tableKey, id),
+    };
 }

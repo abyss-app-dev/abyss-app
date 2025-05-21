@@ -45,6 +45,9 @@ export default defineConfig({
             '@': join(__dirname, 'src'),
         },
     },
+    optimizeDeps: {
+        include: ['@abyss/records'],
+    },
     build: {
         outDir: 'dist-vite',
         assetsInlineLimit: 0,

@@ -33,7 +33,7 @@ export function App() {
                 <HeaderBar />
                 <Routes>
                     <Route path="/" element={<MainPage />} />
-                    <Route path="/" element={<WithAppSidebar />}>
+                    {/* <Route path="/" element={<WithAppSidebar />}>
                         <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/database" element={<ListTablesPage />} />
                         <Route path="/database/id/:id" element={<ViewTablePage />} />
@@ -54,7 +54,7 @@ export function App() {
                             <Route path="/chats/create" element={<ChatCreatePage />} />
                             <Route path="/chats/id/:id" element={<ChatViewPage />} />
                         </Route>
-                    </Route>
+                    </Route> */}
 
                     <Route path="*" element={<MainPage />} />
                 </Routes>

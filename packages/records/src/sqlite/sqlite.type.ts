@@ -16,6 +16,7 @@ import type { SettingsType } from '../records/settings/settings.type';
 import type { ReferencedToolDefinitionTable } from '../records/tool-definition/tool-definition';
 import type { ToolDefinitionType } from '../records/tool-definition/tool-definition.type';
 import type { ReferencedSqliteRecord } from './reference-record';
+import type { SQliteClient } from './sqlite-client';
 
 export interface DBSidecarType {
     databaseVersionId: string;

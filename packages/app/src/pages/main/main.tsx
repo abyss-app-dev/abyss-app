@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AbyssAnimation } from '../../library/abyss-animation';
 import { useSidebarFadeStore } from '../../state/sidebar-fade';
+
 export function MainPage() {
     const navigate = useNavigate();
     const [sidebarWidth, setSidebarWidth] = useState('40vw');
     const [contentOpacity, setContentOpacity] = useState(1);
     const { setSidebarFadeable } = useSidebarFadeStore();
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
         setSidebarFadeable(true);
     }, []);

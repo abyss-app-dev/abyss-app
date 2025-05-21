@@ -9,7 +9,7 @@
         "skipLibCheck": true,
         "sourceMap": true,
         "declarationMap": true,
-        "module": "CommonJS",
+        "module": "ESNext",
         "moduleResolution": "Node",
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,

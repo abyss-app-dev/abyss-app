@@ -1,9 +1,8 @@
-import type { SQliteClient, SqliteTables } from '@abyss/records';
-import type { ReferencedSqliteRecord } from '@abyss/records/dist/sqlite/reference-record';
+import type { SQliteClient, SqliteTableRecordType, SqliteTables } from '@abyss/records';
 import { useEffect, useState } from 'react';
 import { Database } from '../main';
 
-function useStatefulQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
+function useQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
@@ -22,91 +21,51 @@ function useStatefulQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
     };
 
     // Initial query
+    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
         fetchData();
     }, []);
 
-    return { data, loading, error, refetch: fetchData };
+    return { data, loading, error, refetch: fetchData, setData };
 }
 
-export function useDatabaseQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
-    const query = useStatefulQuery(callback);
-
-    useEffect(() => {
-        const unsubscribe = Database.subscribeDatabase(() => {
-            query.refetch();
-        });
-        return () => unsubscribe();
-    }, []);
-
+export type UseDatabaseSubscription<T> = ReturnType<typeof useDatabaseSubscription<T>>;
+export function useDatabaseSubscription<T>(callback: (database: SQliteClient) => Promise<T>, listeners: unknown[] = []) {
+    const query = useQuery(callback);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
+    useEffect(() => Database.subscribeDatabase(() => query.refetch()), [...listeners]);
     return query;
 }
 
-export function useDatabaseTableQuery<T>(
-    table: keyof SqliteTables,
-    callback: (database: SQliteClient) => Promise<T>,
-    listeners: any[] = []
-) {
-    const query = useStatefulQuery(callback);
-
+export type UseDatabaseTableSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseTableSubscription<T>>;
+export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table: T, listeners: unknown[] = []) {
+    // biome-ignore lint/suspicious/noExplicitAny: This is a helper function to avoid linting errors
+    const query = useQuery(() => Database.tables[table].list() as any);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
-        const unsubscribe = Database.tables[table].subscribeTable(data => {
-            query.refetch();
-        });
-        return () => unsubscribe();
-    }, [table, callback]);
-
-    useEffect(() => {
-        query.refetch();
-    }, listeners);
-
+        let unsubscribeCallback: () => void;
+        Database.tables[table]
+            .subscribe(() => query.refetch())
+            .then(unsubscribe => {
+                unsubscribeCallback = unsubscribe;
+            });
+        return () => unsubscribeCallback();
+    }, [table, ...listeners]);
     return query;
 }
 
-export function useDatabaseRecord<T>(table: keyof SqliteTables, recordId: string | undefined) {
-    const [data, setData] = useState<T | null>(null);
+export type UseDatabaseRecordSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseRecordSubscription<T>>;
+export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(table: T, recordId: string, listeners: unknown[] = []) {
+    const query = useQuery(() => Database.tables[table].get(recordId) as Promise<SqliteTableRecordType[T]>);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: This is a helper function to avoid linting errors
     useEffect(() => {
-        if (!recordId) {
-            return;
-        }
-        const unsubscribe = Database.tables[table].subscribeRecord(recordId, setData as (data: any) => void);
-        return () => unsubscribe();
-    }, [table, recordId]);
-
-    return data;
-}
-
-export function useDatabaseRecordReference<T extends ReferencedSqliteRecord>(table: keyof SqliteTables, recordId: string | undefined) {
-    const [data, setData] = useState<T | null>(null);
-    useEffect(() => {
-        if (!recordId) {
-            return;
-        }
-        const unsubscribe = Database.tables[table].subscribeRecord(recordId, () =>
-            setData(Database.tables[table].ref(recordId) as unknown as T)
-        );
-        return () => unsubscribe();
-    }, [table, recordId]);
-
-    return data;
-}
-
-export function useDatabaseRecordReferenceQuery<T extends ReferencedSqliteRecord, V>(
-    table: keyof SqliteTables,
-    recordId: string | undefined,
-    query: (record: T) => Promise<V>
-) {
-    const [data, setData] = useState<V | null>(null);
-    useEffect(() => {
-        if (!recordId) {
-            return;
-        }
-        const unsubscribe = Database.tables[table].subscribeRecord(recordId, () => {
-            const ref = Database.tables[table].ref(recordId) as unknown as T;
-            query(ref).then(setData);
-        });
-        return () => unsubscribe();
-    }, [table, recordId]);
-
-    return data;
+        let unsubscribeCallback: () => void;
+        Database.tables[table]
+            .subscribeRecord(recordId, data => query.setData(data as SqliteTableRecordType[T]))
+            .then(unsubscribe => {
+                unsubscribeCallback = unsubscribe;
+            });
+        return () => unsubscribeCallback();
+    }, [table, recordId, ...listeners]);
+    return query;
 }
