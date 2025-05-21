@@ -4,6 +4,7 @@ import { SqliteTable, type SqliteTables } from '@abyss/records';
 import {
     type UseDatabaseRecordSubscription,
     type UseDatabaseTableSubscription,
+    useDatabaseQuery,
     useDatabaseRecordSubscription,
     useDatabaseTableQuery,
     useDatabaseTableSubscription,
@@ -33,3 +34,7 @@ for (const tableKey of tableKeys) {
 /// Custom Accessors
 
 export const useDatabaseSettings = () => useDatabaseTableQuery(SqliteTable.settings, async table => table.default());
+
+export function useDatabaseTables() {
+    return useDatabaseQuery(async database => database.describeTables());
+}

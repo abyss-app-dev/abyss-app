@@ -3,6 +3,7 @@ import type { AgentGraphType } from '../records/agent-graph/agent-graph.type';
 import type { ReferencedChatSnapshotTable } from '../records/chat-snapshot/chat-snapshot';
 import type { ChatSnapshotType } from '../records/chat-snapshot/chat-snapshot.type';
 import type { ReferencedDocumentTable } from '../records/document/databaseDocument';
+import { DatabaseDocumentType } from '../records/document/document.type';
 import type { ReferencedMessageTable } from '../records/message/message';
 import type { MessageType } from '../records/message/message.type';
 import type { ReferencedMessageThreadTable } from '../records/message-thread/message-thread';
@@ -74,6 +75,6 @@ export interface SqliteTableRecordType {
     [SqliteTable.metric]: MetricType;
     [SqliteTable.message]: MessageType;
     [SqliteTable.toolDefinition]: ToolDefinitionType;
-    [SqliteTable.document]: DocumentType;
+    [SqliteTable.document]: DatabaseDocumentType;
     [SqliteTable.chatSnapshot]: ChatSnapshotType;
 }

@@ -40,7 +40,7 @@ export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table
     // biome-ignore lint/suspicious/noExplicitAny: This is a helper function to avoid linting errors
     const query = useQuery(() => Database.tables[table].list() as any);
     useEffect(() => {
-        let unsubscribeCallback: () => void;
+        let unsubscribeCallback: () => void = () => {};
         Database.tables[table]
             .subscribe(() => query.refetch())
             .then(unsubscribe => {
@@ -55,7 +55,7 @@ export type UseDatabaseRecordSubscription<T extends keyof SqliteTables> = Return
 export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(table: T, recordId: string, listeners: unknown[] = []) {
     const query = useQuery(() => Database.tables[table].get(recordId) as Promise<SqliteTableRecordType[T]>);
     useEffect(() => {
-        let unsubscribeCallback: () => void;
+        let unsubscribeCallback: () => void = () => {};
         Database.tables[table]
             .subscribeRecord(recordId, data => query.setData(data as SqliteTableRecordType[T]))
             .then(unsubscribe => {
@@ -82,4 +82,12 @@ export function useDatabaseTableQuery<T extends keyof SqliteTables, ResponseType
         return () => unsubscribeCallback();
     }, [table, ...listeners]);
     return usedQuery;
+}
+
+export function useDatabaseQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
+    const query = useQuery(callback);
+    useEffect(() => {
+        return Database.subscribeDatabase(() => query.refetch());
+    }, []);
+    return query;
 }

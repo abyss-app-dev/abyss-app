@@ -20,7 +20,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
             type="button"
             className={`
                 group relative flex items-center px-2 py-1 cursor-pointer select-none font-thin transition-all duration-500
-                w-full text-left rounded-md 
+                w-full text-left
                 ${isActive ? 'bg-sidebar-section' : 'hover:bg-background-800'}
                 ${className}
             `}

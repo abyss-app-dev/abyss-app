@@ -39,7 +39,9 @@ export const Tile: React.FC<TileProps> = ({ title, icon, children, footer, onCli
                 w-[300px]
                 p-3 rounded-md bg-background-200 border border-background-300
                 text-text-300 text-sm relative text-left flex flex-col justify-start
-                ${isClickable ? 'cursor-pointer hover:bg-background-100 transition-colors' : ''}
+                transition-all duration-300 ease-in-out
+                hover:scale-105
+                ${isClickable ? 'cursor-pointer hover:bg-background-100' : ''}
                 ${className}
             `}
             onClick={isClickable ? onClick : undefined}
@@ -61,6 +63,7 @@ export const Tile: React.FC<TileProps> = ({ title, icon, children, footer, onCli
             {children && (
                 <div className="text-xs text-text-300 overflow-hidden overflow-ellipsis line-clamp-3 max-h-[60px]">{children}</div>
             )}
+            <div className="flex-1" />
             {footer && <div className="text-sm text-text-300 flex justify-end pt-2">{footer}</div>}
         </Tag>
     );

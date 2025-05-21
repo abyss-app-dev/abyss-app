@@ -23,9 +23,9 @@ export function ListTablesPage() {
                                     title={table}
                                     onClick={() => openDbTable(table)}
                                     icon={<TableIcon className="w-4 h-4" />}
-                                    footer={`${allTables.data?.[table].rows || 0} records`}
+                                    footer={`${allTables.data?.[table as keyof typeof allTables.data]?.rows || 0} records`}
                                 >
-                                    {allTables.data?.[table].description}
+                                    {allTables.data?.[table as keyof typeof allTables.data]?.description}
                                 </Tile>
                             ))}
                     </TileGrid>

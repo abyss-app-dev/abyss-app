@@ -3,10 +3,10 @@ import { useRecordPage } from './record.hook';
 
 export function ViewTableRecordPage() {
     const { record, breadcrumbs, type } = useRecordPage();
-    const { controller, ...data } = record || {};
+    const { ...data } = record.data || {};
 
     return (
-        <PageCrumbed title={`SQLite Record: ${record?.id}`} breadcrumbs={breadcrumbs}>
+        <PageCrumbed title={`SQLite Record: ${record.data?.id}`} breadcrumbs={breadcrumbs}>
             <LabelValue data={data} />
         </PageCrumbed>
     );

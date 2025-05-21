@@ -35,12 +35,12 @@ export function App() {
                     <Route path="/" element={<MainPage />} />
                     <Route path="/" element={<WithAppSidebar />}>
                         <Route path="/settings" element={<SettingsPage />} />
-                    </Route>
-                    {/* <Route path="/" element={<WithAppSidebar />}>
-                        <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/database" element={<ListTablesPage />} />
                         <Route path="/database/id/:id" element={<ViewTablePage />} />
                         <Route path="/database/id/:id/record/:recordId" element={<ViewTableRecordPage />} />
+                    </Route>
+                    {/* <Route path="/" element={<WithAppSidebar />}>
+                        <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/metrics" element={<MetricsPage />} />
                         <Route path="/metrics/graph/:metricName" element={<MetricsChartPage />} />
                         <Route path="/logs/id/:id" element={<LogViewPage />} />
