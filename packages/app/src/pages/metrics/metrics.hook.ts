@@ -1,3 +1,4 @@
+import { SqliteTable } from '@abyss/records';
 import { formatDistanceToNow } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -5,8 +6,8 @@ import { useDatabaseTableQuery } from '../../state/database-connection';
 
 export function useMetrics() {
     const navigate = useNavigate();
-    const metrics = useDatabaseTableQuery('metric', async database => database.tables.metric.list(10));
-    const uniqueMetricNames = useDatabaseTableQuery('metric', async database => database.tables.metric.getUniqueNames());
+    const metrics = useDatabaseTableQuery(SqliteTable.metric, async database => database.tables.metric.list(10));
+    const uniqueMetricNames = useDatabaseTableQuery(SqliteTable.metric, async database => database.tables.metric.getUniqueNames());
     const [search, setSearch] = useState('');
 
     const renderableRows =

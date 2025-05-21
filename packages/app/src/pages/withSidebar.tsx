@@ -40,7 +40,6 @@ export function AppSidebar() {
                 <AbyssSidebarSection title="Monitor" />
                 <AbyssSidebarButton label="Storage" icon={DatabaseIcon} {...navProps('/database')} />
                 <AbyssSidebarButton label="Metrics" icon={ChartLine} {...navProps('/metrics')} />
-                <AbyssSidebarButton label="Logs" icon={List} {...navProps('/logs')} />
             </AbyssSidebar>
         </div>
     );

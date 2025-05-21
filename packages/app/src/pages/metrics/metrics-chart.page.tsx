@@ -24,7 +24,7 @@ export function MetricsChartPage() {
             <IconSection title="Metric Chart" icon={ChartLine} subtitle="Visualization of metric data over time">
                 <div className="mb-4 flex flex-wrap gap-4 justify-between">
                     <div>
-                        <label className="block text-sm font-medium text-text-500 mb-1">Time Range</label>
+                        <div className="block text-sm font-medium text-text-500 mb-1">Time Range</div>
                         <ButtonGroup>
                             {timeBucketOptions.map(option => (
                                 <Button
@@ -39,7 +39,7 @@ export function MetricsChartPage() {
                         </ButtonGroup>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-text-500 mb-1">Aggregation Method</label>
+                        <div className="block text-sm font-medium text-text-500 mb-1">Aggregation Method</div>
                         <ButtonGroup>
                             {aggregationMethods.map(option => (
                                 <Button
@@ -97,7 +97,7 @@ export function MetricsChartPage() {
                     )}
                     {Object.entries(uniqueDimensions.data || {}).map(([key, values]) => (
                         <div key={key} className="mb-4 ">
-                            <label className="block text-sm font-medium text-text-500 mb-1">{key}</label>
+                            <div className="block text-sm font-medium text-text-500 mb-1">{key}</div>
                             <div className="flex flex-wrap gap-2">
                                 <Button
                                     key="all"

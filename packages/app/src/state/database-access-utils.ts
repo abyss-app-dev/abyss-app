@@ -33,7 +33,7 @@ for (const tableKey of tableKeys) {
 
 /// Custom Accessors
 
-export const useDatabaseSettings = () => useDatabaseTableQuery(SqliteTable.settings, async table => table.default());
+export const useDatabaseSettings = () => useDatabaseTableQuery(SqliteTable.settings, async db => db.tables.settings.default());
 
 export function useDatabaseTables() {
     return useDatabaseQuery(async database => database.describeTables());

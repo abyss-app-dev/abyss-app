@@ -68,10 +68,10 @@ export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(tabl
 
 export function useDatabaseTableQuery<T extends keyof SqliteTables, ResponseType>(
     table: T,
-    query: (table: SqliteTables[T]) => Promise<ResponseType>,
+    query: (database: SQliteClient) => Promise<ResponseType>,
     listeners: unknown[] = []
 ) {
-    const usedQuery = useQuery(() => query(Database.tables[table]));
+    const usedQuery = useQuery(query);
     useEffect(() => {
         let unsubscribeCallback: () => void = () => {};
         Database.tables[table]

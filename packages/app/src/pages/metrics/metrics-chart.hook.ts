@@ -1,3 +1,4 @@
+import { SqliteTable } from '@abyss/records';
 import { addDays, addHours, addMinutes, format, subDays, subHours, subMonths } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -113,13 +114,13 @@ export function useMetricsChart() {
 
     // Dimensions
     const [selectedDimensions, setSelectedDimensions] = useState<Record<string, any>>({});
-    const uniqueDimensions = useDatabaseTableQuery('metric', async database =>
+    const uniqueDimensions = useDatabaseTableQuery(SqliteTable.metric, async database =>
         database.tables.metric.getUniqueDimensionsForMetric(metricName || '')
     );
 
     // Fetch metrics data
     const metrics = useDatabaseTableQuery(
-        'metric',
+        SqliteTable.metric,
         async database => database.tables.metric.queryMetrics(metricName || '', selectedDimensions),
         [metricName]
     );

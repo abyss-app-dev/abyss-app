@@ -1,4 +1,3 @@
-import type { LogStreamType } from '@abyss/records';
 import { useNavigate, useParams } from 'react-router';
 import { useDatabaseRecord } from '../../state/database-connection';
 
