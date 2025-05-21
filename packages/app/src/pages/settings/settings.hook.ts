@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 import { useAppUpdator } from '../../state/app-updater';
-import { useDatabaseSettings } from '../../state/database-access-utils';
 
 export function useSettingsPage() {
     // Navigation
@@ -13,7 +13,7 @@ export function useSettingsPage() {
     ];
 
     // Settings
-    const settings = useDatabaseSettings();
+    const settings = useDatabase.settings.record('default');
 
     // Theme
     const onChangeAppTheme = (theme: string) => {
@@ -30,6 +30,7 @@ export function useSettingsPage() {
     // Version
     const [version, setVersion] = useState<string | undefined>(undefined);
     useEffect(() => {
+        // @ts-ignore
         window['abyss-app'].getVersion().then(setVersion);
     }, []);
 

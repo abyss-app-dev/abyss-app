@@ -33,6 +33,9 @@ export function App() {
                 <HeaderBar />
                 <Routes>
                     <Route path="/" element={<MainPage />} />
+                        <Route path="/" element={<WithAppSidebar />}>
+                            <Route path="/settings" element={<SettingsPage />} />
+                        </Route>
                     {/* <Route path="/" element={<WithAppSidebar />}>
                         <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/database" element={<ListTablesPage />} />
