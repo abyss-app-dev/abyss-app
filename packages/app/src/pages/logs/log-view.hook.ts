@@ -1,16 +1,23 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useDatabaseRecord } from '../../state/database-connection';
+import { Database } from '@/main';
 
 export function useLogView() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const execution = useDatabaseRecord<LogStreamType>('logStream', id);
+    const [rawLog, setRawLog] = useState('');
+
+    useEffect(() => {
+        if (id) {
+            Database.getLogStream(id).then(setRawLog);
+        }
+    }, [id]);
 
     const breadcrumbs = [
         { name: 'Home', onClick: () => navigate('/') },
         { name: 'Logs', onClick: () => navigate('/logs') },
-        { name: execution?.id!, onClick: () => navigate(`/logs/id/${execution?.id}`) },
+        { name: id, onClick: () => navigate(`/logs/id/${id}`) },
     ];
-    return { execution, breadcrumbs };
+    return { rawLog, breadcrumbs };
 }

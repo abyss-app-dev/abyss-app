@@ -3,11 +3,11 @@ import { List } from 'lucide-react';
 import { useLogView } from './log-view.hook';
 
 export function LogViewPage() {
-    const { execution, breadcrumbs } = useLogView();
+    const { rawLog, breadcrumbs } = useLogView();
     return (
         <PageCrumbed title="Log Stream" breadcrumbs={breadcrumbs}>
             <IconSection title="Log Stream" icon={List}>
-                <LogView logs={execution?.messagesData || []} startTime={execution?.createdAt || 0} />
+                <LogView rawLog={rawLog} />
             </IconSection>
         </PageCrumbed>
     );

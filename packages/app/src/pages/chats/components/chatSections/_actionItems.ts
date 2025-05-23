@@ -1,13 +1,18 @@
-import { AlignLeft, Globe } from 'lucide-react';
-import type { ActionItem, ActionItemMap, NavigateFunction } from './types';
+import { AlignLeft, type LucideIcon, TextIcon } from 'lucide-react';
 
-export function getActionItems(message: Record<string, string> | undefined, navigate: NavigateFunction): ActionItem[] {
+export interface ActionItem {
+    icon: LucideIcon;
+    tooltip: string;
+    onClick: () => void;
+}
+
+export function getActionItems(message: Record<string, string> | undefined, navigate: (path: string) => void): ActionItem[] {
     if (!message) return [];
 
-    const map: ActionItemMap = {
-        logStreamId: (value: string) => ({
-            icon: Globe,
-            tooltip: 'LLM logs',
+    const map = {
+        log: (value: string) => ({
+            icon: TextIcon,
+            tooltip: 'Execution logs',
             onClick: () => {
                 navigate(`/logs/id/${value}`);
             },
@@ -24,9 +29,9 @@ export function getActionItems(message: Record<string, string> | undefined, navi
     const result: ActionItem[] = [];
 
     for (const key of Object.keys(message)) {
-        const actionItem = map[key as keyof ActionItemMap]?.(message[key]);
+        const actionItem = map[key as keyof typeof map]?.(message[key]);
         if (!actionItem) {
-            console.error('Unknown action item key', key);
+            console.warn('Unknown action item key', key);
         } else {
             result.push(actionItem);
         }

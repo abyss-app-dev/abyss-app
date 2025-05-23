@@ -5,16 +5,18 @@ import type { LogMessage } from './logstream.type';
 
 export class LogStream {
     public static VERBOSE = false;
+    public readonly id: string;
     private scope: string;
     private readonly artifact: DBArtifact;
     private readonly startTime: number;
 
     static fromClient(id: string, client: SQliteClient): LogStream {
         const artifact = new DBArtifact(client, 'logStream', id);
-        return new LogStream('root', artifact, Date.now());
+        return new LogStream(id, 'root', artifact, Date.now());
     }
 
-    private constructor(scope: string, artifact: DBArtifact, startTime: number = Date.now()) {
+    private constructor(id: string, scope: string, artifact: DBArtifact, startTime: number = Date.now()) {
+        this.id = id;
         this.scope = scope;
         this.artifact = artifact;
         this.startTime = startTime;
@@ -30,15 +32,14 @@ export class LogStream {
     private formatMessage(level: LogMessage['level'], message: string, data: object = {}) {
         if (Object.keys(data).length > 0) {
             const dataObj = safeSerialize(data);
-            const dataString = JSON.stringify(dataObj, null, 2);
-            const dataStringFormat = dataString.replaceAll('\n', '\n        ');
-            return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message} \n        ${dataStringFormat}`;
+            const dataString = JSON.stringify(dataObj);
+            return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message}\n${dataString}`;
         }
-        return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message}`;
+        return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message}\n`;
     }
 
     public child(scope: string) {
-        return new LogStream(`${this.scope}.${scope}`, this.artifact, this.startTime);
+        return new LogStream(this.id, `${this.scope}.${scope}`, this.artifact, this.startTime);
     }
 
     private addMessage(message: LogMessage) {

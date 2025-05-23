@@ -45,9 +45,10 @@ export function App() {
                             <Route path="/chats/create" element={<ChatCreatePage />} />
                             <Route path="/chats/id/:id" element={<ChatViewPage />} />
                         </Route>
+                        <Route path="/logs/id/:id" element={<LogViewPage />} />
+
                     </Route>
                     {/* 
-                        <Route path="/logs/id/:id" element={<LogViewPage />} />
                         <Route path="/logs" element={<LogListPage />} />
                         <Route path="/documents" element={<DocumentsPage />} />
                         <Route path="/snapshots/id/:id" element={<ViewSnapshotPage />} />

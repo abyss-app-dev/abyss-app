@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { appendFile } from 'node:fs/promises';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SQliteClient } from './sqlite-client';
 
@@ -23,6 +23,11 @@ export class DBArtifact {
         if (!existsSync(this.fullPath)) {
             writeFileSync(this.fullPath, '');
         }
+    }
+
+    public static async readRawString(client: SQliteClient, grouping: string, id: string) {
+        const path = join(client.path, grouping, id);
+        return await readFile(path, 'utf8');
     }
 
     public appendString(string: string) {

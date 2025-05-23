@@ -43,7 +43,9 @@ export class ReferencedMessageThreadRecord extends ReferencedSqliteRecord<Messag
 
     public async addMessagePartials(...messages: NewRecord<MessageType>[]) {
         const createdMessages = await Promise.all(messages.map(m => this.client.tables.message.create(m)));
-        await this._internalAddMessagesByIds(createdMessages.map(m => m.id));
+        const createdMessageRefs = createdMessages.map(m => new ReferencedMessageRecord(m.id, this.client));
+        await this._internalAddMessagesByIds(createdMessageRefs.map(m => m.id));
+        return createdMessageRefs;
     }
 
     public async addMessages(...messages: ReferencedMessageRecord[]) {

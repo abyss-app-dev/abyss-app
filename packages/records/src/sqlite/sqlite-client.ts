@@ -13,6 +13,7 @@ import { ReferencedSettingsTable } from '../records/settings/settings';
 import { ReferencedToolDefinitionTable } from '../records/tool-definition/tool-definition';
 import { randomId } from '../utils/ids';
 import { DatabaseSubscriptionLayer } from './database-subscription';
+import { DBArtifact } from './db-artifact';
 import type { ReferencedSqliteTable } from './reference-table';
 import { migrations } from './schemas/migrations';
 import { type BaseSqliteRecord, type DBSidecarType, DefaultSidecar, type SqliteTables } from './sqlite.type';
@@ -94,6 +95,10 @@ export class SQliteClient {
 
     public createLogStreamArtifact() {
         return LogStream.fromClient(randomId(), this);
+    }
+
+    public getLogStream(id: string) {
+        return DBArtifact.readRawString(this, 'logStream', id);
     }
 
     // Describe tables
