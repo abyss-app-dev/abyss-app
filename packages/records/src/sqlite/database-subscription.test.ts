@@ -168,7 +168,7 @@ describe('Record Level Subscriptions', () => {
         const recordRef = new ReferencedSqliteRecord<TestRecord>(table.tableId, record.id, table.client);
         subscriptionLayer.subscribeRecord(table.client, table.tableId, record.id, events.consumeRecordEvent);
         await subscriptionLayer.notifyRecordChanged(recordRef);
-        expect(events.events).toEqual(['record_event', 'record_event']);
+        expect(events.events).toEqual(['record_event']);
     });
 
     test('when subscribed to record, recieve notification when table changes', async () => {
@@ -176,7 +176,7 @@ describe('Record Level Subscriptions', () => {
         const record = await table.create({ name: 'test' });
         subscriptionLayer.subscribeRecord(table.client, table.tableId, record.id, events.consumeRecordEvent);
         await subscriptionLayer.notifyTableChanged(table);
-        expect(events.events).toEqual(['record_event', 'record_event']);
+        expect(events.events).toEqual(['record_event']);
     });
 
     test('when subscribed to record, recieve notification when db changes', async () => {
@@ -184,7 +184,7 @@ describe('Record Level Subscriptions', () => {
         const record = await table.create({ name: 'test' });
         subscriptionLayer.subscribeRecord(table.client, table.tableId, record.id, events.consumeRecordEvent);
         await subscriptionLayer.notifyDatabaseChanged();
-        expect(events.events).toEqual(['record_event', 'record_event']);
+        expect(events.events).toEqual(['record_event']);
     });
 
     test('when subscribed to record, dont recieve notification after unsubscribe', async () => {

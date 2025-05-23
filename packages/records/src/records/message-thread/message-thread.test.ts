@@ -457,7 +457,7 @@ describe('Message Thread Record', () => {
                 const thread = await client.tables.messageThread.new();
                 const threadRef = client.tables.messageThread.ref(thread.id);
                 const unprocessedToolCalls = await threadRef.getUnprocessedToolCalls();
-                expect(unprocessedToolCalls).toEqual({});
+                expect(unprocessedToolCalls).toEqual([]);
             });
 
             test('when there have been tool calls added to the thread, then completed, we get an empty array', async () => {
@@ -494,7 +494,7 @@ describe('Message Thread Record', () => {
                 await threadRef.addMessagePartials(toolCallRequest, toolCallResponse);
 
                 const unprocessedToolCalls = await threadRef.getUnprocessedToolCalls();
-                expect(unprocessedToolCalls).toEqual({});
+                expect(unprocessedToolCalls).toEqual([]);
             });
 
             test('when there are tool calls that are not completed, we get the tool calls', async () => {

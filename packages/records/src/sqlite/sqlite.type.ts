@@ -3,7 +3,7 @@ import type { AgentGraphType } from '../records/agent-graph/agent-graph.type';
 import type { ReferencedChatSnapshotRecord, ReferencedChatSnapshotTable } from '../records/chat-snapshot/chat-snapshot';
 import type { ChatSnapshotType } from '../records/chat-snapshot/chat-snapshot.type';
 import type { ReferencedDocumentRecord, ReferencedDocumentTable } from '../records/document/databaseDocument';
-import { DatabaseDocumentType } from '../records/document/document.type';
+import type { DatabaseDocumentType } from '../records/document/document.type';
 import type { ReferencedMessageRecord, ReferencedMessageTable } from '../records/message/message';
 import type { MessageType } from '../records/message/message.type';
 import type { ReferencedMessageThreadRecord, ReferencedMessageThreadTable } from '../records/message-thread/message-thread';
