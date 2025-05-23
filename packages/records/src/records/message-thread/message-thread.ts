@@ -17,9 +17,10 @@ export class ReferencedMessageThreadTable extends ReferencedSqliteTable<MessageT
         return new ReferencedMessageThreadRecord(id, this.client);
     }
 
-    public async new() {
+    public async new(participantId?: string) {
         return await this.create({
             name: 'New Message Thread',
+            participantId,
             messagesData: [],
         });
     }

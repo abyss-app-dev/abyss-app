@@ -10,8 +10,7 @@ describe('Model Connection Table Reference', () => {
             const newConnectionArgs: NewModelConnectionArgs = {
                 name: 'Test Connection',
                 description: 'A test model connection',
-                accessFormat: 'static',
-                providerId: 'test-provider',
+                providerId: 'static',
                 modelId: 'test-model',
                 connectionData: { apiKey: 'test-api-key' }, // Example connectionData
             };

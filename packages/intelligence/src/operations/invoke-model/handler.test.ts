@@ -27,9 +27,8 @@ test('invokeModelAgainstThread', async () => {
     const modelConnection = await db.tables.modelConnection.create({
         name: 'test',
         description: 'test',
-        providerId: 'test',
+        providerId: 'static',
         modelId: 'static',
-        accessFormat: 'static',
         connectionData: {
             response: 'My cached response! wow!',
         },

@@ -1,5 +1,5 @@
 import { Button, IconSection, Input, PageCrumbed } from '@abyss/ui-components';
-import { Box, Globe, Settings } from 'lucide-react';
+import { ArrowRight, Box, Globe, Settings, Trash } from 'lucide-react';
 import { AnthropicLogo, GeminiLogo, OpenAILogo } from '../../library/logos';
 import { AnthropicConfig } from './connectors/anthropic';
 import { GeminiConfig } from './connectors/gemini';
@@ -25,7 +25,7 @@ const Providers = [
 ] as const;
 
 export function ModelProfileEditPage() {
-    const { modelMetadata, saveHandler, breadcrumbs } = useModelProfileCreate();
+    const { modelMetadata, saveHandler, breadcrumbs, deleteHandler } = useModelProfileCreate();
     const selectedProviderConfig = Providers.find(provider => provider.name === modelMetadata.providerId);
 
     const handleProviderSelect = (providerName: string) => {
@@ -73,6 +73,14 @@ export function ModelProfileEditPage() {
                     })}
                 </div>
             </IconSection>
+
+            {modelMetadata.id && (
+                <IconSection title="Destructive Actions" icon={Trash}>
+                    <Button variant="primary" icon={Trash} onClick={deleteHandler}>
+                        Delete this model profile
+                    </Button>
+                </IconSection>
+            )}
         </PageCrumbed>
     );
 }

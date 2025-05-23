@@ -24,7 +24,7 @@ export function useChatMain() {
     const sidebarItems = (threads.data || []).map(entry => {
         return {
             id: entry.id,
-            title: entry.participantId,
+            title: entry.name,
             icon: getIconForSourceType(entry.participantId || ''),
             url: `/chats/id/${entry.id}`,
             isInProgress: !!entry.blockerId,

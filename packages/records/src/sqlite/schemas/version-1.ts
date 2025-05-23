@@ -50,7 +50,6 @@ export const BaseModelConnectionTable = `
         updatedAt INTEGER NOT NULL,
         name TEXT NOT NULL,
         description TEXT NOT NULL,
-        accessFormat TEXT NOT NULL,
         providerId TEXT NOT NULL,
         modelId TEXT NOT NULL,
         connectionData TEXT NOT NULL

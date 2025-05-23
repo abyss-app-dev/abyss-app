@@ -14,7 +14,7 @@ export function ChatViewPage() {
 
     return (
         <PageCrumbed
-            title={thread.data?.participantId || ''}
+            title={thread.data?.name || ''}
             icon={React.createElement(participantIcon)}
             actions={headerReference}
             breadcrumbs={breadcrumbs}

@@ -40,8 +40,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
             )}
 
             {isClosable && (
-                <button
-                    type="button"
+                <div
                     className={
                         'absolute right-2 h-5 w-5 p-0.5 px-1 flex items-center justify-center opacity-0 group-hover:opacity-100 hover:text-primary-500 transition-opacity hidden group-hover:block'
                     }
@@ -51,7 +50,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
                     }}
                 >
                     <X className="h-4 w-4 stroke-2" />
-                </button>
+                </div>
             )}
         </button>
     );

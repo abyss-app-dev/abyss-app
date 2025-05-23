@@ -1,8 +1,9 @@
+import { SqliteTable } from '@abyss/records';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
-import { chatWithAgentGraph, chatWithAiModel } from '../../state/operations';
+import { chatWithAiModel } from '../../state/operations';
 
 export function useChatCreate() {
     const navigate = useNavigate();
@@ -28,11 +29,11 @@ export function useChatCreate() {
         if (!sourceId || !message) {
             return;
         }
-        const chatRecord = await Database.tables.messageThread.new();
+        const chatRecord = await Database.tables.messageThread.new(sourceId);
         if (chatType === 'model') {
-            chatWithAiModel(message, sourceId, chatRecord.id);
+            chatWithAiModel(message, Database.tables[SqliteTable.messageThread].ref(chatRecord.id));
         } else {
-            chatWithAgentGraph(message, sourceId, chatRecord.id);
+            // chatWithAgentGraph(message, sourceId, chatRecord.id);
         }
         navigate(`/chats/id/${chatRecord.id}`);
     };

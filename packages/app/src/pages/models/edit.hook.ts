@@ -1,4 +1,4 @@
-import type { ModelConnectionAccessFormat, ModelConnectionType } from '@abyss/records';
+import type { ModelConnectionType } from '@abyss/records';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useDatabase } from '@/state/database-access-utils';
@@ -19,7 +19,7 @@ export function useModelProfileCreate() {
     }, [modelProfile.data]);
 
     useEffect(() => {
-        if (modelMetadata.id) {
+        if (id) {
             return;
         }
         if (!modelMetadata.providerId || !modelMetadata.modelId) {
@@ -31,7 +31,6 @@ export function useModelProfileCreate() {
                 description: `A model connection for ${modelMetadata.providerId} ${modelMetadata.modelId}`,
                 providerId: modelMetadata.providerId,
                 modelId: modelMetadata.modelId,
-                accessFormat: modelMetadata.providerId as ModelConnectionAccessFormat,
                 connectionData: modelMetadata.connectionData || {},
             })
             .then(record => {
@@ -51,6 +50,14 @@ export function useModelProfileCreate() {
         [modelMetadata]
     );
 
+    // Delete model profile
+    const deleteHandler = useCallback(() => {
+        if (modelMetadata.id) {
+            Database.tables.modelConnection.ref(modelMetadata.id).delete();
+            navigate('/models');
+        }
+    }, [modelMetadata]);
+
     const breadcrumbs = [
         { name: 'Home', onClick: () => navigate('/') },
         { name: 'Models', onClick: () => navigate('/models') },
@@ -61,6 +68,7 @@ export function useModelProfileCreate() {
     return {
         modelMetadata,
         saveHandler,
+        deleteHandler,
         breadcrumbs,
     };
 }

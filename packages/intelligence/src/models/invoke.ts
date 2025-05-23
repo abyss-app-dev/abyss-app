@@ -10,7 +10,7 @@ export async function invokeLLM(params: InvokeModelParams): Promise<InvokeModelI
 
     // Invoke LLM
     try {
-        if (connection.accessFormat.toLowerCase() === 'anthropic') {
+        if (connection.providerId.toLowerCase() === 'anthropic') {
             log.log('Invoking Anthropic API handler');
             const anthropicResult = await InvokeAnthropic({
                 log,
@@ -22,7 +22,7 @@ export async function invokeLLM(params: InvokeModelParams): Promise<InvokeModelI
             log.log('Anthropic API handler invoke completed', anthropicResult);
             return anthropicResult;
         }
-        if (connection.accessFormat.toLowerCase() === 'static') {
+        if (connection.providerId.toLowerCase() === 'static') {
             log.log('Invoking Static API handler');
             const staticResult = await InvokeStatic({
                 log,
@@ -34,8 +34,8 @@ export async function invokeLLM(params: InvokeModelParams): Promise<InvokeModelI
             return staticResult;
         }
 
-        log.warn(`Unknown AI access format: ${connection.accessFormat}`);
-        throw new Error(`Unknown AI access format: ${connection.accessFormat}`);
+        log.warn(`Unknown AI access format: ${connection.providerId}`);
+        throw new Error(`Unknown AI access format: ${connection.providerId}`);
     } catch (error) {
         log.error('Error invoking LLM', { error });
         throw error;

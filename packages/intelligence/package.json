@@ -7,7 +7,7 @@
     "scripts": {
         "test": "vitest run",
         "build": "tsc && npm run build:esbuild",
-        "build:esbuild": "npx esbuild src/index.ts --bundle --platform=node --target=node14 --outfile=dist/index.js --external:sqlite3",
+        "build:esbuild": "npx esbuild src/index.ts --bundle --format=esm --platform=node --target=node14 --outfile=dist/index.mjs --external:sqlite3",
         "watch": "concurrently \"tsc-watch --noClear\" \"npm run build:esbuild --watch\""
     },
     "devDependencies": {
