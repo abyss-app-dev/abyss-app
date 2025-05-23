@@ -38,7 +38,7 @@ export function getIconForSourceType(source: string): LucideIcon {
         case 'tool':
             return Hammer;
         default:
-            console.warn('Unknown source type', {source});
+            console.warn('Unknown source type', { source });
             return MessageCircleQuestion;
     }
 }
