@@ -1,6 +1,7 @@
+import { ReferencedMessageThreadRecord } from '@abyss/records';
 import { NodeHandler } from '../node-handler';
 import type { GraphNodePartialDefinition } from '../type-definition.type';
-import type { NodeExecutionResult } from '../type-execution.type';
+import type { NodeExecutionResult, ResolveNodeData } from '../type-execution.type';
 
 export class AddAgentMessageToThreadNode extends NodeHandler {
     constructor() {
@@ -50,7 +51,19 @@ export class AddAgentMessageToThreadNode extends NodeHandler {
         };
     }
 
-    protected async _resolve(): Promise<NodeExecutionResult> {
+    protected async _resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
+        const thread = data.inputPorts.thread as ReferencedMessageThreadRecord;
+        const message = data.inputPorts.message as string;
+
+        // Add agent message to thread
+        await thread.addMessagePartials({
+            senderId: 'agent',
+            type: 'text',
+            payloadData: {
+                content: message,
+            },
+        });
+
         return {
             ports: {
                 next: true,

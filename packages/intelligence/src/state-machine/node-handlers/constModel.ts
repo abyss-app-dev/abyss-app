@@ -1,3 +1,4 @@
+import { SqliteTable } from '@abyss/records';
 import { NodeHandler } from '../node-handler';
 import type { GraphNodePartialDefinition } from '../type-definition.type';
 import type { NodeExecutionResult, ResolveNodeData } from '../type-execution.type';
@@ -27,10 +28,11 @@ export class ConstModelNode extends NodeHandler {
     }
 
     protected async _resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
-        const value = data.inputPorts.value;
+        const modelId = data.inputPorts.model as string;
+        const modelRef = data.database.tables[SqliteTable.modelConnection].ref(modelId);
         return {
             ports: {
-                output: value,
+                output: modelRef,
             },
         };
     }
