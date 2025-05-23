@@ -8,10 +8,5 @@ interface UserMessageSectionProps {
 }
 
 export function UserMessageSection({ message, navigate }: UserMessageSectionProps) {
-    return (
-        <ChatMessageText 
-            text={message.payloadData.content} 
-            actionItems={getActionItems(message.referencedData, navigate)} 
-        />
-    );
-} 
+    return <ChatMessageText text={message.payloadData.content} actionItems={getActionItems(message.referencedData, navigate)} />;
+}

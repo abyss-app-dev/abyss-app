@@ -9,18 +9,11 @@ interface SystemErrorMessageSectionProps {
 
 export function SystemErrorMessageSection({ message, navigate }: SystemErrorMessageSectionProps) {
     const errorText = `${message.payloadData.error}: ${message.payloadData.message}`;
-    
+
     return (
         <div className="flex flex-col gap-2">
-            <ChatMessageSystemError
-                text={errorText}
-                actionItems={getActionItems(message.referencedData, navigate)}
-            />
-            {message.payloadData.body && (
-                <div className="pl-4 text-sm text-gray-600">
-                    {message.payloadData.body}
-                </div>
-            )}
+            <ChatMessageSystemError text={errorText} actionItems={getActionItems(message.referencedData, navigate)} />
+            {message.payloadData.body && <div className="pl-4 text-sm text-gray-600">{message.payloadData.body}</div>}
         </div>
     );
-} 
+}

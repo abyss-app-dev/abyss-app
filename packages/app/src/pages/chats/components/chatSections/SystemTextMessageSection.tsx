@@ -8,10 +8,5 @@ interface SystemTextMessageSectionProps {
 }
 
 export function SystemTextMessageSection({ message, navigate }: SystemTextMessageSectionProps) {
-    return (
-        <ChatMessageSystemText 
-            text={message.payloadData.content} 
-            actionItems={getActionItems(message.referencedData, navigate)} 
-        />
-    );
-} 
+    return <ChatMessageSystemText text={message.payloadData.content} actionItems={getActionItems(message.referencedData, navigate)} />;
+}

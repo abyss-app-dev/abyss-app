@@ -7,9 +7,5 @@ interface ReadonlyDocumentSectionProps {
 }
 
 export function ReadonlyDocumentSection({ message }: ReadonlyDocumentSectionProps) {
-    return (
-        <ChatMessageSystemText 
-            text={`Added readonly references to documents: ${message.payloadData.documentIds.join(', ')}`} 
-        />
-    );
-} 
+    return <ChatMessageSystemText text={`Added readonly references to documents: ${message.payloadData.documentIds.join(', ')}`} />;
+}

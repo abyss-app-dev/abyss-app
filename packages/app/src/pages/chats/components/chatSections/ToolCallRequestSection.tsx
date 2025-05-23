@@ -24,4 +24,4 @@ export function ToolCallRequestSection({ request, response, navigate }: ToolCall
             )}
         />
     );
-} 
+}

@@ -14,4 +14,4 @@ export function RemovedToolDefinition({ message, navigate }: RemovedToolDefiniti
             actionItems={getActionItems(message.referencedData, navigate)}
         />
     );
-} 
+}

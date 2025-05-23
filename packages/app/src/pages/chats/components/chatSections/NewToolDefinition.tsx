@@ -14,4 +14,4 @@ export function NewToolDefinition({ message, navigate }: NewToolDefinitionProps)
             actionItems={getActionItems(message.referencedData, navigate)}
         />
     );
-} 
+}
