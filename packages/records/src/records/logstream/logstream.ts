@@ -4,6 +4,7 @@ import { safeSerialize } from '../../utils/serialization';
 import type { LogMessage } from './logstream.type';
 
 export class LogStream {
+    public static VERBOSE = false;
     private scope: string;
     private readonly artifact: DBArtifact;
     private readonly startTime: number;
@@ -42,7 +43,9 @@ export class LogStream {
 
     private addMessage(message: LogMessage) {
         const formattedMessage = this.formatMessage(message.level, message.message, message.data);
-        console.log(formattedMessage);
+        if (LogStream.VERBOSE) {
+            console.log(formattedMessage);
+        }
         this.artifact.appendString(`\n${formattedMessage}`);
     }
 
