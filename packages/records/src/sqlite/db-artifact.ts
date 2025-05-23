@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import type { SQliteClient } from './sqlite-client';
 
 export class DBArtifact {
-    private fullPath: string;
+    public readonly fullPath: string;
     private folderPath: string;
     private grouping: string;
     private id: string;

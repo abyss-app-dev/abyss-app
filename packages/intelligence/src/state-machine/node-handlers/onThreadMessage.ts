@@ -16,7 +16,7 @@ export class OnThreadMessageNode extends NodeHandler {
             ports: [
                 {
                     id: 'thread',
-                    direction: 'input',
+                    direction: 'output',
                     connectionType: 'data',
                     dataType: 'thread',
                     name: 'Thread',

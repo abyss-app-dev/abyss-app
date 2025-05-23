@@ -1,3 +1,4 @@
+import { LogStream } from '@abyss/records';
 import type { AgentGraphDefinition } from '../../state-machine';
 import { StateMachineRuntime } from '../../state-machine';
 import { randomId } from '../../utils/ids';
@@ -11,8 +12,16 @@ export async function invokeGraphFromUserMessage(options: InvokeGraphFromUserMes
     const graphDefinition: AgentGraphDefinition = graph.serialzedData as AgentGraphDefinition;
 
     // Find the node, if no node, skip
-    const onThreadMessageNode = graphDefinition.nodes.find(node => node.id === 'onThreadMessage');
+    const onThreadMessageNode = graphDefinition.nodes.find(node => node.type === 'onThreadMessage');
     if (!onThreadMessageNode) {
+        await thread.addMessagePartials({
+            type: 'text',
+            senderId: 'system',
+            payloadData: {
+                content:
+                    'This agent graph does not have an onThreadMessage node and so did not trigger when a user message was sent, this could be an error',
+            },
+        });
         return;
     }
 

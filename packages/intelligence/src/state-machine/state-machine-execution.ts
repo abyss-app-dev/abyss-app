@@ -2,8 +2,9 @@ import type { LogStream, SQliteClient } from '@abyss/records';
 import './node-handlers';
 import { mapLocalPortsToGlobalPorts } from './map-ports';
 import { NodeHandler } from './node-handler';
-import type { AgentGraphDefinition } from './type-definition.type';
+import type { AgentGraphDefinition, GraphNodeDefinition } from './type-definition.type';
 import type { PortStates, StateMachineExecutionOptions } from './type-execution.type';
+import { saveSerialize } from './utils';
 
 export class StateMachineRuntime {
     // Guard the state machine to prevent infinite loops
@@ -19,6 +20,7 @@ export class StateMachineRuntime {
     private readonly nodeExecutions: string[] = [];
 
     // Execution
+    private evaluatedStaticNodes: Set<string> = new Set();
     private nodeEvaluationQueue: string[] = [];
     private portValues: PortStates = {};
 
@@ -63,6 +65,7 @@ export class StateMachineRuntime {
     }
 
     private consumePortStates(portStates: PortStates) {
+        this.logStream.log('Consuming port states', saveSerialize(portStates));
         for (const [portId, newValue] of Object.entries(portStates)) {
             this.consumePortValue(portId, newValue);
         }
@@ -114,6 +117,44 @@ export class StateMachineRuntime {
         return nodeData;
     }
 
+    private hasAllPortsForNode(nodeId: string) {
+        const node = this.getNodeDefinition(nodeId);
+        const portsForNode = this.getPortDataForNode(nodeId);
+        const inputPorts = node.ports.filter(p => p.direction === 'input');
+        if (inputPorts.length === 0) {
+            return true;
+        }
+        return inputPorts.every(p => portsForNode[p.id] !== undefined);
+    }
+
+    private async resolveStaticNodes() {
+        let madeProgress = true;
+        const staticNodes = this.definition.nodes.filter(n => n.ports.every(p => p.direction !== 'input' && p.connectionType !== 'signal'));
+        while (madeProgress) {
+            this.logStream.log(`Resolving static nodes, ${staticNodes.length - this.evaluatedStaticNodes.size} nodes left to resolve`, {
+                staticNodes: staticNodes.map(n => n.id),
+                evaluatedStaticNodes: Array.from(this.evaluatedStaticNodes),
+            });
+            madeProgress = false;
+            for (const node of staticNodes) {
+                if (!this.evaluatedStaticNodes.has(node.id)) {
+                    const hasAllPorts = this.hasAllPortsForNode(node.id);
+                    this.logStream.log(`Checking if node ${node.id} has all ports: ${hasAllPorts}`);
+                    if (hasAllPorts) {
+                        this.logStream.log(`Resolving static node ${node.id}`);
+                        const result = await this.resolveNode(node.id);
+                        this.consumePortStates(result.ports);
+                        this.evaluatedStaticNodes.add(node.id);
+                        madeProgress = true;
+                    }
+                }
+            }
+        }
+        this.logStream.log(
+            `Static nodes resolved, ${this.evaluatedStaticNodes.size} nodes resolved, no more nodes able to resolve statically`
+        );
+    }
+
     private async resolveNode(nodeId: string) {
         this.logStream.log(`Executing node ${nodeId}`);
         this.nodeExecutions.push(nodeId);
@@ -129,6 +170,7 @@ export class StateMachineRuntime {
             inputPorts: ports,
             database: this.database,
             logStream: this.logStream.child(`node-${nodeId}`),
+            userParameters: node.parameters || {},
         });
         this.logStream.log(`Node ${nodeId} executed`);
         return result;
@@ -153,6 +195,9 @@ export class StateMachineRuntime {
     public async signal(nodeId: string, portData: PortStates) {
         try {
             await this.logStream.log('Invoking state machine', { inputNode: nodeId });
+
+            // First we are going to evaluate static nodes
+            await this.resolveStaticNodes();
 
             // Set all the values we got as input
             const targetNode = this.getNodeDefinition(nodeId);

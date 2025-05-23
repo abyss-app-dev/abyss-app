@@ -1,4 +1,5 @@
 import type { ReferencedMessageThreadRecord } from '@abyss/records';
+import { randomId } from '../../utils/ids';
 import { NodeHandler } from '../node-handler';
 import type { GraphNodePartialDefinition } from '../type-definition.type';
 import type { NodeExecutionResult, ResolveNodeData } from '../type-execution.type';
@@ -66,7 +67,7 @@ export class AddSystemMessageToThreadNode extends NodeHandler {
 
         return {
             ports: {
-                next: true,
+                next: randomId(),
             },
         };
     }

@@ -50,6 +50,9 @@ export function AgentNodeDrawer({ onAddNode }: AgentNodeDrawerProps) {
                     icon={Sparkles}
                     onClick={() => onAddNode(Nodes.InvokeModelAgainstThread.getDefinition())}
                 />
+
+                <SidebarSection title="Others" />
+                <SidebarButton label="String" icon={CircleDot} onClick={() => onAddNode(Nodes.ConstString.getDefinition())} />
             </Sidebar>
         </div>
     );

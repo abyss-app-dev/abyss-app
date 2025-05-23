@@ -1,6 +1,7 @@
 import { Handle, Position, useReactFlow } from '@xyflow/react';
 import { XIcon } from 'lucide-react';
 import type React from 'react';
+import { SelectForAgentGraph } from './agent-graph-inputs';
 import type { RenderedGraphNode } from './graph.types';
 import { DynamicIcon } from './ids-to-icons';
 
@@ -77,29 +78,33 @@ export function CustomAgentGraphNode({ id, data }: { id: string; data: RenderedG
 
     for (const output of outputDataPorts) {
         if (output.userConfigurable) {
-            // rightHandles.push(
-            //     <div className="flex flex-col gap-1 relative" key={output.id}>
-            //         <div className="text-[8px] text-text-500 px-2 flex flex-row items-center gap-1 justify-end relative">
-            //             <SelectForAgentGraph
-            //                 port={output}
-            //                 onSelect={value => {
-            //                     const newObject = JSON.parse(JSON.stringify(data));
-            //                     newObject.database.parameters[output.id] = value;
-            //                     updateNodeData(id, newObject);
-            //                 }}
-            //                 value={data.parameters[output.id]}
-            //                 color={color}
-            //             />
-            //             <Handle
-            //                 className="bg-background-300 border-background-900"
-            //                 type="source"
-            //                 position={Position.Right}
-            //                 id={output.id}
-            //             />
-            //         </div>
-            //         <div className="text-[6px] text-text-500 px-2">{output.description}</div>
-            //     </div>
-            // );
+            rightHandles.push(
+                <div className="flex flex-col gap-1 relative" key={output.id}>
+                    <div className="text-[8px] text-text-500 px-2 flex flex-row items-center gap-1 justify-end relative">
+                        <SelectForAgentGraph
+                            port={output}
+                            onSelect={value => {
+                                const newObject = JSON.parse(JSON.stringify(data.definition));
+                                newObject.parameters = newObject.parameters || {};
+                                newObject.parameters[output.id] = value;
+                                updateNodeData(id, {
+                                    ...data,
+                                    definition: newObject,
+                                });
+                            }}
+                            value={data.definition.parameters?.[output.id]}
+                            color={color}
+                        />
+                        <Handle
+                            className="bg-background-300 border-background-900"
+                            type="source"
+                            position={Position.Right}
+                            id={output.id}
+                        />
+                    </div>
+                    <div className="text-[6px] text-text-500 px-2">{output.description}</div>
+                </div>
+            );
         } else {
             rightHandles.push(
                 <div className="flex flex-col gap-1 relative" key={output.id}>

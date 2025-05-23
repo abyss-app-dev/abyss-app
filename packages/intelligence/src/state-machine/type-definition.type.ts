@@ -29,6 +29,9 @@ export interface GraphNodeDefinition {
     description: string;
     color: string;
 
+    // User configurable parameters
+    parameters?: Record<string, string>;
+
     // Ports
     ports: GraphPortDefinition[];
 }

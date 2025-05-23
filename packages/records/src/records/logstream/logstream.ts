@@ -12,6 +12,7 @@ export class LogStream {
 
     static fromClient(id: string, client: SQliteClient): LogStream {
         const artifact = new DBArtifact(client, 'logs', id);
+        console.log('%cStarted Log Stream:', 'color:rgb(87, 185, 90); font-weight: bold', artifact.fullPath);
         return new LogStream(id, 'root', artifact, Date.now());
     }
 
@@ -35,7 +36,7 @@ export class LogStream {
             const dataString = JSON.stringify(dataObj);
             return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message}\n${dataString}`;
         }
-        return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message}\n`;
+        return `${this.formatTimeDelta()} ${level} ${this.scope.padEnd(20)} ${message}`;
     }
 
     public child(scope: string) {

@@ -19,18 +19,18 @@ export class ConstStringNode extends NodeHandler {
                     direction: 'output',
                     connectionType: 'data',
                     dataType: 'string',
-                    name: 'Output',
-                    description: 'The constant string value',
+                    name: 'String',
+                    description: 'A configurable string value',
+                    userConfigurable: true,
                 },
             ],
         };
     }
 
     protected async _resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
-        const value = data.inputPorts.value as string;
         return {
             ports: {
-                output: value,
+                output: data.userParameters.output,
             },
         };
     }

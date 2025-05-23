@@ -10,6 +10,7 @@ export interface ResolveNodeData {
     execution: StateMachineRuntime;
     node: GraphNodeDefinition;
     inputPorts: PortStates;
+    userParameters: Record<string, string>;
     database: SQliteClient;
     logStream: LogStream;
 }
