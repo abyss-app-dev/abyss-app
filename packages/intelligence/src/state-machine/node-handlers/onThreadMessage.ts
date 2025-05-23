@@ -10,7 +10,7 @@ export class OnThreadMessageNode extends NodeHandler {
     protected _getDefinition(): GraphNodePartialDefinition {
         return {
             name: 'On Thread Message',
-            icon: 'thread',
+            icon: 'MessageCircle',
             description: 'Triggered after a user message is sent to a thread with this agent',
             color: '#FFA500',
             ports: [

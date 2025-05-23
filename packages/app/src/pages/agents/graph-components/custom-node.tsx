@@ -2,7 +2,7 @@ import { Handle, Position, useReactFlow } from '@xyflow/react';
 import { XIcon } from 'lucide-react';
 import type React from 'react';
 import type { RenderedGraphNode } from './graph.types';
-import { IdsToIcons } from './ids-to-icons';
+import { DynamicIcon } from './ids-to-icons';
 
 export function CustomAgentGraphNode({ id, data }: { id: string; data: RenderedGraphNode['data'] }) {
     const inputSignals: React.ReactNode[] = [];
@@ -11,8 +11,9 @@ export function CustomAgentGraphNode({ id, data }: { id: string; data: RenderedG
     const rightHandles: React.ReactNode[] = [];
     const { deleteElements, updateNodeData } = useReactFlow();
 
-    const Icon = IdsToIcons[data.definition.icon as keyof typeof IdsToIcons];
+
     const color = data.definition.color;
+
 
     // Get all nodes
     const inputPorts = data.definition.ports.filter(port => port.direction === 'input');
@@ -135,7 +136,7 @@ export function CustomAgentGraphNode({ id, data }: { id: string; data: RenderedG
                 <div className="flex flex-col border-b gap-1 p-1 min-w-[300px]" style={{ borderColor: data.definition.color + '70' }}>
                     <div className="text-xs flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <Icon className="w-4 h-4" color={data.definition.color} />
+                            <DynamicIcon name={data.definition.icon} className="w-4 h-4" color={data.definition.color} />
                             <div className="">{data.definition.name}</div>
                         </div>
                         <button

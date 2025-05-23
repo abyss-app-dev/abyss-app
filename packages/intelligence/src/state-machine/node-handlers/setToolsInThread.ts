@@ -1,19 +1,19 @@
-import { randomId } from '../../utils/ids';
+import type { ReferencedMessageThreadRecord } from '@abyss/records';
 import { NodeHandler } from '../node-handler';
 import type { GraphNodePartialDefinition } from '../type-definition.type';
 import type { NodeExecutionResult, ResolveNodeData } from '../type-execution.type';
 
-export class HelloWorldNode extends NodeHandler {
+export class SetToolsInThreadNode extends NodeHandler {
     constructor() {
-        super('helloWorld');
+        super('setToolsInThread');
     }
 
     protected _getDefinition(): GraphNodePartialDefinition {
         return {
-            name: 'Hello World',
+            name: 'Set Tools',
             icon: 'Hammer',
-            description: 'A simple hello world node',
-            color: '#673AB7',
+            description: 'Sets the tools available in a thread',
+            color: '#E57373',
             ports: [
                 {
                     id: 'trigger',
@@ -21,7 +21,23 @@ export class HelloWorldNode extends NodeHandler {
                     connectionType: 'signal',
                     dataType: 'signal',
                     name: 'Trigger',
-                    description: 'Trigger the hello world node',
+                    description: 'Trigger this node',
+                },
+                {
+                    id: 'thread',
+                    direction: 'input',
+                    connectionType: 'data',
+                    dataType: 'thread',
+                    name: 'Thread',
+                    description: 'The thread to set tools for',
+                },
+                {
+                    id: 'tools',
+                    direction: 'input',
+                    connectionType: 'data',
+                    dataType: 'tools',
+                    name: 'Tools',
+                    description: 'The tools to set in the thread',
                 },
                 {
                     id: 'next',
@@ -36,10 +52,9 @@ export class HelloWorldNode extends NodeHandler {
     }
 
     protected async _resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
-        data.logStream.log('Hello World Node executed');
         return {
             ports: {
-                next: randomId(),
+                next: true,
             },
         };
     }
