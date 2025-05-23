@@ -59,6 +59,7 @@ export async function invokeGraphFromUserMessage(options: InvokeGraphFromUserMes
             });
             await executionRef.update({ status: 'success' });
         } catch (e) {
+            logStream.error(`Error invoking graph from user message: ${e}`, { error: e });
             await executionRef.update({ status: 'failed' });
             throw e;
         }

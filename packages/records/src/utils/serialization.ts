@@ -11,6 +11,11 @@ export function safeSerialize(obj: unknown, depth = 100, seen: Set<unknown> = ne
         return 'CIRCULAR_REFERENCE';
     }
 
+    const stringified = obj.toString();
+    if (stringified !== '[object Object]') {
+        return stringified;
+    }
+
     seen.add(obj);
 
     if (Array.isArray(obj)) {
@@ -21,6 +26,10 @@ export function safeSerialize(obj: unknown, depth = 100, seen: Set<unknown> = ne
 
     if (obj instanceof Date) {
         return obj.toISOString();
+    }
+
+    if (obj instanceof Error) {
+        return `ERROR: ${obj.name}: ${obj.message}`;
     }
 
     // Handling general objects

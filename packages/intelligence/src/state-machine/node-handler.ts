@@ -39,6 +39,11 @@ export abstract class NodeHandler {
     async resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
         const inputPorts = mapGlobalPortsToLocalPorts(data.inputPorts);
         const userParameters = mapGlobalPortsToLocalPorts(data.userParameters);
+        data.logStream.log('Sending input port states', {
+            inputPorts,
+            userParameters,
+        });
+
         const resolution = await this._resolve({
             ...data,
             inputPorts,

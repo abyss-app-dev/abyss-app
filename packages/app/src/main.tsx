@@ -6,6 +6,7 @@ import { CaptureMetric } from './state/metrics';
 import { loadFromLastPage } from './state/page-history';
 import { applyTheme } from './state/theme-state';
 import './style.css';
+import { defineDefaults } from './defaults';
 
 // @ts-ignore
 export const Database = window['abyss-sqlite'] as SQliteClient;
@@ -17,6 +18,7 @@ async function main() {
     await loadFromLastPage();
     await applyTheme();
     await CaptureMetric.ApplicationOpened();
+    await defineDefaults();
 
     const root = document.getElementById('root');
     if (!root) {

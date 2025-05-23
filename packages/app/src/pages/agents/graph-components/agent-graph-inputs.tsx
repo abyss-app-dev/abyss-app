@@ -22,7 +22,7 @@ export function SelectForAgentGraph(props: SelectForAgentGraphProps) {
     if (props.port.dataType === 'tools') {
         return <ToolSetSelector {...props} />;
     }
-    
+
     console.warn('Unknown data type', props.port.dataType);
 
     return null;

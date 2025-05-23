@@ -62,4 +62,8 @@ export class ReferencedSqliteRecord<
     subscribe(callback: (record: IRecordType) => void) {
         return this.client.events.subscribeRecord(this.client, this.tableId, this.id, callback as (record: BaseSqliteRecord) => void);
     }
+
+    toString() {
+        return `ReferencedRecord[${this.tableId}::${this.id}]`;
+    }
 }

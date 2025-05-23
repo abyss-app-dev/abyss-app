@@ -1,28 +1,39 @@
+import { UserToolsetConfig } from '@abyss/intelligence';
 import { CheckIcon, SquareDashedIcon } from 'lucide-react';
 import React from 'react';
 import { useDatabase } from '@/state/database-access-utils';
 
 export interface ToolSetSelectorProps {
     color: string;
-    onSelect: (value: any) => void;
-    value: any;
+    onSelect: (value: string) => void;
+    value: string;
 }
 
+const parseToolConfig = (value: string): UserToolsetConfig => {
+    try {
+        return JSON.parse(value);
+    } catch (e) {
+        return { tools: [] };
+    }
+};
+
 export function ToolSetSelector(props: ToolSetSelectorProps) {
-    const [selectedTools, setSelectedTools] = React.useState<string[]>(props.value ? props.value : []);
+    const [selectedTools, setSelectedTools] = React.useState<string[]>(props.value ? parseToolConfig(props.value).tools.map(tool => tool.id) : []);
     const { data: tools } = useDatabase.toolDefinition.scan();
 
     const handleToolToggle = (toolId: string) => {
         const newSelectedTools = selectedTools.includes(toolId) ? selectedTools.filter(id => id !== toolId) : [...selectedTools, toolId];
-
         setSelectedTools(newSelectedTools);
-        props.onSelect(newSelectedTools);
+        const toolConfig: UserToolsetConfig = {
+            tools: newSelectedTools.map(id => ({ id })),
+        };
+        props.onSelect(JSON.stringify(toolConfig));
     };
 
     React.useEffect(() => {
         if (props.value) {
             try {
-                setSelectedTools(props.value);
+                setSelectedTools(parseToolConfig(props.value).tools.map(tool => tool.id));
             } catch (e) {
                 setSelectedTools([]);
             }

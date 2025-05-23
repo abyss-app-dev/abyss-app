@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { appendFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SQliteClient } from './sqlite-client';
@@ -32,6 +32,6 @@ export class DBArtifact {
 
     public appendString(string: string) {
         const path = this.fullPath;
-        void appendFile(path, string);
+        appendFileSync(path, string);
     }
 }

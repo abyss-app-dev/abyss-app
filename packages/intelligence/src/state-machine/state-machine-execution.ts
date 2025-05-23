@@ -65,7 +65,7 @@ export class StateMachineRuntime {
     }
 
     private consumePortStates(portStates: PortStates) {
-        this.logStream.log('Consuming port states', saveSerialize(portStates));
+        this.logStream.log('Got output port states', saveSerialize(portStates));
         for (const [portId, newValue] of Object.entries(portStates)) {
             this.consumePortValue(portId, newValue);
         }

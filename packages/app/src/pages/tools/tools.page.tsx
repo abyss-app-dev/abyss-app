@@ -3,7 +3,7 @@ import { Box, Hammer } from 'lucide-react';
 import { useToolsPage } from './tools.hook';
 
 export function ToolsPage() {
-    const { breadcrumbs, tools, systemTools, viewTool } = useToolsPage();
+    const { breadcrumbs, systemTools } = useToolsPage();
 
     return (
         <PageCrumbed
@@ -14,7 +14,7 @@ export function ToolsPage() {
             <IconSection icon={Hammer} title="System Tools" subtitle="These are tools built into Abyss for you to use as needed">
                 <TileGrid>
                     {systemTools?.map(tool => (
-                        <Tile key={tool.id} title={tool.name} onClick={() => viewTool(tool.id)} icon={<Box className="w-4 h-4" />}>
+                        <Tile key={tool.id} title={tool.name} icon={<Box className="w-4 h-4" />}>
                             {tool.description}
                         </Tile>
                     ))}

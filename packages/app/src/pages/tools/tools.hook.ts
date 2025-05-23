@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { useScanTableTools } from '../../state/database-access-utils';
+import { useDatabase } from '@/state/database-access-utils';
 
 export function useToolsPage() {
     // Navigation
@@ -9,10 +9,8 @@ export function useToolsPage() {
         { name: 'Tools', onClick: () => navigate('/tools') },
     ];
 
-    const tools = useScanTableTools();
+    const tools = useDatabase.toolDefinition.scan();
     const systemTools = tools.data?.filter(tool => tool.handlerType === 'abyss');
 
-    const viewTool = (toolId: string) => {};
-
-    return { breadcrumbs: pageBreadcrumbs, tools, systemTools, viewTool };
+    return { breadcrumbs: pageBreadcrumbs, tools, systemTools };
 }

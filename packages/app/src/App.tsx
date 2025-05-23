@@ -49,11 +49,11 @@ export function App() {
                         <Route path="/snapshots/id/:id" element={<ViewSnapshotPage />} />
                         <Route path="/agents" element={<AgentsPage />} />
                         <Route path="/agents/id/:id" element={<ViewAgentGraphPage />} />
+                        <Route path="/tools" element={<ToolsPage />} />
                     </Route>
                     {/* 
                         <Route path="/logs" element={<LogListPage />} />
                         <Route path="/documents" element={<DocumentsPage />} />
-                        <Route path="/tools" element={<ToolsPage />} />
                     */}
 
                     <Route path="*" element={<MainPage />} />
