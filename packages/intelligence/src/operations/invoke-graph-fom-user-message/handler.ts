@@ -1,4 +1,3 @@
-import { LogStream } from '@abyss/records';
 import type { AgentGraphDefinition } from '../../state-machine';
 import { StateMachineRuntime } from '../../state-machine';
 import { randomId } from '../../utils/ids';
@@ -29,15 +28,17 @@ export async function invokeGraphFromUserMessage(options: InvokeGraphFromUserMes
     const logStream = agentGraph.client.createLogStreamArtifact();
 
     // Execute
-    const execution = new StateMachineRuntime({
-        logStream,
-        definition: graphDefinition,
-        database: agentGraph.client,
-    });
+    await thread.withBlock(agentGraph.id, async () => {
+        const execution = new StateMachineRuntime({
+            logStream,
+            definition: graphDefinition,
+            database: agentGraph.client,
+        });
 
-    await execution.signal(onThreadMessageNode.id, {
-        thread: thread,
-        onThreadMessage: randomId(),
+        await execution.signal(onThreadMessageNode.id, {
+            thread: thread,
+            onThreadMessage: randomId(),
+        });
     });
 
     return { log: logStream };
