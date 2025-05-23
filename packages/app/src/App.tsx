@@ -46,7 +46,6 @@ export function App() {
                             <Route path="/chats/id/:id" element={<ChatViewPage />} />
                         </Route>
                         <Route path="/logs/id/:id" element={<LogViewPage />} />
-
                     </Route>
                     {/* 
                         <Route path="/logs" element={<LogListPage />} />
