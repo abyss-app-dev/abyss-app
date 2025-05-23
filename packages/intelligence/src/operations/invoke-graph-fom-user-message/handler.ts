@@ -1,3 +1,5 @@
+import { SqliteTable } from '@abyss/records';
+import { ReferencedAgentGraphExecutionRecord } from '@abyss/records/dist/records/agent-graph-execution/agent-graph-execution';
 import type { AgentGraphDefinition } from '../../state-machine';
 import { StateMachineRuntime } from '../../state-machine';
 import { randomId } from '../../utils/ids';
@@ -27,6 +29,21 @@ export async function invokeGraphFromUserMessage(options: InvokeGraphFromUserMes
     // Create a log stream
     const logStream = agentGraph.client.createLogStreamArtifact();
 
+    // Create an agent graph execution
+    const execution = await agentGraph.client.tables[SqliteTable.agentGraphExecution].create({
+        agentGraphId: agentGraph.id,
+        logId: logStream.id,
+        status: 'inProgress',
+    });
+    const executionRef = new ReferencedAgentGraphExecutionRecord(execution.id, agentGraph.client);
+    await thread.addMessagePartials({
+        type: 'agent-graph-execution-reference',
+        senderId: 'system',
+        payloadData: {
+            agentGraphExecutionId: execution.id,
+        },
+    });
+
     // Execute
     await thread.withBlock(agentGraph.id, async () => {
         const execution = new StateMachineRuntime({
@@ -35,10 +52,16 @@ export async function invokeGraphFromUserMessage(options: InvokeGraphFromUserMes
             database: agentGraph.client,
         });
 
-        await execution.signal(onThreadMessageNode.id, {
-            thread: thread,
-            onThreadMessage: randomId(),
-        });
+        try {
+            await execution.signal(onThreadMessageNode.id, {
+                thread: thread,
+                onThreadMessage: randomId(),
+            });
+            await executionRef.update({ status: 'success' });
+        } catch (e) {
+            await executionRef.update({ status: 'failed' });
+            throw e;
+        }
     });
 
     return { log: logStream };

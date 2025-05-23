@@ -14,10 +14,6 @@ export function useLogView() {
         }
     }, [id]);
 
-    const breadcrumbs = [
-        { name: 'Home', onClick: () => navigate('/') },
-        { name: 'Logs', onClick: () => navigate('/logs') },
-        { name: id, onClick: () => navigate(`/logs/id/${id}`) },
-    ];
+    const breadcrumbs = [{ name: 'Home', onClick: () => navigate('/') }, { name: 'Logs' }, { name: id }];
     return { rawLog, breadcrumbs };
 }

@@ -1,5 +1,10 @@
 import type { ReferencedAgentGraphRecord, ReferencedAgentGraphTable } from '../records/agent-graph/agent-graph';
 import type { AgentGraphType } from '../records/agent-graph/agent-graph.type';
+import type {
+    ReferencedAgentGraphExecutionRecord,
+    ReferencedAgentGraphExecutionTable,
+} from '../records/agent-graph-execution/agent-graph-execution';
+import type { AgentGraphExecutionType } from '../records/agent-graph-execution/agent-graph-execution.type';
 import type { ReferencedChatSnapshotRecord, ReferencedChatSnapshotTable } from '../records/chat-snapshot/chat-snapshot';
 import type { ChatSnapshotType } from '../records/chat-snapshot/chat-snapshot.type';
 import type { ReferencedDocumentRecord, ReferencedDocumentTable } from '../records/document/databaseDocument';
@@ -53,6 +58,7 @@ export enum SqliteTable {
     toolDefinition = 'toolDefinition',
     document = 'document',
     chatSnapshot = 'chatSnapshot',
+    agentGraphExecution = 'agentGraphExecution',
 }
 
 export interface SqliteTables {
@@ -65,6 +71,7 @@ export interface SqliteTables {
     [SqliteTable.toolDefinition]: ReferencedToolDefinitionTable;
     [SqliteTable.document]: ReferencedDocumentTable;
     [SqliteTable.chatSnapshot]: ReferencedChatSnapshotTable;
+    [SqliteTable.agentGraphExecution]: ReferencedAgentGraphExecutionTable;
 }
 
 export interface SqliteTableRecordReference {
@@ -77,6 +84,7 @@ export interface SqliteTableRecordReference {
     [SqliteTable.toolDefinition]: ReferencedToolDefinitionRecord;
     [SqliteTable.document]: ReferencedDocumentRecord;
     [SqliteTable.chatSnapshot]: ReferencedChatSnapshotRecord;
+    [SqliteTable.agentGraphExecution]: ReferencedAgentGraphExecutionRecord;
 }
 
 export interface SqliteTableRecordType {
@@ -89,4 +97,5 @@ export interface SqliteTableRecordType {
     [SqliteTable.toolDefinition]: ToolDefinitionType;
     [SqliteTable.document]: DatabaseDocumentType;
     [SqliteTable.chatSnapshot]: ChatSnapshotType;
+    [SqliteTable.agentGraphExecution]: AgentGraphExecutionType;
 }

@@ -78,6 +78,14 @@ export interface ReadonlyDocumentPartial extends BaseSqliteRecord {
     };
 }
 
+export interface AgentGraphExecutionReferencePartial extends BaseSqliteRecord {
+    type: 'agent-graph-execution-reference';
+    senderId: string;
+    payloadData: {
+        agentGraphExecutionId: string;
+    };
+}
+
 export type MessageType =
     | TextPartial
     | NewToolDefinitionPartial
@@ -85,4 +93,5 @@ export type MessageType =
     | ToolCallRequestPartial
     | ToolCallResponsePartial
     | ReadonlyDocumentPartial
-    | SystemErrorPartial;
+    | SystemErrorPartial
+    | AgentGraphExecutionReferencePartial;

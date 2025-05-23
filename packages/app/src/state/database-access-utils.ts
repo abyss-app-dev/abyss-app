@@ -27,6 +27,7 @@ type UseDatabase = {
 export const useDatabase = {} as UseDatabase;
 
 const tableKeys = Object.keys(SqliteTable) as TableNamesAsStrings[];
+console.log(tableKeys, SqliteTable);
 
 for (const tableKey of tableKeys) {
     useDatabase[tableKey] = {

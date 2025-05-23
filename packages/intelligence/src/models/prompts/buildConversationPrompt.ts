@@ -33,7 +33,6 @@ export async function buildConversationPrompt(thread: ReferencedMessageThreadRec
         if (message.type === 'text') {
             prompt.addText(message.payloadData.content);
         }
-
         if (message.type === 'readonly-document') {
             const documents = await db.tables.document.getMany(message.payloadData.documentIds);
             if (documents.length > 0) {

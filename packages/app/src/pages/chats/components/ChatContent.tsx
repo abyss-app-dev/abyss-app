@@ -1,6 +1,7 @@
 import type { MessageThreadTurn } from '@abyss/records';
 import { useNavigate } from 'react-router-dom';
 import { SectionHeader } from './ChatSectionHeader';
+import { AgentGraphExecutionReference } from './chatSections/AgentGraphExecutionReference';
 import { AiMessageTextSection } from './chatSections/AiMessageTextSection';
 import { NewToolDefinition } from './chatSections/NewToolDefinition';
 import { ReadonlyDocumentSection } from './chatSections/ReadonlyDocumentSection';
@@ -78,6 +79,14 @@ export function ChatHistoryRenderer({ turns }: { turns: MessageThreadTurn[] | nu
                             <ReadonlyDocumentSection key={`readonly-document-${i}-${j}`} message={message} navigate={navigate} />
                         );
                     }
+                } else if (message.type === 'agent-graph-execution-reference') {
+                    elementsThisTurn.push(
+                        <AgentGraphExecutionReference
+                            key={`agent-graph-execution-reference-${i}-${j}`}
+                            message={message}
+                            navigate={navigate}
+                        />
+                    );
                 } else {
                     console.error('Unknown system message type', message);
                 }

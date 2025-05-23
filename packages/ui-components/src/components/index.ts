@@ -1,3 +1,4 @@
+export * from './chat-components/ChatMessageExecutionReference';
 export * from './chat-components/ChatMessageSystemError';
 export * from './chat-components/ChatMessageSystemEvent';
 export * from './chat-components/ChatMessageSystemText';

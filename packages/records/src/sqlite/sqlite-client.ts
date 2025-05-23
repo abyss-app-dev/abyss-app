@@ -2,6 +2,7 @@ import { existsSync, promises as fs, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import sqlite3 from 'sqlite3';
 import { ReferencedAgentGraphTable } from '../records/agent-graph/agent-graph';
+import { ReferencedAgentGraphExecutionTable } from '../records/agent-graph-execution/agent-graph-execution';
 import { ReferencedChatSnapshotTable } from '../records/chat-snapshot/chat-snapshot';
 import { ReferencedDocumentTable } from '../records/document/databaseDocument';
 import { LogStream } from '../records/logstream/logstream';
@@ -49,6 +50,7 @@ export class SQliteClient {
             toolDefinition: new ReferencedToolDefinitionTable(this),
             document: new ReferencedDocumentTable(this),
             chatSnapshot: new ReferencedChatSnapshotTable(this),
+            agentGraphExecution: new ReferencedAgentGraphExecutionTable(this),
         };
     }
 
