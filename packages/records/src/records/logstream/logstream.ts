@@ -11,7 +11,7 @@ export class LogStream {
     private readonly startTime: number;
 
     static fromClient(id: string, client: SQliteClient): LogStream {
-        const artifact = new DBArtifact(client, 'logStream', id);
+        const artifact = new DBArtifact(client, 'logs', id);
         return new LogStream(id, 'root', artifact, Date.now());
     }
 

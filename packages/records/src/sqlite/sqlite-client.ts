@@ -98,7 +98,7 @@ export class SQliteClient {
     }
 
     public getLogStream(id: string) {
-        return DBArtifact.readRawString(this, 'logStream', id);
+        return DBArtifact.readRawString(this, 'logs', id);
     }
 
     // Describe tables

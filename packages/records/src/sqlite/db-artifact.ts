@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { appendFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SQliteClient } from './sqlite-client';
@@ -15,8 +15,8 @@ export class DBArtifact {
         this.id = id;
         this.client = client;
 
-        this.fullPath = join(this.client.path, this.grouping, this.id);
-        this.folderPath = join(this.client.path, this.grouping);
+        this.fullPath = join(this.client.path, '..', this.grouping, this.id);
+        this.folderPath = join(this.client.path, '..', this.grouping);
 
         mkdirSync(this.folderPath, { recursive: true });
 
@@ -26,7 +26,7 @@ export class DBArtifact {
     }
 
     public static async readRawString(client: SQliteClient, grouping: string, id: string) {
-        const path = join(client.path, grouping, id);
+        const path = join(client.path, '..', grouping, id);
         return await readFile(path, 'utf8');
     }
 
