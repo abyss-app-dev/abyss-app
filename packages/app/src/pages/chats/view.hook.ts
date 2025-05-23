@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Database } from '@/main';
 import { useDatabase } from '@/state/database-access-utils';
-import { chatWithAiModel } from '../../state/operations';
+import { chatWithAgentGraph, chatWithAiModel } from '../../state/operations';
 
 export function useChatView() {
     const { id } = useParams();
@@ -44,9 +44,9 @@ export function useChatView() {
         }
         setMessage('');
         if (thread.data?.participantId?.startsWith('modelConnection::')) {
-            chatWithAiModel(message, Database.tables[SqliteTable.messageThread].ref(thread.data.id));
+            chatWithAiModel(message, Database.tables[SqliteTable.messageThread].ref(thread.data?.id || ''));
         } else {
-            // chatWithAgentGraph(message, thread.data?.participantId || '', thread.data?.id || '');
+            chatWithAgentGraph(message, Database.tables[SqliteTable.messageThread].ref(thread.data?.id || ''));
         }
     };
 

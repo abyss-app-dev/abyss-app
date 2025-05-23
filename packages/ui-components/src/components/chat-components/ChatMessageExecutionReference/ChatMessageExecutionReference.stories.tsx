@@ -46,4 +46,4 @@ export const Pending: Story = {
         onBodyClick: () => console.log('Body clicked'),
         onLogsClick: () => console.log('Logs clicked'),
     },
-}; 
+};

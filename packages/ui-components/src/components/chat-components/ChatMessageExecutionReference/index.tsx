@@ -34,7 +34,7 @@ export const ChatMessageExecutionReference: React.FC<ChatMessageExecutionReferen
         actionItems.push({
             icon: TextIcon,
             tooltip: 'View logs',
-            onClick: onLogsClick
+            onClick: onLogsClick,
         });
     }
 
@@ -66,4 +66,4 @@ export const ChatMessageExecutionReference: React.FC<ChatMessageExecutionReferen
             )}
         </div>
     );
-}; 
+};
