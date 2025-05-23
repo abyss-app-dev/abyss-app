@@ -11,9 +11,7 @@ export function CustomAgentGraphNode({ id, data }: { id: string; data: RenderedG
     const rightHandles: React.ReactNode[] = [];
     const { deleteElements, updateNodeData } = useReactFlow();
 
-
     const color = data.definition.color;
-
 
     // Get all nodes
     const inputPorts = data.definition.ports.filter(port => port.direction === 'input');
