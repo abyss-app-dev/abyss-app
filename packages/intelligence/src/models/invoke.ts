@@ -2,7 +2,7 @@ import { SqliteTable } from '@abyss/records';
 import { InvokeAnthropic } from './model-apis/anthropic/handler';
 import { InvokeStatic } from './model-apis/static/handler';
 import { buildConversationPrompt } from './prompts/buildConversationPrompt';
-import type { InvokeModelInternalResult, InvokeModelParams } from './types';
+import type { InvokeModelParams } from './types';
 
 export async function invokeLLM(params: InvokeModelParams) {
     const log = params.log.child('invokeRouter');

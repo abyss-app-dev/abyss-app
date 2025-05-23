@@ -2,7 +2,7 @@ import type { LogStream, SQliteClient } from '@abyss/records';
 import './node-handlers';
 import { mapLocalPortsToGlobalPorts } from './map-ports';
 import { NodeHandler } from './node-handler';
-import type { AgentGraphDefinition, GraphNodeDefinition } from './type-definition.type';
+import type { AgentGraphDefinition } from './type-definition.type';
 import type { PortStates, StateMachineExecutionOptions } from './type-execution.type';
 import { saveSerialize } from './utils';
 
