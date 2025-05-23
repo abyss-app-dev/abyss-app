@@ -1,5 +1,5 @@
 import { Button, IconSection, PageCrumbed, Tile, TileGrid } from '@abyss/ui-components';
-import { Bot,  Plus } from 'lucide-react';
+import { Bot, Plus } from 'lucide-react';
 import { useAgentsPage } from './agents-page.hook';
 
 export function AgentsPage() {
@@ -34,7 +34,6 @@ export function AgentsPage() {
                     <div className="text-text-700">No agents found, create a new agent graph to get started.</div>
                 )}
             </IconSection>
-
         </PageCrumbed>
     );
 }
