@@ -39,9 +39,16 @@ export interface GraphEdgeDefinition {
     targetPortId: string;
 }
 
+export interface UISetting {
+    nodeId: string;
+    positionX: number;
+    positionY: number;
+}
+
 export interface AgentGraphDefinition {
     nodes: GraphNodeDefinition[];
     edges: GraphEdgeDefinition[];
+    uiSettings: UISetting[];
 }
 
 export interface GraphNodePartialDefinition {

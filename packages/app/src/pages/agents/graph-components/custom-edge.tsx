@@ -43,7 +43,7 @@ export default function CustomEdge({
     const targetColor = data?.targetColor! as string;
 
     return (
-        <g>
+        <g onClick={onEdgeClick}>
             <path d={edgePath} fill="none" stroke="transparent" strokeWidth={30} onClick={onEdgeClick} style={{ cursor: 'pointer' }} />
             {isSignal ? (
                 <>

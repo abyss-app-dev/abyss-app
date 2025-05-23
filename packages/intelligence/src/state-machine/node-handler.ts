@@ -21,18 +21,16 @@ export abstract class NodeHandler {
     // Definition
     public getDefinition(name?: string): GraphNodeDefinition {
         const definitionPartial = this._getDefinition();
+        const nodeId = `${this.id}::${name ?? randomId()}`;
         const completeDefinition: GraphNodeDefinition = {
-            id: `${this.id}::${name ?? randomId()}`,
+            id: nodeId,
             type: this.id,
             ...definitionPartial,
-            ports: [],
-        };
-        for (const port of definitionPartial.ports) {
-            completeDefinition.ports.push({
+            ports: definitionPartial.ports.map(port => ({
                 ...port,
-                id: `${this.id}::${port.id}::${name ?? randomId()}`,
-            });
-        }
+                id: `${nodeId}::${port.id}`,
+            })),
+        };
         return completeDefinition;
     }
     protected abstract _getDefinition(): GraphNodePartialDefinition;

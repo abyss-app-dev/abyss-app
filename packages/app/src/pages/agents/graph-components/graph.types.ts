@@ -1,5 +1,4 @@
-import type { GraphNodeDefinition } from '@abyss/intelligence/dist/state-machine/type-definition.type';
-import type { AgentGraphNode } from '@abyss/records';
+import type { GraphEdgeDefinition, GraphNodeDefinition } from '@abyss/intelligence/dist/state-machine/type-definition.type';
 
 export interface RenderedGraphNode {
     id: string;
@@ -8,6 +7,19 @@ export interface RenderedGraphNode {
     data: {
         label: string;
         definition: GraphNodeDefinition;
-        database: AgentGraphNode;
+    };
+}
+
+export interface RenderedGraphEdge {
+    id: string;
+    type: string;
+    source: string;
+    sourceHandle: string;
+    target: string;
+    targetHandle: string;
+    data: {
+        isSignal: boolean;
+        targetColor: string;
+        definition: GraphEdgeDefinition;
     };
 }

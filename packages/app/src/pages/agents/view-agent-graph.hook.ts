@@ -1,135 +1,177 @@
-import { type GraphNodeDefinition, NodeHandler } from '@abyss/intelligence';
-import type { AgentGraphEdge, AgentGraphNode, AgentGraphType } from '@abyss/records';
-import { addEdge, type Connection, type Edge, useEdgesState, useNodesState } from '@xyflow/react';
+import { type AgentGraphDefinition, type GraphEdgeDefinition, type GraphNodeDefinition, NodeHandler } from '@abyss/intelligence';
+import { addEdge, type Connection, useEdgesState, useNodesState } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
-import { useDatabaseRecord } from '../../state/database-connection';
-import type { RenderedGraphNode } from './graph-components/graph.types';
+import type { RenderedGraphEdge, RenderedGraphNode } from './graph-components/graph.types';
 
 export function useViewAgent() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const agent = useDatabaseRecord<AgentGraphType>('agentGraph', id || '');
+
+    // Agent data
+    const agent = useDatabase.agentGraph.record(id || '');
     const [hasDoneInitialLoad, setHasDoneInitialLoad] = useState(false);
 
-    const handleUpdateAgent = (data: Partial<AgentGraphType>) => {
-        if (agent) {
-            Database.tables.agentGraph.ref(id!).update(data);
-        }
-    };
-
-    const breadcrumbs = [
-        { name: 'Home', onClick: () => navigate('/') },
-        { name: 'Agents', onClick: () => navigate('/agents') },
-        { name: agent?.name || id || '', onClick: () => navigate(`/agents/id/${id}`) },
-    ];
-
+    // Graph data
     const [nodes, setNodes, onNodesChange] = useNodesState<RenderedGraphNode>([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState<RenderedGraphEdge>([]);
 
-    const dbToRenderedGraphNode = (node: AgentGraphNode): RenderedGraphNode | null => {
-        if (!NodeHandler.getById(node.nodeId)) {
-            console.error('Node handler not found for node:', node.nodeId);
-            return null;
+    // Conversions
+
+    const dbToRenderedGraphNode = (graph: AgentGraphDefinition, graphNodeId: string): RenderedGraphNode | null => {
+        const graphNode = graph.nodes.find(node => node.id === graphNodeId);
+        if (!graphNode) {
+            throw new Error(`Node not found in graph: ${graphNodeId}`);
         }
-        const definition = NodeHandler.getById(node.nodeId).getDefinition(node.id);
+        const nodeHandler = NodeHandler.getById(graphNode.type);
+        if (!nodeHandler) {
+            throw new Error(`Node handler not found for node: ${graphNode.type}`);
+        }
+        const uiSetting = (graph.uiSettings || []).find(setting => setting.nodeId === graphNodeId);
         return {
-            id: node.id,
+            id: graphNodeId,
             type: 'custom',
-            position: { x: node.position.x, y: node.position.y },
-            data: { label: definition.name, definition: definition, database: node },
+            position: { x: uiSetting?.positionX ?? 0, y: uiSetting?.positionY ?? 0 },
+            data: { label: graphNode.name, definition: graphNode },
         };
     };
 
-    const dbToRenderedGraphEdge = (edge: AgentGraphEdge, nodes: AgentGraphNode[]): Edge | null => {
-        const targetNode = nodes.find(node => node.id === edge.targetNodeId);
+    const dbToRenderedGraphEdge = (graph: AgentGraphDefinition, edge: GraphEdgeDefinition): RenderedGraphEdge | null => {
+        const edgeSourceNode = edge.sourcePortId.split('::').splice(0, 2).join('::');
+        const edgeTargetNode = edge.targetPortId.split('::').splice(0, 2).join('::');
+        const sourceNode = graph.nodes.find(node => node.id === edgeSourceNode);
+        if (!sourceNode) {
+            throw new Error(`Source node not found for edge: ${edge.sourcePortId}`);
+        }
+        const targetNode = graph.nodes.find(node => node.id === edgeTargetNode);
         if (!targetNode) {
-            console.error('Target node not found for edge:', edge);
-            return null;
+            throw new Error(`Target node not found for edge: ${edge.targetPortId}`);
         }
-        const definition = NodeHandler.getById(targetNode?.nodeId!);
-        if (!definition) {
-            console.error('Definition not found for edge:', edge);
-            return null;
-        }
-        const isSignal = definition.isSignalPort(edge.targetPortId);
+        const isSignal = targetNode.ports.find(port => port.id === edge.targetPortId)?.connectionType === 'signal';
 
         return {
             id: edge.id,
-            source: edge.sourceNodeId,
+            source: edgeSourceNode,
             sourceHandle: edge.sourcePortId,
-            target: edge.targetNodeId,
+            target: edgeTargetNode,
             targetHandle: edge.targetPortId,
             type: 'custom',
             data: {
                 isSignal,
-                targetColor: definition.getDefinition().color,
+                targetColor: targetNode.color,
+                definition: edge,
             },
         };
     };
 
-    const renderedToDbNode = (node: RenderedGraphNode): AgentGraphNode => {
-        return {
-            id: node.data.database.id,
-            nodeId: node.data.database.nodeId,
-            parameters: node.data.database.parameters,
-            position: node.position,
-        };
+    const renderedToDbNode = (node: RenderedGraphNode): GraphNodeDefinition => {
+        return node.data.definition;
     };
 
-    const renderedToDbEdge = (edge: Edge): AgentGraphEdge => {
-        return {
-            id: edge.id,
-            sourceNodeId: edge.source,
-            sourcePortId: edge.sourceHandle || '',
-            targetNodeId: edge.target,
-            targetPortId: edge.targetHandle || '',
-        };
+    const renderedToDbEdge = (edge: RenderedGraphEdge): GraphEdgeDefinition => {
+        return edge.data.definition;
     };
 
-    // Create a debounced save function with 1 second delay
-    const saveGraphStateToDb = useCallback(
-        (currentNodes: RenderedGraphNode[], currentEdges: Edge[]) => {
+    // Database updates
+
+    const handleUpdateAgent = useCallback(
+        (data: Partial<AgentGraphDefinition>) => {
             if (agent && id) {
-                handleUpdateAgent({
-                    nodesData: currentNodes.map(renderedToDbNode),
-                    edgesData: currentEdges.map(renderedToDbEdge),
-                });
+                Database.tables.agentGraph.ref(id).update({ serialzedData: data });
             }
         },
         [agent, id]
     );
 
+    const handleUpdateAgentName = useCallback(
+        (name: string) => {
+            if (agent && id) {
+                Database.tables.agentGraph.ref(id).update({ name });
+            }
+        },
+        [handleUpdateAgent, id, agent]
+    );
+
+    const saveGraphStateToDb = useCallback(
+        (currentNodes: RenderedGraphNode[], currentEdges: RenderedGraphEdge[]) => {
+            if (agent && id) {
+                handleUpdateAgent({
+                    nodes: currentNodes.map(renderedToDbNode),
+                    edges: currentEdges.map(renderedToDbEdge),
+                    uiSettings: currentNodes.map(node => ({
+                        nodeId: node.id,
+                        positionX: node.position.x,
+                        positionY: node.position.y,
+                    })),
+                });
+            }
+        },
+        [agent, id, handleUpdateAgent]
+    );
+
+    // Graph data updates
+
     useEffect(() => {
-        if (agent && nodes.length === 0 && edges.length === 0 && !hasDoneInitialLoad) {
-            setNodes(agent.nodesData.map(node => dbToRenderedGraphNode(node)).filter(node => node !== null) as RenderedGraphNode[]);
-            setEdges(agent.edgesData.map(edge => dbToRenderedGraphEdge(edge, agent.nodesData)).filter(edge => edge !== null) as Edge[]);
+        if (agent?.data && nodes.length === 0 && edges.length === 0 && !hasDoneInitialLoad) {
+            const renderedNodes: RenderedGraphNode[] = [];
+            const renderedEdges: RenderedGraphEdge[] = [];
+            const graph = agent.data.serialzedData as AgentGraphDefinition;
+            for (const node of graph.nodes || []) {
+                const renderedNode = dbToRenderedGraphNode(graph, node.id);
+                if (renderedNode) {
+                    renderedNodes.push(renderedNode);
+                }
+            }
+            for (const edge of graph.edges || []) {
+                const renderedEdge = dbToRenderedGraphEdge(graph, edge);
+                if (renderedEdge) {
+                    renderedEdges.push(renderedEdge);
+                }
+            }
+            setNodes(renderedNodes);
+            setEdges(renderedEdges);
             setHasDoneInitialLoad(true);
         }
     }, [agent]);
 
-    const handleAddNode = (node: GraphNodeDefinition) => {
-        const newNode: RenderedGraphNode = {
-            id: node.id,
-            position: { x: 0, y: 0 },
-            data: {
-                label: node.name,
-                definition: node,
-                database: {
-                    id: node.id,
-                    nodeId: node.type,
-                    position: { x: 0, y: 0 },
-                    parameters: {},
+    useEffect(() => {
+        if (agent?.data && hasDoneInitialLoad) {
+            saveGraphStateToDb(nodes, edges);
+        }
+    }, [nodes, edges]);
+
+    const handleAddNode = useCallback(
+        (node: GraphNodeDefinition) => {
+            const newNode: RenderedGraphNode = {
+                id: node.id,
+                position: { x: 0, y: 0 },
+                data: {
+                    label: node.name,
+                    definition: node,
                 },
-            },
-            type: 'custom',
-        };
-        setNodes(nds => {
-            const nodes = [...nds, newNode];
-            return nodes;
-        });
-    };
+                type: 'custom',
+            };
+            setNodes(nds => {
+                const nodes = [...nds, newNode];
+                return nodes;
+            });
+        },
+        [setNodes]
+    );
+
+    // Handle node deletion
+    const onNodesDelete = useCallback(
+        (deletedNodes: RenderedGraphNode[]) => {
+            const deletedNodeIds = new Set(deletedNodes.map(node => node.id));
+            setEdges(edges => {
+                const newEdges = edges.filter(edge => !deletedNodeIds.has(edge.source) && !deletedNodeIds.has(edge.target));
+                return newEdges;
+            });
+        },
+        [setEdges]
+    );
 
     const onConnect = useCallback(
         (connection: Connection) => {
@@ -137,11 +179,9 @@ export function useViewAgent() {
             const sourceHandleLocalId = connection.sourceHandle;
             const targetNode = nodes.find(node => node.id === connection.target);
             const targetHandleLocalId = connection.targetHandle;
-            const sourceHandle =
-                sourceNode?.data.definition.outputPorts[sourceHandleLocalId as keyof typeof sourceNode.data.definition.outputPorts];
-            const targetHandle =
-                targetNode?.data.definition.inputPorts[targetHandleLocalId as keyof typeof targetNode.data.definition.inputPorts];
-            if (sourceHandle?.dataType !== targetHandle?.dataType) {
+            const sourceHandle = sourceNode?.data.definition.ports.find(port => port.id === sourceHandleLocalId)?.connectionType;
+            const targetHandle = targetNode?.data.definition.ports.find(port => port.id === targetHandleLocalId)?.connectionType;
+            if (sourceHandle !== targetHandle) {
                 console.error('Source and target handle types do not match:', {
                     sourceHandleId: sourceHandleLocalId,
                     sourceNode,
@@ -152,7 +192,7 @@ export function useViewAgent() {
                 });
                 return;
             }
-            const isTargetSignal = targetHandle?.type === 'signal';
+            const isTargetSignal = targetHandle === 'signal';
             setEdges(eds => {
                 const newEdges = addEdge(
                     {
@@ -160,9 +200,12 @@ export function useViewAgent() {
                         type: 'custom',
                         data: {
                             isSignal: isTargetSignal,
-                            sourceHandle,
-                            targetHandle,
-                            targetColor: targetNode?.data.definition.color,
+                            targetColor: targetNode?.data.definition.color || '',
+                            definition: {
+                                id: Math.random().toString(36).substring(2, 15),
+                                sourcePortId: connection.sourceHandle || '',
+                                targetPortId: connection.targetHandle || '',
+                            },
                         },
                     },
                     eds
@@ -173,30 +216,8 @@ export function useViewAgent() {
         [setEdges, nodes]
     );
 
-    // Handle node deletion
-    const onNodesDelete = useCallback(
-        (deletedNodes: RenderedGraphNode[]) => {
-            // Clean up any edges connected to the deleted nodes
-            const deletedNodeIds = new Set(deletedNodes.map(node => node.id));
-            setEdges(edges => {
-                const newEdges = edges.filter(edge => !deletedNodeIds.has(edge.source) && !deletedNodeIds.has(edge.target));
-                return newEdges;
-            });
-        },
-        [setEdges, nodes]
-    );
-
-    useEffect(() => {
-        saveGraphStateToDb(nodes, edges);
-    }, [nodes, edges]);
-
-    const handleUpdateAgentName = (name: string) => {
-        handleUpdateAgent({ name });
-    };
-
     return {
         agent,
-        breadcrumbs,
         handleUpdateAgent,
         navigate,
         handleAddNode,

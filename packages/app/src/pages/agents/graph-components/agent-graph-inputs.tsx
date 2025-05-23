@@ -11,7 +11,7 @@ export interface SelectForAgentGraphProps {
 }
 
 export function SelectForAgentGraph(props: SelectForAgentGraphProps) {
-    if (props.port.dataType === 'chat-model') {
+    if (props.port.dataType === 'model') {
         return <ChatModelSelector {...props} />;
     }
 
@@ -19,7 +19,7 @@ export function SelectForAgentGraph(props: SelectForAgentGraphProps) {
         return <StringInput {...props} />;
     }
 
-    if (props.port.dataType === 'tool-set') {
+    if (props.port.dataType === 'tools') {
         return <ToolSetSelector {...props} />;
     }
 

@@ -15,42 +15,7 @@ export function AgentNodeDrawer({ onAddNode }: AgentNodeDrawerProps) {
                 <SidebarButton
                     label="On Chat Message"
                     icon={MessageCircle}
-                    onClick={() => onAddNode(Nodes.OnChatMessage.getDefinition())}
-                />
-                <SidebarSection title="Constants" />
-                <SidebarButton
-                    label="Input String"
-                    icon={ArrowRight}
-                    onClick={() => onAddNode(Nodes.InputConstantString.getDefinition())}
-                />
-                <SidebarSection title="AI" />
-                <SidebarButton
-                    label="Input Language Model"
-                    icon={ArrowRight}
-                    onClick={() => onAddNode(Nodes.InputLanguageModel.getDefinition())}
-                />
-                <SidebarButton
-                    label="Invoke Language Model"
-                    icon={Sparkles}
-                    onClick={() => onAddNode(Nodes.InvokeLanguageModel.getDefinition())}
-                />
-                <SidebarSection title="Tools" />
-                <SidebarButton label="Input Tools" icon={ArrowRight} onClick={() => onAddNode(Nodes.InputToolsSelection.getDefinition())} />
-                <SidebarButton
-                    label="Add Tools to Thread"
-                    icon={MessageCircle}
-                    onClick={() => onAddNode(Nodes.AddToolsToThread.getDefinition())}
-                />
-                <SidebarSection title="Chats" />
-                <SidebarButton
-                    label="Write Agent Message"
-                    icon={MessageCircle}
-                    onClick={() => onAddNode(Nodes.WriteAgentMessage.getDefinition())}
-                />
-                <SidebarButton
-                    label="Write User Message"
-                    icon={MessageCircle}
-                    onClick={() => onAddNode(Nodes.WriteUserMessage.getDefinition())}
+                    onClick={() => onAddNode(Nodes.HelloWorld.getDefinition())}
                 />
             </Sidebar>
         </div>

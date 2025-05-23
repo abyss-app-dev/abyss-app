@@ -1,5 +1,5 @@
 import { ChevronDown } from 'lucide-react';
-import { useScanTableModelConnections } from '../../../../state/database-access-utils';
+import { useDatabase } from '@/state/database-access-utils';
 
 export interface ChatModelSelectorProps {
     color: string;
@@ -8,7 +8,7 @@ export interface ChatModelSelectorProps {
 }
 
 export function ChatModelSelector(props: ChatModelSelectorProps) {
-    const models = useScanTableModelConnections();
+    const models = useDatabase.modelConnection.scan();
 
     if (!props.value && models.data && models.data.length) {
         props.onSelect(models.data[0].id);

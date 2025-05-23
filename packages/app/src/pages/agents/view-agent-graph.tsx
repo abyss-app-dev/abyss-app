@@ -17,7 +17,7 @@ export function ViewAgentGraphPage() {
                     <div className="h-[54px] w-full  bg-[#0e0e0e] border-b border-background-600 py-2 border-l pl-4 flex items-center gap-2">
                         <Bot className="w-6 h-6 text-white" />
                         <input
-                            value={agent?.name || ''}
+                            value={agent?.data?.name || ''}
                             onChange={e => handleUpdateAgentName(e.target.value)}
                             placeholder="My Amazing Agent"
                             className="w-[200px] bg-transparent text-text-100 p-2 pl-2 text-white focus:outline-none text-lg"

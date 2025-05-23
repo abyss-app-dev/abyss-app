@@ -16,6 +16,7 @@ test('hello world graph', async () => {
     const definition: AgentGraphDefinition = {
         nodes: [helloWorld1, helloWorld2],
         edges: [connect(helloWorld1, 'next', helloWorld2, 'trigger')],
+        uiSettings: [],
     };
 
     const stateMachine = new StateMachineRuntime({ definition, database, logStream });

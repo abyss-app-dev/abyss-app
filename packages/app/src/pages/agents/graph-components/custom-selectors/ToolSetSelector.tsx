@@ -1,6 +1,6 @@
 import { CheckIcon, SquareDashedIcon } from 'lucide-react';
 import React from 'react';
-import { useScanTableToolDefinitions } from '../../../../state/database-access-utils';
+import { useDatabase } from '@/state/database-access-utils';
 
 export interface ToolSetSelectorProps {
     color: string;
@@ -10,7 +10,7 @@ export interface ToolSetSelectorProps {
 
 export function ToolSetSelector(props: ToolSetSelectorProps) {
     const [selectedTools, setSelectedTools] = React.useState<string[]>(props.value ? props.value : []);
-    const { data: tools } = useScanTableToolDefinitions();
+    const { data: tools } = useDatabase.toolDefinition.scan();
 
     const handleToolToggle = (toolId: string) => {
         const newSelectedTools = selectedTools.includes(toolId) ? selectedTools.filter(id => id !== toolId) : [...selectedTools, toolId];

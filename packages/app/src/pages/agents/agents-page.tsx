@@ -1,9 +1,9 @@
-import { Button, IconSection, PageCrumbed, Table, Tile, TileGrid } from '@abyss/ui-components';
-import { Bot, List, Plus } from 'lucide-react';
+import { Button, IconSection, PageCrumbed, Tile, TileGrid } from '@abyss/ui-components';
+import { Bot,  Plus } from 'lucide-react';
 import { useAgentsPage } from './agents-page.hook';
 
 export function AgentsPage() {
-    const { agents, handleCreateAgent, navigate, executionTableData, onOpenRecordStr } = useAgentsPage();
+    const { agents, handleCreateAgent, navigate } = useAgentsPage();
 
     return (
         <PageCrumbed
@@ -27,7 +27,6 @@ export function AgentsPage() {
                                 title={agent.name || 'Untitled'}
                                 onClick={() => navigate(`/agents/id/${agent.id}`)}
                                 icon={<Bot className="w-4 h-4" />}
-                                footer={`${agent.nodesData.length} nodes`}
                             />
                         ))}
                     </TileGrid>
@@ -36,13 +35,6 @@ export function AgentsPage() {
                 )}
             </IconSection>
 
-            <IconSection title="Executions" icon={List}>
-                <Table
-                    table={'agentGraphExecution'}
-                    data={executionTableData as Record<string, any>[]}
-                    onRecordClick={recordId => onOpenRecordStr(recordId)}
-                />
-            </IconSection>
         </PageCrumbed>
     );
 }
