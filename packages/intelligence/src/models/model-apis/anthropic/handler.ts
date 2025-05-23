@@ -3,7 +3,7 @@ import { buildAnthropicMessages } from './build-context';
 import type { AnthropicResponse, InvokeAnthropicProps } from './types';
 
 export async function InvokeAnthropic(props: InvokeAnthropicProps): Promise<InvokeModelInternalResult> {
-    const messages = await buildAnthropicMessages(props.thread);
+    const messages = await buildAnthropicMessages(props.turns);
     const modelId = props.modelId;
     const apiKey = props.apiKey;
     const log = props.log.child('anthropic-handler');

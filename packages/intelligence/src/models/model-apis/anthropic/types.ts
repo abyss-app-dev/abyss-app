@@ -1,8 +1,9 @@
-import type { LogStream, ReferencedMessageThreadRecord } from '@abyss/records';
+import type { LogStream } from '@abyss/records';
+import type { MessageThreadRenderedTurn } from '@abyss/records/dist/records/chat-snapshot/chat-snapshot.type';
 
 export interface InvokeAnthropicProps {
     log: LogStream;
-    thread: ReferencedMessageThreadRecord;
+    turns: MessageThreadRenderedTurn[];
     modelId: string;
     apiKey: string;
 }

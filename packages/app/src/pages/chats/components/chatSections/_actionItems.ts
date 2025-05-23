@@ -1,4 +1,4 @@
-import { AlignLeft, type LucideIcon, TextIcon } from 'lucide-react';
+import { AlignLeft, Eye, type LucideIcon, TextIcon } from 'lucide-react';
 
 export interface ActionItem {
     icon: LucideIcon;
@@ -17,9 +17,9 @@ export function getActionItems(message: Record<string, string> | undefined, navi
                 navigate(`/logs/id/${value}`);
             },
         }),
-        chatSnapshotId: (value: string) => ({
-            icon: AlignLeft,
-            tooltip: 'Chat Snapshot',
+        snapshot: (value: string) => ({
+            icon: Eye,
+            tooltip: 'True Conversation',
             onClick: () => {
                 navigate(`/snapshots/id/${value}`);
             },

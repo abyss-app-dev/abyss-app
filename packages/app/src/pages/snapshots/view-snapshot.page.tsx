@@ -98,17 +98,23 @@ export function ViewSnapshotPage() {
     const { breadcrumbs, record, raw, setRaw } = useSnapshotsPage();
     const messages: React.ReactNode[] = [];
 
-    for (let i = 0; i < (record?.messagesData ?? []).length; i++) {
-        const message = (record?.messagesData ?? [])[i];
-        messages.push(<SectionHeader key={i + 'header'} sender={message.type} />);
+    for (let i = 0; i < (record?.data?.messagesData ?? []).length; i++) {
+        const message = (record?.data?.messagesData ?? [])[i];
+        messages.push(<div key={i + 'header-padding'} className='h-2'/>);
+        messages.push(<SectionHeader key={i + 'header'} sender={message.senderId}  />);
         if (raw === 'raw') {
-            messages.push(<ChatMessageText key={i + 'content'} text={message.content} />);
+            for (const cell of message.messages) {
+                const {content, } = cell;
+                messages.push(<pre key={i + 'content'} className='text-xs p-2'>{typeof content === 'string' ? content : JSON.stringify(content)}</pre>);
+            }
         } else {
-            messages.push(
-                <ReactMarkdown key={i + 'content'} components={components} rehypePlugins={[rehypeWrapOrphanText]}>
-                    {message.content}
-                </ReactMarkdown>
-            );
+            for (const cell of message.messages) {
+                messages.push(
+                    <ReactMarkdown key={i + 'content'} components={components} rehypePlugins={[rehypeWrapOrphanText]} className='text-xs px-2'>
+                        {typeof cell.content === 'string' ? cell.content : JSON.stringify(cell.content)}
+                    </ReactMarkdown>
+                );
+            }
         }
     }
 
@@ -119,8 +125,8 @@ export function ViewSnapshotPage() {
             loading={record === undefined}
             subtitle="This represents the raw text sent to the LLM for a given invoke of the model."
         >
-            <ButtonGroup>
-                <Button isInactive={raw === 'parsed'} onClick={() => setRaw('raw')}>
+            <ButtonGroup className='mb-2'>
+                <Button  isInactive={raw === 'parsed'} onClick={() => setRaw('raw')}>
                     Plain Text
                 </Button>
                 <Button isInactive={raw === 'raw'} onClick={() => setRaw('parsed')}>

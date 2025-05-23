@@ -44,7 +44,12 @@ export async function invokeModelHandler(options: InvokeModelParams) {
 
         log.log(`Adding ${newMessages.length} new messages to thread ${thread.id}`);
         const createdMessages = await thread.addMessagePartials(...newMessages);
-        createdMessages.at(-1)?.update({ referencedData: { log: log.id } });
+        createdMessages.at(-1)?.update({
+            referencedData: {
+                log: log.id,
+                snapshot: response.snapshot.id,
+            },
+        });
     });
 
     return { log };

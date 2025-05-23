@@ -46,11 +46,11 @@ export function App() {
                             <Route path="/chats/id/:id" element={<ChatViewPage />} />
                         </Route>
                         <Route path="/logs/id/:id" element={<LogViewPage />} />
+                        <Route path="/snapshots/id/:id" element={<ViewSnapshotPage />} />
                     </Route>
                     {/* 
                         <Route path="/logs" element={<LogListPage />} />
                         <Route path="/documents" element={<DocumentsPage />} />
-                        <Route path="/snapshots/id/:id" element={<ViewSnapshotPage />} />
                         <Route path="/tools" element={<ToolsPage />} />
                         <Route path="/agents" element={<AgentsPage />} />
                         <Route path="/agents/id/:id" element={<ViewAgentGraphPage />} />

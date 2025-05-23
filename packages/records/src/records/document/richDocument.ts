@@ -1,4 +1,3 @@
-import type { SQliteClient } from '../../sqlite/sqlite-client';
 import type { Cell, CellType } from './richDocument.types';
 import { serializeCells } from './serialize/serialze';
 
@@ -33,8 +32,8 @@ export class RichDocument {
         return this.cells.map(cell => cell.type);
     }
 
-    public async render(db: SQliteClient): Promise<string> {
-        return serializeCells(this.cells, db);
+    public static render(cells: Cell[]): string {
+        return serializeCells(cells);
     }
 
     //

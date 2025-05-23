@@ -1,12 +1,17 @@
+import { SqliteTable } from '@abyss/records';
 import { InvokeAnthropic } from './model-apis/anthropic/handler';
 import { InvokeStatic } from './model-apis/static/handler';
+import { buildConversationPrompt } from './prompts/buildConversationPrompt';
 import type { InvokeModelInternalResult, InvokeModelParams } from './types';
 
-export async function invokeLLM(params: InvokeModelParams): Promise<InvokeModelInternalResult> {
+export async function invokeLLM(params: InvokeModelParams) {
     const log = params.log.child('invokeRouter');
     log.log(`Using ${params.modelConnection.id} to invoke ${params.thread.id}`);
 
     const connection = await params.modelConnection.get();
+    const standardTurns = await buildConversationPrompt(params.thread);
+    const snapshot = await params.thread.client.tables[SqliteTable.chatSnapshot].create({ messagesData: standardTurns });
+    const snapshotRef = params.thread.client.tables[SqliteTable.chatSnapshot].ref(snapshot.id);
 
     // Invoke LLM
     try {
@@ -14,24 +19,24 @@ export async function invokeLLM(params: InvokeModelParams): Promise<InvokeModelI
             log.log('Invoking Anthropic API handler');
             const anthropicResult = await InvokeAnthropic({
                 log,
-                thread: params.thread,
+                turns: standardTurns,
                 modelId: connection.modelId,
                 //@ts-ignore
                 apiKey: connection.connectionData.apiKey,
             });
             log.log('Anthropic API handler invoke completed', anthropicResult);
-            return anthropicResult;
+            return { ...anthropicResult, snapshot: snapshotRef };
         }
         if (connection.providerId.toLowerCase() === 'static') {
             log.log('Invoking Static API handler');
             const staticResult = await InvokeStatic({
                 log,
-                thread: params.thread,
+                turns: standardTurns,
                 //@ts-ignore
                 response: connection.connectionData.response,
             });
             log.log('Static API handler invoke completed', staticResult);
-            return staticResult;
+            return { ...staticResult, snapshot: snapshotRef };
         }
 
         log.warn(`Unknown AI access format: ${connection.providerId}`);

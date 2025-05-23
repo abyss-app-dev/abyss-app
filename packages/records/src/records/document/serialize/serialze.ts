@@ -1,9 +1,8 @@
-import type { SQliteClient } from '../../../sqlite/sqlite-client';
 import type { Cell, CellCode, CellHeader, CellHeader2, CellHeader3, CellText, CellXMLElement } from '../richDocument.types';
 import { dedent } from '../utils/dedent';
 import { renderXmlCell } from '../utils/render-xml';
 
-export async function serializeCells(cells: Cell[], _db: SQliteClient) {
+export function serializeCells(cells: Cell[]) {
     const serialized = cells.map(cell => {
         switch (cell.type) {
             case 'text':
