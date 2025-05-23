@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDatabase } from '@/state/database-access-utils';
 import { getIconForSourceType } from '../../library/references';
 import { Database } from '../../main';
-import { useScanTableChats } from '../../state/database-access-utils';
 
 export function useChatMain() {
-    const chats = useScanTableChats();
+    const threads = useDatabase.messageThread.scan();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -18,14 +18,14 @@ export function useChatMain() {
     };
 
     const handleDeleteChat = (chatId: string) => {
-        Database.tables.chatThread.ref(chatId).delete();
+        Database.tables.messageThread.ref(chatId).delete();
     };
 
-    const sidebarItems = (chats.data || []).map(entry => {
+    const sidebarItems = (threads.data || []).map(entry => {
         return {
             id: entry.id,
-            title: entry.name,
-            icon: getIconForSourceType(entry.participantId),
+            title: entry.participantId,
+            icon: getIconForSourceType(entry.participantId || ''),
             url: `/chats/id/${entry.id}`,
             isInProgress: !!entry.blockerId,
             onCancel: () => handleDeleteChat(entry.id),

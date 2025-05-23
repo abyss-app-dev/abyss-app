@@ -41,6 +41,10 @@ export function App() {
                         <Route path="/models" element={<ModelProfileMainPage />} />
                         <Route path="/models/create" element={<ModelProfileEditPage />} />
                         <Route path="/models/id/:id" element={<ModelProfileEditPage />} />
+                        <Route path="/chats" element={<ChatMainPage />}>
+                            <Route path="/chats/create" element={<ChatCreatePage />} />
+                            <Route path="/chats/id/:id" element={<ChatViewPage />} />
+                        </Route>
                     </Route>
                     {/* 
                         <Route path="/logs/id/:id" element={<LogViewPage />} />
@@ -50,10 +54,6 @@ export function App() {
                         <Route path="/tools" element={<ToolsPage />} />
                         <Route path="/agents" element={<AgentsPage />} />
                         <Route path="/agents/id/:id" element={<ViewAgentGraphPage />} />
-                        <Route path="/chats" element={<ChatMainPage />}>
-                            <Route path="/chats/create" element={<ChatCreatePage />} />
-                            <Route path="/chats/id/:id" element={<ChatViewPage />} />
-                        </Route>
                     */}
 
                     <Route path="*" element={<MainPage />} />

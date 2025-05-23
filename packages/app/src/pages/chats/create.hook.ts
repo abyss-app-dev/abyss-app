@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
-import { useScanTableAgents, useScanTableModelConnections } from '../../state/database-access-utils';
 import { chatWithAgentGraph, chatWithAiModel } from '../../state/operations';
 
 export function useChatCreate() {
     const navigate = useNavigate();
-    const allModels = useScanTableModelConnections();
-    const allAgents = useScanTableAgents();
+    const allModels = useDatabase.modelConnection.scan();
+    const allAgents = useDatabase.agentGraph.scan();
 
     const [chatType, setChatType] = useState<'model' | 'agent'>('model');
     const [selectedModel, setSelectedModel] = useState<string>('');
@@ -15,10 +15,10 @@ export function useChatCreate() {
     const [message, setMessage] = useState<string>('');
 
     useEffect(() => {
-        if (allModels.data && allModels.data.length && chatType === 'model') {
+        if (allModels.data?.length && chatType === 'model') {
             setSelectedModel(allModels.data[0].id);
         }
-        if (allAgents.data && allAgents.data.length && chatType === 'agent') {
+        if (allAgents.data?.length && chatType === 'agent') {
             setSelectedAgent(allAgents.data[0].id);
         }
     }, [allModels.data, allAgents.data, chatType]);
@@ -28,7 +28,7 @@ export function useChatCreate() {
         if (!sourceId || !message) {
             return;
         }
-        const chatRecord = await Database.tables.chatThread.new(sourceId);
+        const chatRecord = await Database.tables.messageThread.new();
         if (chatType === 'model') {
             chatWithAiModel(message, sourceId, chatRecord.id);
         } else {

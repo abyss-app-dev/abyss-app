@@ -6,24 +6,24 @@ import { ChatHistoryRenderer } from './components/ChatContent';
 import { useChatView } from './view.hook';
 
 export function ChatViewPage() {
-    const { chat, thread, message, setMessage, handleKeyPress, breadcrumbs, navigateToParticipant, handleSendMessage } = useChatView();
-    const participantIcon = getIconForSourceType(chat?.participantId || '');
+    const { thread, turns, message, setMessage, handleKeyPress, breadcrumbs, navigateToParticipant, handleSendMessage } = useChatView();
+    const participantIcon = getIconForSourceType(thread.data?.participantId || '');
     const headerReference = (
         <Button variant="secondary" icon={participantIcon} tooltip="View model profile" onClick={navigateToParticipant} />
     );
 
     return (
         <PageCrumbed
-            title={chat?.name || ''}
+            title={thread.data?.participantId || ''}
             icon={React.createElement(participantIcon)}
             actions={headerReference}
             breadcrumbs={breadcrumbs}
         >
-            <ChatHistoryRenderer thread={thread || []} />
+            <ChatHistoryRenderer turns={turns.data} />
             <br />
             <br />
-            {chat?.blockerId && <div className="text-sm text-gray-500">Chat is responding...</div>}
-            {!chat?.blockerId && (
+            {thread.data?.blockerId && <div className="text-sm text-gray-500">Chat is responding...</div>}
+            {!thread.data?.blockerId && (
                 <>
                     <InputArea
                         value={message}

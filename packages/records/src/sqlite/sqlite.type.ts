@@ -1,20 +1,20 @@
-import type { ReferencedAgentGraphTable } from '../records/agent-graph/agent-graph';
+import type { ReferencedAgentGraphRecord, ReferencedAgentGraphTable } from '../records/agent-graph/agent-graph';
 import type { AgentGraphType } from '../records/agent-graph/agent-graph.type';
-import type { ReferencedChatSnapshotTable } from '../records/chat-snapshot/chat-snapshot';
+import type { ReferencedChatSnapshotRecord, ReferencedChatSnapshotTable } from '../records/chat-snapshot/chat-snapshot';
 import type { ChatSnapshotType } from '../records/chat-snapshot/chat-snapshot.type';
-import type { ReferencedDocumentTable } from '../records/document/databaseDocument';
+import type { ReferencedDocumentRecord, ReferencedDocumentTable } from '../records/document/databaseDocument';
 import { DatabaseDocumentType } from '../records/document/document.type';
-import type { ReferencedMessageTable } from '../records/message/message';
+import type { ReferencedMessageRecord, ReferencedMessageTable } from '../records/message/message';
 import type { MessageType } from '../records/message/message.type';
-import type { ReferencedMessageThreadTable } from '../records/message-thread/message-thread';
+import type { ReferencedMessageThreadRecord, ReferencedMessageThreadTable } from '../records/message-thread/message-thread';
 import type { MessageThreadType } from '../records/message-thread/message-thread.type';
-import type { ReferencedMetricTable } from '../records/metric/metric';
+import type { ReferencedMetricRecord, ReferencedMetricTable } from '../records/metric/metric';
 import type { MetricType } from '../records/metric/metric.type';
-import type { ReferencedModelConnectionTable } from '../records/model-connection/model-connection';
+import type { ReferencedModelConnectionRecord, ReferencedModelConnectionTable } from '../records/model-connection/model-connection';
 import type { ModelConnectionType } from '../records/model-connection/model-connection.type';
-import type { ReferencedSettingsTable } from '../records/settings/settings';
+import type { ReferencedSettingsRecord, ReferencedSettingsTable } from '../records/settings/settings';
 import type { SettingsType } from '../records/settings/settings.type';
-import type { ReferencedToolDefinitionTable } from '../records/tool-definition/tool-definition';
+import type { ReferencedToolDefinitionRecord, ReferencedToolDefinitionTable } from '../records/tool-definition/tool-definition';
 import type { ToolDefinitionType } from '../records/tool-definition/tool-definition.type';
 import type { ReferencedSqliteRecord } from './reference-record';
 import type { SQliteClient } from './sqlite-client';
@@ -65,6 +65,18 @@ export interface SqliteTables {
     [SqliteTable.toolDefinition]: ReferencedToolDefinitionTable;
     [SqliteTable.document]: ReferencedDocumentTable;
     [SqliteTable.chatSnapshot]: ReferencedChatSnapshotTable;
+}
+
+export interface SqliteTableRecordReference {
+    [SqliteTable.settings]: ReferencedSettingsRecord;
+    [SqliteTable.modelConnection]: ReferencedModelConnectionRecord;
+    [SqliteTable.agentGraph]: ReferencedAgentGraphRecord;
+    [SqliteTable.messageThread]: ReferencedMessageThreadRecord;
+    [SqliteTable.metric]: ReferencedMetricRecord;
+    [SqliteTable.message]: ReferencedMessageRecord;
+    [SqliteTable.toolDefinition]: ReferencedToolDefinitionRecord;
+    [SqliteTable.document]: ReferencedDocumentRecord;
+    [SqliteTable.chatSnapshot]: ReferencedChatSnapshotRecord;
 }
 
 export interface SqliteTableRecordType {

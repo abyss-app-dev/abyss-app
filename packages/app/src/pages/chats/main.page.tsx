@@ -18,7 +18,7 @@ export function ChatMainPage() {
                 {sidebarItems.map(item => (
                     <SidebarButton
                         key={item.id}
-                        label={item.title}
+                        label={item.title || ''}
                         icon={item.icon}
                         onClick={() => navigate(item.url)}
                         isActive={location.pathname === item.url}

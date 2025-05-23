@@ -1,4 +1,4 @@
-import type { SQliteClient, SqliteTable, SqliteTableRecordType, SqliteTables } from '@abyss/records';
+import type { SQliteClient, SqliteTable, SqliteTableRecordReference, SqliteTableRecordType, SqliteTables } from '@abyss/records';
 import { useEffect, useState } from 'react';
 import { Database } from '../main';
 
@@ -37,7 +37,6 @@ export function useDatabaseSubscription<T>(callback: (database: SQliteClient) =>
 
 export type UseDatabaseTableSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseTableSubscription<T>>;
 export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table: T, listeners: unknown[] = []) {
-    // biome-ignore lint/suspicious/noExplicitAny: This is a helper function to avoid linting errors
     const query = useQuery(() => Database.tables[table].list() as unknown as Promise<SqliteTableRecordType[T][]>);
     useEffect(() => {
         let unsubscribeCallback: () => void = () => {};
@@ -52,7 +51,11 @@ export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table
 }
 
 export type UseDatabaseRecordSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseRecordSubscription<T>>;
-export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(table: T, recordId: string, listeners: unknown[] = []) {
+export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(
+    table: T,
+    recordId: string | undefined,
+    listeners: unknown[] = []
+) {
     const query = useQuery<SqliteTableRecordType[T] | null>(async () => {
         if (recordId) {
             return Database.tables[table].get(recordId) as Promise<SqliteTableRecordType[T]>;
@@ -60,6 +63,9 @@ export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(tabl
         return null;
     });
     useEffect(() => {
+        if (!recordId) {
+            return;
+        }
         let unsubscribeCallback: () => void = () => {};
         Database.tables[table]
             .subscribeRecord(recordId, data => query.setData(data as SqliteTableRecordType[T] | null))
@@ -94,5 +100,29 @@ export function useDatabaseQuery<T>(callback: (database: SQliteClient) => Promis
     useEffect(() => {
         return Database.subscribeDatabase(() => query.refetch());
     }, []);
+    return query;
+}
+
+export type UseDatabaseRecordQuery<T extends keyof SqliteTables, IResultType> = ReturnType<typeof useDatabaseRecordQuery<T, IResultType>>;
+export function useDatabaseRecordQuery<T extends keyof SqliteTables, IResultType>(
+    table: T,
+    recordId: string,
+    handler: (ref: SqliteTableRecordReference[T]) => Promise<IResultType>
+) {
+    const query = useQuery(async () => {
+        return await handler(Database.tables[table].ref(recordId) as SqliteTableRecordReference[T]);
+    });
+    useEffect(() => {
+        if (!recordId) {
+            return;
+        }
+        let unsubscribeCallback: () => void = () => {};
+        Database.tables[table]
+            .subscribeRecord(recordId, () => query.refetch())
+            .then(unsubscribe => {
+                unsubscribeCallback = unsubscribe;
+            });
+        return () => unsubscribeCallback();
+    }, [recordId, table]);
     return query;
 }

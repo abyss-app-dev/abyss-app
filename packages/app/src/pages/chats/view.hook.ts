@@ -1,19 +1,14 @@
-import type { ChatThreadType, MessageThreadTurn, ReferencedMessageThreadRecord } from '@abyss/records';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDatabaseRecord, useDatabaseRecordReferenceQuery } from '../../state/database-connection';
+import { useDatabase } from '@/state/database-access-utils';
 import { chatWithAgentGraph, chatWithAiModel } from '../../state/operations';
 
 export function useChatView() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const chat = useDatabaseRecord<ChatThreadType>('chatThread', id);
-    const thread = useDatabaseRecordReferenceQuery<ReferencedMessageThreadRecord, MessageThreadTurn[]>(
-        'messageThread',
-        chat?.threadId,
-        record => record.getTurns()
-    );
+    const thread = useDatabase.messageThread.record(id);
+    const turns = useDatabase.messageThread.recordQuery(id || '', ref => ref.getTurns());
 
     const [message, setMessage] = useState('');
 
@@ -32,11 +27,11 @@ export function useChatView() {
     };
 
     const navigateToParticipant = () => {
-        if (chat?.participantId) {
-            if (chat.participantId.startsWith('modelConnection::')) {
-                navigate(`/database/id/modelConnection/record/${chat.participantId}`);
-            } else if (chat.participantId.startsWith('agentGraph::')) {
-                navigate(`/agents/id/${chat.participantId}`);
+        if (thread.data?.participantId) {
+            if (thread.data.participantId.startsWith('modelConnection::')) {
+                navigate(`/database/id/modelConnection/record/${thread.data.participantId}`);
+            } else if (thread.data.participantId.startsWith('agentGraph::')) {
+                navigate(`/agents/id/${thread.data.participantId}`);
             }
         }
     };
@@ -46,21 +41,21 @@ export function useChatView() {
             return;
         }
         setMessage('');
-        if (chat?.participantId?.startsWith('modelConnection::')) {
-            chatWithAiModel(message, chat?.participantId || '', chat?.id || '');
+        if (thread.data?.participantId?.startsWith('modelConnection::')) {
+            chatWithAiModel(message, thread.data?.participantId || '', thread.data?.id || '');
         } else {
-            chatWithAgentGraph(message, chat?.participantId || '', chat?.id || '');
+            chatWithAgentGraph(message, thread.data?.participantId || '', thread.data?.id || '');
         }
     };
 
     const breadcrumbs = [
         { name: 'Home', onClick: navigateToHome },
         { name: 'Chats', onClick: navigateToChats },
-        { name: chat?.name || 'Chat', onClick: () => {} },
+        { name: thread.data?.participantId || 'Chat', onClick: () => {} },
     ];
 
     return {
-        chat,
+        turns,
         thread,
         message,
         setMessage,

@@ -1,10 +1,12 @@
 // General access
 
-import { SqliteTable, type SqliteTables } from '@abyss/records';
+import { SqliteTable, type SqliteTableRecordReference, type SqliteTables } from '@abyss/records';
 import {
+    type UseDatabaseRecordQuery,
     type UseDatabaseRecordSubscription,
     type UseDatabaseTableSubscription,
     useDatabaseQuery,
+    useDatabaseRecordQuery,
     useDatabaseRecordSubscription,
     useDatabaseTableQuery,
     useDatabaseTableSubscription,
@@ -14,7 +16,11 @@ type TableNamesAsStrings = keyof SqliteTables;
 type UseDatabase = {
     [K in TableNamesAsStrings]: {
         scan: () => UseDatabaseTableSubscription<K>;
-        record: (id: string) => UseDatabaseRecordSubscription<K>;
+        record: (id: string | undefined) => UseDatabaseRecordSubscription<K>;
+        recordQuery: <IResultType>(
+            id: string,
+            handler: (ref: SqliteTableRecordReference[K]) => Promise<IResultType>
+        ) => UseDatabaseRecordQuery<K, IResultType>;
     };
 };
 
@@ -27,7 +33,10 @@ for (const tableKey of tableKeys) {
         //@ts-ignore
         scan: () => useDatabaseTableSubscription<typeof tableKey>(tableKey),
         //@ts-ignore
-        record: (id: string) => useDatabaseRecordSubscription<typeof tableKey>(tableKey, id),
+        record: (id: string | undefined) => useDatabaseRecordSubscription<typeof tableKey>(tableKey, id),
+        //@ts-ignore
+        recordQuery: <IResultType>(id: string, handler: (ref: SqliteTableRecordReference[typeof tableKey]) => Promise<IResultType>) =>
+            useDatabaseRecordQuery<typeof tableKey, IResultType>(tableKey, id, handler),
     };
 }
 

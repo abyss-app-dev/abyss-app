@@ -13,7 +13,7 @@ export function SectionHeader({ sender, timestamp }: { sender: string; timestamp
             icon={reference.icon}
             label={reference.label}
             timestamp={formattedTime}
-            onClick={reference.link ? () => navigate(reference.link!) : undefined}
+            onClick={reference.link ? () => navigate(reference.link || '') : undefined}
         />
     );
 }
