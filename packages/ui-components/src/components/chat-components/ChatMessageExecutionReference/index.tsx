@@ -1,5 +1,5 @@
 import { Bot, Check, Loader2, TextIcon, X } from 'lucide-react';
-import React from 'react';
+import type React from 'react';
 import { Button } from '../../inputs/Button';
 import type { ActionItem } from '../ChatMessageText';
 
