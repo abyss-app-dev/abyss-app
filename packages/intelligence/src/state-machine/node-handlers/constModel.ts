@@ -22,17 +22,18 @@ export class ConstModelNode extends NodeHandler {
                     dataType: 'model',
                     name: 'Model',
                     description: 'The model to use',
+                    userConfigurable: true,
                 },
             ],
         };
     }
 
     protected async _resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
-        const modelId = data.inputPorts.model as string;
+        const modelId = data.userParameters.model as string;
         const modelRef = data.database.tables[SqliteTable.modelConnection].ref(modelId);
         return {
             ports: {
-                output: modelRef,
+                model: modelRef,
             },
         };
     }

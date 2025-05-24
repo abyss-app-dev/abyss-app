@@ -1,5 +1,7 @@
 export * from './records/agent-graph/agent-graph';
 export * from './records/agent-graph/agent-graph.type';
+export * from './records/chat-snapshot/chat-snapshot';
+export * from './records/chat-snapshot/chat-snapshot.type';
 export * from './records/document/databaseDocument';
 export * from './records/document/document.type';
 export * from './records/document/richDocument';

@@ -2,7 +2,7 @@ import type { Cell, CellCode, CellHeader, CellHeader2, CellHeader3, CellText, Ce
 import { dedent } from '../utils/dedent';
 import { renderXmlCell } from '../utils/render-xml';
 
-export function serializeCells(cells: Cell[]) {
+export function serializeCells(cells: Cell[]): string {
     const serialized = cells.map(cell => {
         switch (cell.type) {
             case 'text':
@@ -17,6 +17,8 @@ export function serializeCells(cells: Cell[]) {
                 return renderXMLElement(cell);
             case 'code':
                 return renderCode(cell);
+            case 'document':
+                return serializeCells(cell.content.cells);
         }
     });
 

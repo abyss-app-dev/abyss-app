@@ -19,7 +19,7 @@ test('hello world graph', async () => {
         uiSettings: [],
     };
 
-    const stateMachine = new StateMachineRuntime({ definition, database, logStream });
+    const stateMachine = new StateMachineRuntime({ definition, database, logStream, senderId: '123' });
     await stateMachine.signal(helloWorld1.id, {
         trigger: randomId(),
     });

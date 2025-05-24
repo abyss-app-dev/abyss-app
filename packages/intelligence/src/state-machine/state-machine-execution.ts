@@ -12,6 +12,7 @@ export class StateMachineRuntime {
     private invokeCount = 0;
 
     // Graph itself
+    public readonly senderId: string;
     public readonly definition: AgentGraphDefinition;
     private readonly database: SQliteClient;
 
@@ -25,6 +26,7 @@ export class StateMachineRuntime {
     private portValues: PortStates = {};
 
     constructor(params: StateMachineExecutionOptions) {
+        this.senderId = params.senderId;
         this.definition = params.definition;
         this.logStream = params.logStream.child('agent-graph');
         this.database = params.database;

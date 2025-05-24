@@ -1,6 +1,10 @@
+import { ReferencedMessageRecord, ReferencedMessageThreadRecord, ReferencedModelConnectionRecord, SqliteTable } from '@abyss/records';
+import { invokeModelAgainstThread } from '../../models/handler';
+import { runUnproccessedToolCalls } from '../../tool-handlers/run-tool-calls';
+import { randomId } from '../../utils/ids';
 import { NodeHandler } from '../node-handler';
 import type { GraphNodePartialDefinition } from '../type-definition.type';
-import type { NodeExecutionResult } from '../type-execution.type';
+import type { NodeExecutionResult, ResolveNodeData } from '../type-execution.type';
 
 export class InvokeModelAgainstThreadNode extends NodeHandler {
     constructor() {
@@ -39,14 +43,6 @@ export class InvokeModelAgainstThreadNode extends NodeHandler {
                     description: 'The model to invoke',
                 },
                 {
-                    id: 'response',
-                    direction: 'output',
-                    connectionType: 'data',
-                    dataType: 'string',
-                    name: 'Response',
-                    description: "The model's response",
-                },
-                {
                     id: 'next',
                     direction: 'output',
                     connectionType: 'signal',
@@ -58,11 +54,67 @@ export class InvokeModelAgainstThreadNode extends NodeHandler {
         };
     }
 
-    protected async _resolve(): Promise<NodeExecutionResult> {
+    protected async _resolve(data: ResolveNodeData): Promise<NodeExecutionResult> {
+        const modelConnection = data.inputPorts.model as ReferencedModelConnectionRecord;
+        const thread = data.inputPorts.thread as ReferencedMessageThreadRecord;
+
+        // Invoke the model
+        const result = await invokeModelAgainstThread({
+            modelConnection,
+            thread,
+            log: data.logStream.child('model'),
+        });
+
+        // Add the model response to the thread
+        const addedMessages: ReferencedMessageRecord[] = [];
+        for (const message of result.parsed) {
+            if (message.type === 'text') {
+                const newMessage = await thread.addMessagePartials({
+                    senderId: data.execution.senderId,
+                    type: 'text',
+                    payloadData: {
+                        content: message.content,
+                    },
+                });
+                addedMessages.push(newMessage[0]);
+            }
+            if (message.type === 'tool') {
+                const toolId = Object.keys(message.content)[0];
+                const tool = await data.database.tables[SqliteTable.toolDefinition].ref(toolId).get();
+                const newMessage = await thread.addMessagePartials({
+                    senderId: data.execution.senderId,
+                    type: 'tool-call-request',
+                    payloadData: {
+                        shortName: tool.shortName,
+                        toolCallId: randomId(),
+                        toolId: tool.id,
+                        parameters: message.content[toolId] as Record<string, unknown>,
+                    },
+                });
+                addedMessages.push(newMessage[0]);
+            }
+        }
+
+        // Add data to last message
+        if (addedMessages.length > 0) {
+            const lastMessage = addedMessages.at(-1);
+            if (lastMessage) {
+                await lastMessage.update({
+                    referencedData: { snapshot: result.snapshot.id },
+                });
+            }
+        }
+
+        // Process tool calls if there are any
+        await runUnproccessedToolCalls({
+            callerId: 'invokeModelAgainstThread',
+            thread,
+            log: data.logStream.child('tools'),
+        });
+
         return {
             ports: {
-                response: 'Hello World',
-                next: true,
+                next: randomId(),
             },
         };
     }

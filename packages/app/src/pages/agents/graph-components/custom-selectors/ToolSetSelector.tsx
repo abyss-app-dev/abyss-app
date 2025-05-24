@@ -18,7 +18,9 @@ const parseToolConfig = (value: string): UserToolsetConfig => {
 };
 
 export function ToolSetSelector(props: ToolSetSelectorProps) {
-    const [selectedTools, setSelectedTools] = React.useState<string[]>(props.value ? parseToolConfig(props.value).tools.map(tool => tool.id) : []);
+    const [selectedTools, setSelectedTools] = React.useState<string[]>(
+        props.value ? parseToolConfig(props.value).tools.map(tool => tool.id) : []
+    );
     const { data: tools } = useDatabase.toolDefinition.scan();
 
     const handleToolToggle = (toolId: string) => {

@@ -20,6 +20,7 @@ export interface NodeExecutionResult {
 }
 
 export interface StateMachineExecutionOptions {
+    senderId: string;
     logStream: LogStream;
     definition: AgentGraphDefinition;
     database: SQliteClient;

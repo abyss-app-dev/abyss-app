@@ -1,130 +1,95 @@
-import { Button, ButtonGroup, ChatMessageText, PageCrumbed } from '@abyss/ui-components';
+import { Cell, CellCode, CellDocument, CellHeader, CellHeader2, CellHeader3, CellText, CellXMLElement, RichDocument } from '@abyss/records';
+import { Button, ButtonGroup, ChatMessageText, ChatTurnHeader, PageCrumbed } from '@abyss/ui-components';
+import { Bot } from 'lucide-react';
 import type { default as React } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import { SectionHeader } from '../chats/components/ChatSectionHeader';
 import { useSnapshotsPage } from './view-snapshot.hook';
 
-// Define the rehype plugin to wrap orphan text nodes
-function rehypeWrapOrphanText() {
-    return (tree: any) => {
-        if (tree.type === 'root' && Array.isArray(tree.children)) {
-            const newChildren: any[] = [];
-            let paragraphNodes: any[] = []; // To collect nodes for the current paragraph
-
-            const flushParagraph = () => {
-                if (paragraphNodes.length > 0) {
-                    // Check if the paragraphNodes contain actual content beyond whitespace
-                    const content = paragraphNodes
-                        .map(n => (n.type === 'raw' ? n.value : n.type === 'element' && n.tagName === 'br' ? '\n' : ' '))
-                        .join('');
-
-                    if (content.trim()) {
-                        newChildren.push({
-                            type: 'element',
-                            tagName: 'pre',
-                            properties: {
-                                className:
-                                    'bg-background-100 border border-background-200 px-1 rounded overflow-x-auto font-mono text-[10px] w-full',
-                            },
-                            children: [...paragraphNodes],
-                        });
-                    } else {
-                        // If it's all whitespace, add original nodes back (or discard if preferred)
-                        newChildren.push(...paragraphNodes);
-                    }
-                    paragraphNodes = [];
-                }
-            };
-
-            for (const child of tree.children) {
-                // If child is text or a line break element, it could be part of a paragraph
-                if (child.type === 'raw') {
-                    paragraphNodes.push(child);
-                } else {
-                    // If it's another element, the current paragraph (if any) ends
-                    flushParagraph();
-                    newChildren.push(child); // Add the block element
-                }
-            }
-            flushParagraph(); // Don't forget the last potential paragraph
-
-            tree.children = newChildren;
-        }
-    };
+function renderCellText(cell: CellText) {
+    return <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
 }
 
-// Define custom components with Tailwind CSS classes
-const components: Components = {
-    h1: ({ node, ...props }) => (
-        <h1 className="text-[20px] font-bold my-4 before:content-['#'] before:text-primary-500 capitalize" {...props} />
-    ),
-    h2: ({ node, ...props }) => (
-        <h2 className="text-[16px] font-bold my-3 before:content-['##'] before:text-primary-500 capitalize" {...props} />
-    ),
-    h3: ({ node, ...props }) => (
-        <h3 className="text-[14px] font-bold my-2 before:content-['###'] before:text-primary-500 capitalize" {...props} />
-    ),
-    p: ({ node, ...props }) => <p className="my-2 text-[12px]" {...props} />,
-    ul: ({ node, ...props }) => <ul className="list-disc pl-5 my-2" {...props} />,
-    ol: ({ node, ...props }) => <ol className="list-decimal pl-5 my-2" {...props} />,
-    li: ({ node, ...props }) => <li className="m-2 text-[12px] " {...props} />,
-    pre: ({ node, ...props }) => <pre className="my-2 inline-block w-full" {...props} />,
-    code: ({ node, inline, className, children, ...props }) => {
-        //@ts-ignore
-        return children[0]?.split('\n')?.length > 1 ? (
-            <pre
-                className={`bg-background-100 border border-background-200 px-1 rounded overflow-x-auto font-mono text-[10px] w-full ${
-                    className || ''
-                }`}
-                {...props}
-            >
-                {children}
-            </pre>
-        ) : (
-            <code
-                className={`bg-background-100 border border-background-200 px-1 rounded overflow-x-auto font-mono text-[10px] ${
-                    className || ''
-                }`}
-                {...props}
-            >
-                {children}
-            </code>
-        );
-    },
-    blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-gray-300 pl-4 italic my-2 w-full" {...props} />,
-};
+function renderCellHeader(cell: CellHeader) {
+    return <div key={cell.id + 'content'} className="text-[24px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+}
+
+function renderCellHeader2(cell: CellHeader2) {
+    return <div key={cell.id + 'content'} className="text-[18px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+}
+
+function renderCellHeader3(cell: CellHeader3) {
+    return <div key={cell.id + 'content'} className="text-[16px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+}
+
+function renderCellXMLElement(cell: CellXMLElement) {
+    return <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">{RichDocument.render([cell]).trim()}</div>;
+}
+
+function renderCellCode(cell: CellCode) {
+    return <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+}
+
+function renderCellDocument(cell: CellDocument) {
+    return <div key={cell.id + 'content'} className="text-xs p-2 pb-2 border bg-background-200 border-background-400 rounded my-2 whitespace-pre-wrap">{renderCells(cell.content.cells)}</div>;
+}
+
+function renderCells(cells: Cell[]) {
+    const content = cells.map(cell => {
+        if (cell.type === 'text') {
+            return renderCellText(cell);
+        }
+        if (cell.type === 'header') {
+            return renderCellHeader(cell);
+        }
+        if (cell.type === 'header2') {
+            return renderCellHeader2(cell);
+        }
+        if (cell.type === 'header3') {
+            return renderCellHeader3(cell);
+        }
+        if (cell.type === 'xmlElement') {
+            return renderCellXMLElement(cell);
+        }
+        if (cell.type === 'code') {
+            return renderCellCode(cell);
+        }
+        if (cell.type === 'document') {
+            return renderCellDocument(cell);
+        }
+    })
+
+    if (!content.length) {
+        return null;
+    }
+
+    return <div className="whitespace-pre-wrap">
+        {content}
+    </div>;
+}
 
 export function ViewSnapshotPage() {
-    const { breadcrumbs, record, raw, setRaw } = useSnapshotsPage();
+    const { breadcrumbs, record } = useSnapshotsPage();
     const messages: React.ReactNode[] = [];
 
     for (let i = 0; i < (record?.data?.messagesData ?? []).length; i++) {
         const message = (record?.data?.messagesData ?? [])[i];
-        messages.push(<div key={i + 'header-padding'} className="h-2" />);
-        messages.push(<SectionHeader key={i + 'header'} sender={message.senderId} />);
-        if (raw === 'raw') {
-            for (const cell of message.messages) {
-                const { content } = cell;
-                messages.push(
-                    <pre key={i + 'content'} className="text-xs p-2">
-                        {typeof content === 'string' ? content : JSON.stringify(content)}
-                    </pre>
-                );
-            }
-        } else {
-            for (const cell of message.messages) {
-                messages.push(
-                    <ReactMarkdown
-                        key={i + 'content'}
-                        components={components}
-                        rehypePlugins={[rehypeWrapOrphanText]}
-                        className="text-xs px-2"
-                    >
-                        {typeof cell.content === 'string' ? cell.content : JSON.stringify(cell.content)}
-                    </ReactMarkdown>
-                );
-            }
+        const content = renderCells(message.messages);
+
+        if (!content) {
+            continue;
         }
+
+        messages.push(<div key={i + 'header-padding'} className="h-2" />);
+        if (message.senderId === 'RESPONSE') {
+            messages.push(<hr key={i + 'hr'} className="my-5 border-primary-400" />);
+            messages.push(<ChatTurnHeader icon={Bot}
+                label={'MODEL RESPONSE'}
+            />)
+        } else {
+            messages.push(<SectionHeader key={i + 'header'} sender={message.senderId} />);
+        }
+        messages.push(content);
     }
 
     return (
@@ -134,14 +99,6 @@ export function ViewSnapshotPage() {
             loading={record === undefined}
             subtitle="This represents the raw text sent to the LLM for a given invoke of the model."
         >
-            <ButtonGroup className="mb-2">
-                <Button isInactive={raw === 'parsed'} onClick={() => setRaw('raw')}>
-                    Plain Text
-                </Button>
-                <Button isInactive={raw === 'raw'} onClick={() => setRaw('parsed')}>
-                    Rendered Markdown
-                </Button>
-            </ButtonGroup>
             {messages}
         </PageCrumbed>
     );

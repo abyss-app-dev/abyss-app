@@ -47,6 +47,7 @@ export async function invokeGraphFromUserMessage(options: InvokeGraphFromUserMes
     // Execute
     await thread.withBlock(agentGraph.id, async () => {
         const execution = new StateMachineRuntime({
+            senderId: agentGraph.id,
             logStream,
             definition: graphDefinition,
             database: agentGraph.client,

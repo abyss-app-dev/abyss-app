@@ -10,6 +10,10 @@ export async function buildAnthropicMessages(turns: MessageThreadRenderedTurn[])
         const lastMessage = messages[messages.length - 1];
         const turnContent = RichDocument.render(turn.messages);
 
+        if (!turnContent) {
+            continue;
+        }
+
         if (lastMessage && lastMessage.role === 'user' && isUser) {
             lastMessage.content.push({ type: 'text', text: turnContent });
         } else if (lastMessage && lastMessage.role === 'assistant' && !isUser) {
@@ -33,6 +37,8 @@ export async function buildAnthropicMessages(turns: MessageThreadRenderedTurn[])
             content: [{ type: 'text', text: 'continue' }],
         });
     }
+
+    console.log(turns, messages)
 
     return messages;
 }
