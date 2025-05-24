@@ -65,6 +65,10 @@ export class InvokeModelAgainstThreadNode extends NodeHandler {
             log: data.logStream.child('model'),
         });
 
+        // Tools in chat
+        const toolCallRefs = await thread.getAllActiveToolDefinitions();
+        const toolCalls = await Promise.all(toolCallRefs.map(t => t.get()));
+
         // Add the model response to the thread
         const addedMessages: ReferencedMessageRecord[] = [];
         for (const message of result.parsed) {
@@ -80,14 +84,14 @@ export class InvokeModelAgainstThreadNode extends NodeHandler {
             }
             if (message.type === 'tool') {
                 const toolId = Object.keys(message.content)[0];
-                const tool = await data.database.tables[SqliteTable.toolDefinition].ref(toolId).get();
+                const toolForId = toolCalls.find(t => t.shortName === toolId);
                 const newMessage = await thread.addMessagePartials({
                     senderId: data.execution.senderId,
                     type: 'tool-call-request',
                     payloadData: {
-                        shortName: tool.shortName,
+                        shortName: toolForId?.shortName || toolId,
                         toolCallId: randomId(),
-                        toolId: tool.id,
+                        toolId: toolForId?.id || toolId,
                         parameters: message.content[toolId] as Record<string, unknown>,
                     },
                 });
@@ -107,7 +111,7 @@ export class InvokeModelAgainstThreadNode extends NodeHandler {
 
         // Process tool calls if there are any
         await runUnproccessedToolCalls({
-            callerId: 'invokeModelAgainstThread',
+            callerId: data.execution.senderId,
             thread,
             log: data.logStream.child('tools'),
         });

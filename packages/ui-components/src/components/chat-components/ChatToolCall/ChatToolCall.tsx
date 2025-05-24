@@ -57,7 +57,7 @@ export const ChatToolCall: React.FC<ChatToolCallProps> = ({
     const isError = status === 'failed';
     const isComplete = status === 'success';
 
-    const formatToolName = (name: string) => {
+    const formatToolName = (name: string = 'unknown') => {
         return name.split('-').join(' ');
     };
 

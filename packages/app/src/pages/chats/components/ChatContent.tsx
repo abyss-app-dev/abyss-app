@@ -102,6 +102,8 @@ export function ChatHistoryRenderer({ turns }: { turns: MessageThreadTurn[] | nu
                             navigate={navigate}
                         />
                     );
+                } else if (message.type === 'tool-call-response') {
+                    // no-op
                 } else {
                     console.error('Unknown agent graph message type', message);
                 }

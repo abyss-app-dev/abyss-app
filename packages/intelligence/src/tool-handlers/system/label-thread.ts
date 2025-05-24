@@ -2,14 +2,14 @@ import { ToolHandler } from '../tool-handler';
 import type { ToolHandlerExecutionParams } from '../types';
 
 interface Parameters {
-    input: string;
+    label: string;
 }
 
-export class HelloWorldToolHandler extends ToolHandler {
+export class LabelThreadToolHandler extends ToolHandler {
     protected async _execute(params: Parameters, ctx: ToolHandlerExecutionParams) {
-        ctx.log.log(`Hello ${params.input}`);
+        await ctx.thread.setName(params.label);
         return {
-            raw: params.input,
+            raw: `Thread labeled as ${params.label}`,
         };
     }
 }

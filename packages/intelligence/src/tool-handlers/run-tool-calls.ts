@@ -31,6 +31,7 @@ export async function runUnproccessedToolCalls(options: UnprocessedToolCallHandl
         try {
             // Get the handler
             const toolDefinitionRef = activeToolDefinitions.find(t => t.id === toolCall.payloadData.toolId);
+            console.log('toolDefinitionRef', { activeToolDefinitions, toolCall });
             if (!toolDefinitionRef) {
                 throw new Error(
                     `Tool definition ${toolCall.payloadData.toolId} not found in the current context, it either doesnt exist or was removed.`
@@ -45,6 +46,7 @@ export async function runUnproccessedToolCalls(options: UnprocessedToolCallHandl
                 thread,
                 request: toolCall.payloadData,
                 log: log.child('handler'),
+                database: thread.client,
             });
 
             // Mark the tool call as processed

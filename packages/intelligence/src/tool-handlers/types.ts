@@ -1,4 +1,4 @@
-import type { LogStream, ReferencedMessageThreadRecord, ToolCallRequestPartial } from '@abyss/records';
+import type { LogStream, ReferencedMessageThreadRecord, SQliteClient, ToolCallRequestPartial } from '@abyss/records';
 
 export interface UnprocessedToolCallHandlerParams {
     callerId: string;
@@ -10,6 +10,7 @@ export interface ToolHandlerExecutionParams {
     callerId: string;
     thread: ReferencedMessageThreadRecord;
     request: ToolCallRequestPartial['payloadData'];
+    database: SQliteClient;
     log: LogStream;
 }
 
