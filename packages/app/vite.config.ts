@@ -48,7 +48,7 @@ export default defineConfig({
             resolve: {
                 sqlite3: { type: 'cjs' },
                 bindings: { type: 'cjs' },
-                "file-uri-to-path": { type: 'cjs' },
+                'file-uri-to-path': { type: 'cjs' },
             },
         }),
     ],
