@@ -5,6 +5,10 @@
     "author": {
         "name": "A Developer!"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/abyss-app-dev/abyss-app.git"
+    },
     "main": "dist-electron/main/index.mjs",
     "type": "module",
     "scripts": {
@@ -60,6 +64,10 @@
         "productName": "Abyss",
         "npmRebuild": true,
         "afterPack": "scripts/after-pack.cjs",
+        "publish": {
+            "provider": "github",
+            "releaseType": "release"
+        },
         "mac": {
             "icon": "../../build/icon.icns",
             "target": [

@@ -3,8 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Octokit } from '@octokit/rest';
 
-const OWNER = 'anonymous-apps';
-const REPO = 'Abyss';
+const OWNER = 'abyss-app-dev';
+const REPO = 'abyss-app';
 
 console.log('Publishing updated checksums to GitHub...');
 
