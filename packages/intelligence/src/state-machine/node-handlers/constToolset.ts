@@ -1,4 +1,4 @@
-import { ReferencedToolDefinitionRecord, SqliteTable } from '@abyss/records';
+import { type ReferencedToolDefinitionRecord, SqliteTable } from '@abyss/records';
 import { NodeHandler } from '../node-handler';
 import type { GraphNodePartialDefinition } from '../type-definition.type';
 import type { NodeExecutionResult, ResolveNodeData } from '../type-execution.type';

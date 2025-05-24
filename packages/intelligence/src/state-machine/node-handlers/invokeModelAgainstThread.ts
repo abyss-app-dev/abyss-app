@@ -1,4 +1,4 @@
-import { ReferencedMessageRecord, ReferencedMessageThreadRecord, ReferencedModelConnectionRecord, SqliteTable } from '@abyss/records';
+import type { ReferencedMessageRecord, ReferencedMessageThreadRecord, ReferencedModelConnectionRecord } from '@abyss/records';
 import { invokeModelAgainstThread } from '../../models/handler';
 import { runUnproccessedToolCalls } from '../../tool-handlers/run-tool-calls';
 import { randomId } from '../../utils/ids';

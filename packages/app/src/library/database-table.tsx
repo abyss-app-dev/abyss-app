@@ -27,7 +27,7 @@ export function TableKeyValue({ table, column, value }: { table: string; column:
     if (typeof value === 'object') {
         try {
             return JSON.stringify(value);
-        } catch (error) {
+        } catch (_error) {
             return 'Error parsing object';
         }
     }
@@ -50,7 +50,7 @@ export function CustomTable({ table, records }: DatabaseTableProps) {
                     <tr className="capitalize bg-background-transparent">
                         {columns
                             .filter(column => column !== 'createdAt' && column !== 'updatedAt')
-                            .map((column, colIndex) => (
+                            .map((column, _colIndex) => (
                                 <th key={column} className="p-1.5 text-left text-text-100 font-medium border-b border-background-100">
                                     {column}
                                 </th>
@@ -62,7 +62,7 @@ export function CustomTable({ table, records }: DatabaseTableProps) {
                         <tr key={rowIndex} className="truncate">
                             {columns
                                 .filter(column => column !== 'createdAt' && column !== 'updatedAt')
-                                .map((column, colIndex) => (
+                                .map((column, _colIndex) => (
                                     <td key={column} className="p-1.5 text-text-300 max-w-[100px] truncate">
                                         <TableKeyValue table={table} column={column} value={record[column]} />
                                     </td>

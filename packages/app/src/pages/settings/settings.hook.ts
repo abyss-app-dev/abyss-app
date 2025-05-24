@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { useDatabase, useDatabaseSettings } from '@/state/database-access-utils';
+import { useDatabaseSettings } from '@/state/database-access-utils';
 import { Database } from '../../main';
 
 export function useSettingsPage() {

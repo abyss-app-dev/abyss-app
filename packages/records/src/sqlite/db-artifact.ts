@@ -1,5 +1,5 @@
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { appendFile, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SQliteClient } from './sqlite-client';
 

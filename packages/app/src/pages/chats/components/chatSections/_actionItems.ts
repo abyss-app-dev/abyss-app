@@ -1,4 +1,4 @@
-import { AlignLeft, Eye, type LucideIcon, TextIcon } from 'lucide-react';
+import { Eye, type LucideIcon, TextIcon } from 'lucide-react';
 
 export interface ActionItem {
     icon: LucideIcon;

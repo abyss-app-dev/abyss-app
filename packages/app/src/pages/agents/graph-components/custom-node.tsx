@@ -132,11 +132,11 @@ export function CustomAgentGraphNode({ id, data }: { id: string; data: RenderedG
             <div
                 className="border rounded-md"
                 style={{
-                    backgroundColor: data.definition.color + '10',
-                    borderColor: data.definition.color + '70',
+                    backgroundColor: `${data.definition.color}10`,
+                    borderColor: `${data.definition.color}70`,
                 }}
             >
-                <div className="flex flex-col border-b gap-1 p-1 min-w-[300px]" style={{ borderColor: data.definition.color + '70' }}>
+                <div className="flex flex-col border-b gap-1 p-1 min-w-[300px]" style={{ borderColor: `${data.definition.color}70` }}>
                     <div className="text-xs flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <DynamicIcon name={data.definition.icon} className="w-4 h-4" color={data.definition.color} />
@@ -155,7 +155,7 @@ export function CustomAgentGraphNode({ id, data }: { id: string; data: RenderedG
                 {hasAnySignals && (
                     <div
                         className="flex flex-row gap-2 relative my-1 w-full border-b py-2"
-                        style={{ borderColor: data.definition.color + '70' }}
+                        style={{ borderColor: `${data.definition.color}70` }}
                     >
                         {inputSignals.length > 0 && <div className="flex flex-col gap-2 flex-1">{inputSignals}</div>}
                         {outputSignals.length > 0 && <div className="flex flex-col gap-2 flex-1 text-right">{outputSignals}</div>}

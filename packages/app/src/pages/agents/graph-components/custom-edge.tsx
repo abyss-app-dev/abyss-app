@@ -58,7 +58,7 @@ export default function CustomEdge({
                             ...style,
                             cursor: 'pointer',
                             opacity: 0.75,
-                            stroke: targetColor + '70',
+                            stroke: `${targetColor}70`,
                         }}
                     />
 

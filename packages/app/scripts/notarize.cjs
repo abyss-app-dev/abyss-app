@@ -8,7 +8,7 @@ exports.default = async function notarizing(context) {
     // if the enviroment variable SKIP_NOTARIZE is set to `true`
     // This is useful for local testing where notarization is useless
     if (electronPlatformName !== 'darwin' || process.env.SKIP_NOTARIZE === 'true') {
-        console.log(`  • Skipping notarization`);
+        console.log('  • Skipping notarization');
         return;
     }
 
@@ -18,7 +18,7 @@ exports.default = async function notarizing(context) {
 
     const appPath = `${appOutDir}/${appName}.app`;
     const { APPLE_ID, APPLE_ID_PASSWORD, APPLE_TEAM_ID } = process.env;
-    console.log(`  • Notarizing ${appPath}`);
+    console.log('  • Notarizing', appPath);
 
     return await notarize({
         tool: 'notarytool',

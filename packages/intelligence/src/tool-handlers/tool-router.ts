@@ -1,6 +1,6 @@
 import type { ToolDefinitionType } from '@abyss/records';
-import type { ToolHandler } from './tool-handler';
 import { LabelThreadToolHandler } from './system/label-thread';
+import type { ToolHandler } from './tool-handler';
 
 export function getToolHandler(toolDefinition: ToolDefinitionType): ToolHandler {
     if (toolDefinition.handlerType === 'abyss') {

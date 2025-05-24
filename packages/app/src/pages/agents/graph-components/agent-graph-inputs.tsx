@@ -6,8 +6,8 @@ import { ToolSetSelector } from './custom-selectors/ToolSetSelector';
 export interface SelectForAgentGraphProps {
     color: string;
     port: GraphPortDefinition;
-    onSelect: (value: any) => void;
-    value: any;
+    onSelect: (value: string) => void;
+    value: string;
 }
 
 export function SelectForAgentGraph(props: SelectForAgentGraphProps) {

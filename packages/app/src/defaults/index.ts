@@ -1,4 +1,4 @@
-import { NewRecord } from '@abyss/records';
+import type { NewRecord } from '@abyss/records';
 import { Database } from '@/main';
 import { LabelChatTool } from './tools/tool.labelchat';
 

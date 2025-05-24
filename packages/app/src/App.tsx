@@ -8,7 +8,6 @@ import { ChatViewPage } from './pages/chats/view.page';
 import { ListTablesPage } from './pages/database/database.page';
 import { ViewTableRecordPage } from './pages/database/record.page';
 import { ViewTablePage } from './pages/database/table.page';
-import { DocumentsPage } from './pages/documents/documents.page';
 import { LogViewPage } from './pages/logs/log-view';
 import { MainPage } from './pages/main/main';
 import { MetricsPage } from './pages/metrics/metrics.page';

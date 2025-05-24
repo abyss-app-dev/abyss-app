@@ -1,6 +1,6 @@
-const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto');
+const path = require('node:path');
+const fs = require('node:fs');
+const crypto = require('node:crypto');
 const yaml = require('js-yaml');
 
 function hashFile(file, algorithm = 'sha512', encoding = 'base64') {

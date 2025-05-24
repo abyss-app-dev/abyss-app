@@ -1,5 +1,5 @@
+import { join } from 'node:path';
 import react from '@vitejs/plugin-react';
-import { join } from 'path';
 import { defineConfig } from 'vite';
 import electron from 'vite-plugin-electron';
 import renderer from 'vite-plugin-electron-renderer';

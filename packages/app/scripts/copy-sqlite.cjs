@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const path = require('path');
+const path = require('node:path');
 
 const copySqlite = async () => {
     fs.mkdirSync(path.join(__dirname, '..', 'build'), { recursive: true });

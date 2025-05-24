@@ -1,4 +1,4 @@
-import { UserToolsetConfig } from '@abyss/intelligence';
+import type { UserToolsetConfig } from '@abyss/intelligence';
 import { CheckIcon, SquareDashedIcon } from 'lucide-react';
 import React from 'react';
 import { useDatabase } from '@/state/database-access-utils';
@@ -12,7 +12,7 @@ export interface ToolSetSelectorProps {
 const parseToolConfig = (value: string): UserToolsetConfig => {
     try {
         return JSON.parse(value);
-    } catch (e) {
+    } catch (_e) {
         return { tools: [] };
     }
 };
@@ -36,7 +36,7 @@ export function ToolSetSelector(props: ToolSetSelectorProps) {
         if (props.value) {
             try {
                 setSelectedTools(parseToolConfig(props.value).tools.map(tool => tool.id));
-            } catch (e) {
+            } catch (_e) {
                 setSelectedTools([]);
             }
         }

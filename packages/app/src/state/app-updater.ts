@@ -43,7 +43,7 @@ export const useAppUpdator = () => {
             state.setStatus(AppUpdaterStatus.READY_TO_INSTALL);
         });
         //@ts-ignore
-        window['abyss-updater'].onUpdateNotAvailable(info => {
+        window['abyss-updater'].onUpdateNotAvailable(_info => {
             state.setStatus(AppUpdaterStatus.IDLE);
         });
         //@ts-ignore

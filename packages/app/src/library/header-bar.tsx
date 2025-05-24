@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export const HeaderBar = () => {
     const location = useLocation();
-    const isHomePage = location.pathname === '/';
-    const navigate = useNavigate();
+    const _isHomePage = location.pathname === '/';
+    const _navigate = useNavigate();
     const headerRef = useRef<HTMLDivElement>(null);
 
     const updateScale = () => {
@@ -39,9 +39,9 @@ export const HeaderBar = () => {
             <div className="fixed top-0 left-0 w-[100vw] h-[15px] flex items-center justify-center menuDragSection" />
             <div className="absolute bottom-0 left-0 w-full h-full flex items-center justify-center menuDragSection" />
 
-            <div className={`absolute text-text-sidebar h-[45%] w-[40%] right-0 flex gap-1 mt-1 px-2 z-10 hidden`}>
-                <ChevronLeftIcon className={`h-full w-full rounded-sm opacity-100 hover:bg-primary-100`} />
-                <ChevronRightIcon className={`h-full w-full rounded-sm opacity-20`} />
+            <div className="absolute text-text-sidebar h-[45%] w-[40%] right-0 flex gap-1 mt-1 px-2 z-10 hidden">
+                <ChevronLeftIcon className="h-full w-full rounded-sm opacity-100 hover:bg-primary-100" />
+                <ChevronRightIcon className="h-full w-full rounded-sm opacity-20" />
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 import { Button, IconSection, Input, PageCrumbed } from '@abyss/ui-components';
-import { ArrowRight, Box, Globe, Settings, Trash } from 'lucide-react';
+import { Box, Globe, Settings, Trash } from 'lucide-react';
 import { AnthropicLogo, GeminiLogo, OpenAILogo } from '../../library/logos';
 import { AnthropicConfig } from './connectors/anthropic';
 import { GeminiConfig } from './connectors/gemini';

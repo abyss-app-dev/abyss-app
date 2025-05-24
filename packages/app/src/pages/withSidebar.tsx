@@ -1,5 +1,5 @@
 import { Sidebar as AbyssSidebar, SidebarButton as AbyssSidebarButton, SidebarSection as AbyssSidebarSection } from '@abyss/ui-components';
-import { Bot, Box, ChartLine, DatabaseIcon, Hammer, List, MessageSquare, NotebookText, SettingsIcon } from 'lucide-react';
+import { Bot, Box, ChartLine, DatabaseIcon, Hammer, MessageSquare, NotebookText, SettingsIcon } from 'lucide-react';
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Navigate, useLocation, useNavigate, useOutlet } from 'react-router';

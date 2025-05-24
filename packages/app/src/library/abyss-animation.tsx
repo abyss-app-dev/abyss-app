@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Star = {
     x: number;
@@ -41,7 +41,7 @@ export function AbyssAnimation({ initialStaticStars = 30, initialDynamicStars = 
     const nextIdRef = useRef(0);
 
     const calculateDistance = (x1: number, y1: number, x2: number, y2: number): number => {
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
     };
 
     const createStar = (isStaticOverride?: boolean, idToUse?: number): Star => {
@@ -198,7 +198,7 @@ export function AbyssAnimation({ initialStaticStars = 30, initialDynamicStars = 
                         const star2 = currentStars.find(s => s.id === star2Id);
                         // Check if star2 exists, is active, and also wants to connect to star1
                         if (star2 && !star2.fadeOut && star2.connections.has(star1.id)) {
-                            const opacity2 = star2.connections.get(star1.id)!;
+                            const _opacity2 = star2.connections.get(star1.id)!;
                             // Use the lower of the two opacities (or an average) for a synchronized appearance
                             // Or simply let each manage its half, and rely on per-frame update.
                             // Here, we ensure the connection is mutual, opacity will be handled by per-frame updates.

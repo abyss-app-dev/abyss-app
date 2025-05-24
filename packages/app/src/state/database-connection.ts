@@ -1,4 +1,4 @@
-import type { SQliteClient, SqliteTable, SqliteTableRecordReference, SqliteTableRecordType, SqliteTables } from '@abyss/records';
+import type { SQliteClient, SqliteTableRecordReference, SqliteTableRecordType, SqliteTables } from '@abyss/records';
 import { useEffect, useState } from 'react';
 import { Database } from '../main';
 

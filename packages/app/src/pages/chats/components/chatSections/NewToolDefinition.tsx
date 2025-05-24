@@ -10,7 +10,7 @@ interface NewToolDefinitionProps {
 export function NewToolDefinition({ message, navigate }: NewToolDefinitionProps) {
     return (
         <ChatMessageSystemText
-            text={'Added access to tools: ' + message.payloadData.tools.map(t => t.shortName).join(', ')}
+            text={`Added access to tools: ${message.payloadData.tools.map(t => t.shortName).join(', ')}`}
             actionItems={getActionItems(message.referencedData, navigate)}
         />
     );

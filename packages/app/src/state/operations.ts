@@ -1,5 +1,5 @@
 import { Operations } from '@abyss/intelligence';
-import { LogStream, ReferencedAgentGraphRecord, type ReferencedMessageThreadRecord, SqliteTable } from '@abyss/records';
+import { type ReferencedMessageThreadRecord, SqliteTable } from '@abyss/records';
 import { Database } from '../main';
 
 export async function chatWithAiModel(humanMessage: string, threadRef: ReferencedMessageThreadRecord) {

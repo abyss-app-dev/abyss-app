@@ -1,7 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Octokit } from '@octokit/rest';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const OWNER = 'anonymous-apps';
 const REPO = 'Abyss';
