@@ -7,31 +7,62 @@ import { SectionHeader } from '../chats/components/ChatSectionHeader';
 import { useSnapshotsPage } from './view-snapshot.hook';
 
 function renderCellText(cell: CellText) {
-    return <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+    return (
+        <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">
+            {cell.content}
+        </div>
+    );
 }
 
 function renderCellHeader(cell: CellHeader) {
-    return <div key={cell.id + 'content'} className="text-[24px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+    return (
+        <div key={cell.id + 'content'} className="text-[24px] px-2 pb-2 whitespace-pre-wrap rounded">
+            {cell.content}
+        </div>
+    );
 }
 
 function renderCellHeader2(cell: CellHeader2) {
-    return <div key={cell.id + 'content'} className="text-[18px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+    return (
+        <div key={cell.id + 'content'} className="text-[18px] px-2 pb-2 whitespace-pre-wrap rounded">
+            {cell.content}
+        </div>
+    );
 }
 
 function renderCellHeader3(cell: CellHeader3) {
-    return <div key={cell.id + 'content'} className="text-[16px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+    return (
+        <div key={cell.id + 'content'} className="text-[16px] px-2 pb-2 whitespace-pre-wrap rounded">
+            {cell.content}
+        </div>
+    );
 }
 
 function renderCellXMLElement(cell: CellXMLElement) {
-    return <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">{RichDocument.render([cell]).trim()}</div>;
+    return (
+        <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">
+            {RichDocument.render([cell]).trim()}
+        </div>
+    );
 }
 
 function renderCellCode(cell: CellCode) {
-    return <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">{cell.content}</div>;
+    return (
+        <div key={cell.id + 'content'} className="text-[12px] px-2 pb-2 whitespace-pre-wrap rounded">
+            {cell.content}
+        </div>
+    );
 }
 
 function renderCellDocument(cell: CellDocument) {
-    return <div key={cell.id + 'content'} className="text-xs p-2 pb-2 border bg-background-200 border-background-400 rounded my-2 whitespace-pre-wrap">{renderCells(cell.content.cells)}</div>;
+    return (
+        <div
+            key={cell.id + 'content'}
+            className="text-xs p-2 pb-2 border bg-background-200 border-background-400 rounded my-2 whitespace-pre-wrap"
+        >
+            {renderCells(cell.content.cells)}
+        </div>
+    );
 }
 
 function renderCells(cells: Cell[]) {
@@ -57,15 +88,13 @@ function renderCells(cells: Cell[]) {
         if (cell.type === 'document') {
             return renderCellDocument(cell);
         }
-    })
+    });
 
     if (!content.length) {
         return null;
     }
 
-    return <div className="whitespace-pre-wrap">
-        {content}
-    </div>;
+    return <div className="whitespace-pre-wrap">{content}</div>;
 }
 
 export function ViewSnapshotPage() {
@@ -83,9 +112,7 @@ export function ViewSnapshotPage() {
         messages.push(<div key={i + 'header-padding'} className="h-2" />);
         if (message.senderId === 'RESPONSE') {
             messages.push(<hr key={i + 'hr'} className="my-5 border-primary-400" />);
-            messages.push(<ChatTurnHeader icon={Bot}
-                label={'MODEL RESPONSE'}
-            />)
+            messages.push(<ChatTurnHeader icon={Bot} label={'MODEL RESPONSE'} />);
         } else {
             messages.push(<SectionHeader key={i + 'header'} sender={message.senderId} />);
         }

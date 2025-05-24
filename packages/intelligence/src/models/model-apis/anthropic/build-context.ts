@@ -38,7 +38,7 @@ export async function buildAnthropicMessages(turns: MessageThreadRenderedTurn[])
         });
     }
 
-    console.log(turns, messages)
+    console.log(turns, messages);
 
     return messages;
 }
