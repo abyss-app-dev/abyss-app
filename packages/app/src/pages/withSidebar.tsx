@@ -31,7 +31,6 @@ export function AppSidebar() {
             <AbyssSidebar className="" title="Abyss">
                 <AbyssSidebarSection title="Activity" />
                 <AbyssSidebarButton label="Chats" icon={MessageSquare} {...navProps('/chats')} />
-                <AbyssSidebarButton label="Documents" icon={NotebookText} {...navProps('/documents')} />
                 <AbyssSidebarSection title="Configure" />
                 <AbyssSidebarButton label="Models" icon={Box} {...navProps('/models')} />
                 <AbyssSidebarButton label="Agents" icon={Bot} {...navProps('/agents')} />

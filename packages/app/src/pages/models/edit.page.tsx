@@ -7,16 +7,16 @@ import { OpenAIConfig } from './connectors/openai';
 import { useModelProfileCreate } from './edit.hook';
 
 const Providers = [
-    {
-        name: 'OpenAI',
-        icon: <OpenAILogo logo="OpenAI" className="w-6 h-6" />,
-        component: OpenAIConfig,
-    },
-    {
-        name: 'Gemini',
-        icon: <GeminiLogo logo="Gemini" className="w-6 h-6" />,
-        component: GeminiConfig,
-    },
+    // {
+    //     name: 'OpenAI',
+    //     icon: <OpenAILogo logo="OpenAI" className="w-6 h-6" />,
+    //     component: OpenAIConfig,
+    // },
+    // {
+    //     name: 'Gemini',
+    //     icon: <GeminiLogo logo="Gemini" className="w-6 h-6" />,
+    //     component: GeminiConfig,
+    // },
     {
         name: 'Anthropic',
         icon: <AnthropicLogo logo="Anthropic" className="w-6 h-6" />,
