@@ -14,8 +14,11 @@ export default defineConfig({
                 vite: {
                     build: {
                         outDir: 'dist-electron/main',
+                        commonjsOptions: {
+                            ignoreDynamicRequires: true,
+                        },
                         rollupOptions: {
-                            external: ['@abyss/intelligence', '@abyss/records'],
+                            external: ['@abyss/intelligence', '@abyss/records', 'sqlite3', 'bindings', 'file-uri-to-path'],
                             output: {
                                 entryFileNames: '[name].mjs',
                             },
@@ -28,8 +31,11 @@ export default defineConfig({
                 vite: {
                     build: {
                         outDir: 'dist-electron/preload',
+                        commonjsOptions: {
+                            ignoreDynamicRequires: true,
+                        },
                         rollupOptions: {
-                            external: ['@abyss/intelligence', '@abyss/records'],
+                            external: ['@abyss/intelligence', '@abyss/records', 'sqlite3', 'bindings', 'file-uri-to-path'],
                             output: {
                                 entryFileNames: '[name].mjs',
                             },
@@ -38,7 +44,13 @@ export default defineConfig({
                 },
             },
         ]),
-        renderer(),
+        renderer({
+            resolve: {
+                sqlite3: { type: 'cjs' },
+                bindings: { type: 'cjs' },
+                "file-uri-to-path": { type: 'cjs' },
+            },
+        }),
     ],
     resolve: {
         alias: {
@@ -46,7 +58,7 @@ export default defineConfig({
         },
     },
     optimizeDeps: {
-        include: ['@abyss/records'],
+        include: ['@abyss/records', 'bindings', 'file-uri-to-path'],
     },
     build: {
         outDir: 'dist-vite',
