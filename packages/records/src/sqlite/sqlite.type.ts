@@ -17,6 +17,8 @@ import type { ReferencedMetricRecord, ReferencedMetricTable } from '../records/m
 import type { MetricType } from '../records/metric/metric.type';
 import type { ReferencedModelConnectionRecord, ReferencedModelConnectionTable } from '../records/model-connection/model-connection';
 import type { ModelConnectionType } from '../records/model-connection/model-connection.type';
+import type { ReferencedNotebookCellRecord, ReferencedNotebookCellTable } from '../records/notebook-cell/notebook-cell';
+import type { NotebookCellType } from '../records/notebook-cell/notebook-cell.type';
 import type { ReferencedSettingsRecord, ReferencedSettingsTable } from '../records/settings/settings';
 import type { SettingsType } from '../records/settings/settings.type';
 import type { ReferencedToolDefinitionRecord, ReferencedToolDefinitionTable } from '../records/tool-definition/tool-definition';
@@ -59,6 +61,7 @@ export enum SqliteTable {
     document = 'document',
     chatSnapshot = 'chatSnapshot',
     agentGraphExecution = 'agentGraphExecution',
+    notebookCell = 'notebookCell',
 }
 
 export interface SqliteTables {
@@ -72,6 +75,7 @@ export interface SqliteTables {
     [SqliteTable.document]: ReferencedDocumentTable;
     [SqliteTable.chatSnapshot]: ReferencedChatSnapshotTable;
     [SqliteTable.agentGraphExecution]: ReferencedAgentGraphExecutionTable;
+    [SqliteTable.notebookCell]: ReferencedNotebookCellTable;
 }
 
 export interface SqliteTableRecordReference {
@@ -85,6 +89,7 @@ export interface SqliteTableRecordReference {
     [SqliteTable.document]: ReferencedDocumentRecord;
     [SqliteTable.chatSnapshot]: ReferencedChatSnapshotRecord;
     [SqliteTable.agentGraphExecution]: ReferencedAgentGraphExecutionRecord;
+    [SqliteTable.notebookCell]: ReferencedNotebookCellRecord;
 }
 
 export interface SqliteTableRecordType {
@@ -98,4 +103,5 @@ export interface SqliteTableRecordType {
     [SqliteTable.document]: DatabaseDocumentType;
     [SqliteTable.chatSnapshot]: ChatSnapshotType;
     [SqliteTable.agentGraphExecution]: AgentGraphExecutionType;
+    [SqliteTable.notebookCell]: NotebookCellType;
 }

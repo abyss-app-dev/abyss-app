@@ -17,6 +17,8 @@ export * from './records/metric/metric';
 export * from './records/metric/metric.type';
 export * from './records/model-connection/model-connection';
 export * from './records/model-connection/model-connection.type';
+export * from './records/notebook-cell/notebook-cell';
+export * from './records/notebook-cell/notebook-cell.type';
 export * from './records/settings/settings';
 export * from './records/settings/settings.type';
 export * from './records/tool-definition/tool-definition';

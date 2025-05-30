@@ -10,6 +10,7 @@ import { ReferencedMessageTable } from '../records/message/message';
 import { ReferencedMessageThreadTable } from '../records/message-thread/message-thread';
 import { ReferencedMetricTable } from '../records/metric/metric';
 import { ReferencedModelConnectionTable } from '../records/model-connection/model-connection';
+import { ReferencedNotebookCellTable } from '../records/notebook-cell/notebook-cell';
 import { ReferencedSettingsTable } from '../records/settings/settings';
 import { ReferencedToolDefinitionTable } from '../records/tool-definition/tool-definition';
 import { randomId } from '../utils/ids';
@@ -51,6 +52,7 @@ export class SQliteClient {
             document: new ReferencedDocumentTable(this),
             chatSnapshot: new ReferencedChatSnapshotTable(this),
             agentGraphExecution: new ReferencedAgentGraphExecutionTable(this),
+            notebookCell: new ReferencedNotebookCellTable(this),
         };
     }
 
