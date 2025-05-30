@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@abyss/intelligence": "^0.0.1",
-        "@abyss/records": "^0.0.2",
+        "@abyss/records": "file:../records",
         "@abyss/ui-components": "^0.0.1",
         "@xyflow/react": "^12.6.0",
         "axios": "^1.8.4",

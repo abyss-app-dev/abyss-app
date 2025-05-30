@@ -4,6 +4,7 @@ import { SqliteTable, type SqliteTableRecordReference, type SqliteTables } from 
 import {
     type UseDatabaseRecordQuery,
     type UseDatabaseRecordSubscription,
+    UseDatabaseTableQuery,
     type UseDatabaseTableSubscription,
     useDatabaseQuery,
     useDatabaseRecordQuery,
@@ -21,6 +22,7 @@ type UseDatabase = {
             id: string,
             handler: (ref: SqliteTableRecordReference[K]) => Promise<IResultType>
         ) => UseDatabaseRecordQuery<K, IResultType>;
+        tableQuery: <IResultType>(handler: (ref: SqliteTables[K]) => Promise<IResultType>) => UseDatabaseTableQuery<K, IResultType>;
     };
 };
 
@@ -37,6 +39,9 @@ for (const tableKey of tableKeys) {
         //@ts-ignore
         recordQuery: <IResultType>(id: string, handler: (ref: SqliteTableRecordReference[typeof tableKey]) => Promise<IResultType>) =>
             useDatabaseRecordQuery<typeof tableKey, IResultType>(tableKey, id, handler),
+        //@ts-ignore
+        tableQuery: <IResultType>(handler: (ref: SqliteTables[typeof tableKey]) => Promise<IResultType>) =>
+            useDatabaseTableQuery<typeof tableKey, IResultType>(tableKey, handler),
     };
 }
 

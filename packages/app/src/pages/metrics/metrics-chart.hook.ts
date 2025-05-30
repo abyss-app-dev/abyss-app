@@ -114,16 +114,14 @@ export function useMetricsChart() {
 
     // Dimensions
     const [selectedDimensions, setSelectedDimensions] = useState<Record<string, any>>({});
-    const uniqueDimensions = useDatabaseTableQuery(SqliteTable.metric, async database =>
-        database.tables.metric.getUniqueDimensionsForMetric(metricName || '')
+    const uniqueDimensions = useDatabaseTableQuery(SqliteTable.metric, async metrics =>
+        metrics.getUniqueDimensionsForMetric(metricName || '')
     );
 
     // Fetch metrics data
-    const metrics = useDatabaseTableQuery(
-        SqliteTable.metric,
-        async database => database.tables.metric.queryMetrics(metricName || '', selectedDimensions),
-        [metricName]
-    );
+    const metrics = useDatabaseTableQuery(SqliteTable.metric, async metrics => metrics.queryMetrics(metricName || '', selectedDimensions), [
+        metricName,
+    ]);
 
     // Navigation functions
     const navigateToHome = () => {

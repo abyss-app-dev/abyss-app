@@ -6,8 +6,8 @@ import { useDatabaseTableQuery } from '../../state/database-connection';
 
 export function useMetrics() {
     const navigate = useNavigate();
-    const metrics = useDatabaseTableQuery(SqliteTable.metric, async database => database.tables.metric.list(10));
-    const uniqueMetricNames = useDatabaseTableQuery(SqliteTable.metric, async database => database.tables.metric.getUniqueNames());
+    const metrics = useDatabaseTableQuery(SqliteTable.metric, async metrics => metrics.list(10));
+    const uniqueMetricNames = useDatabaseTableQuery(SqliteTable.metric, async metrics => metrics.getUniqueNames());
     const [search, setSearch] = useState('');
 
     const renderableRows =
