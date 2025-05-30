@@ -18,7 +18,7 @@ export default defineConfig({
                             ignoreDynamicRequires: true,
                         },
                         rollupOptions: {
-                            external: ['@abyss/intelligence', '@abyss/records', 'sqlite3', 'bindings', 'file-uri-to-path'],
+                            external: ['@abyss/intelligence', '@abyss/records', 'sqlite3'],
                             output: {
                                 entryFileNames: '[name].mjs',
                             },
@@ -35,7 +35,7 @@ export default defineConfig({
                             ignoreDynamicRequires: true,
                         },
                         rollupOptions: {
-                            external: ['@abyss/intelligence', '@abyss/records', 'sqlite3', 'bindings', 'file-uri-to-path'],
+                            external: ['@abyss/intelligence', '@abyss/records', 'sqlite3'],
                             output: {
                                 entryFileNames: '[name].mjs',
                             },
@@ -58,7 +58,8 @@ export default defineConfig({
         },
     },
     optimizeDeps: {
-        include: ['@abyss/records', 'bindings', 'file-uri-to-path'],
+        include: ['@abyss/records'],
+        exclude: ['sqlite3', 'bindings', 'file-uri-to-path'],
     },
     build: {
         outDir: 'dist-vite',
