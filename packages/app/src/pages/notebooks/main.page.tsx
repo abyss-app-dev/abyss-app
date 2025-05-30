@@ -10,7 +10,7 @@ export function NotebookMainPage() {
     return (
         <div className="flex flex-row overflow-hidden h-[100vh]">
             <Sidebar
-                className="bg-[#0e0e0e]"    
+                className="bg-[#0e0e0e]"
                 title="notebooks"
                 titleAction={<Button variant="secondary" icon={Plus} onClick={handleCreateCell} />}
                 width={300}
