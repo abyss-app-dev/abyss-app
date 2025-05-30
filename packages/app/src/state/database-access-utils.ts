@@ -4,7 +4,7 @@ import { SqliteTable, type SqliteTableRecordReference, type SqliteTables } from 
 import {
     type UseDatabaseRecordQuery,
     type UseDatabaseRecordSubscription,
-    UseDatabaseTableQuery,
+    type UseDatabaseTableQuery,
     type UseDatabaseTableSubscription,
     useDatabaseQuery,
     useDatabaseRecordQuery,

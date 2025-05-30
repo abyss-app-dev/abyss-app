@@ -1,9 +1,7 @@
 import { Button, IconSection, Input, PageCrumbed } from '@abyss/ui-components';
 import { Box, Globe, Settings, Trash } from 'lucide-react';
-import { AnthropicLogo, GeminiLogo, OpenAILogo } from '../../library/logos';
+import { AnthropicLogo } from '../../library/logos';
 import { AnthropicConfig } from './connectors/anthropic';
-import { GeminiConfig } from './connectors/gemini';
-import { OpenAIConfig } from './connectors/openai';
 import { useModelProfileCreate } from './edit.hook';
 
 const Providers = [

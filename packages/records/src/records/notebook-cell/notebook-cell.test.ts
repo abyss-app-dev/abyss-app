@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import { buildTestDB } from '../../sqlite/sqlite-client.mock';
-import type { NotebookCellType } from './notebook-cell.type';
 
 let client: SQliteClient;
 

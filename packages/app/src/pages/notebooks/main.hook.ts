@@ -1,7 +1,6 @@
 import { NotebookText } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDatabase } from '@/state/database-access-utils';
-import { getIconForSourceType } from '../../library/references';
 import { Database } from '../../main';
 
 export function useNotebookMain() {
