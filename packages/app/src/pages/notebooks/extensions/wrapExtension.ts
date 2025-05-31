@@ -1,5 +1,5 @@
 // biome-ignore lint/suspicious/noExplicitAny: Extensions are weird
-export function withDbAttribute(Base: any) {
+export function wrappedExtension(Base: any) {
     return Base.extend({
         name: `${Base.name}Wrapped`,
         addAttributes() {

@@ -85,11 +85,19 @@
     cursor: pointer;
     border: 1px solid var(--color-primary-200);
     transition: all 0.1s ease;
+    display: inline-flex;
+    align-items: center;
 }
 
 .mention:hover {
     background-color: var(--color-primary-200);
     border-color: var(--color-primary-300);
+}
+
+.mention-brackets {
+    color: var(--color-primary-600);
+    font-weight: 600;
+    margin: 0 2px;
 }
 
 /* Mention dropdown styles */

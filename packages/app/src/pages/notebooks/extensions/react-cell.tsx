@@ -1,7 +1,7 @@
 import { Node } from '@tiptap/core';
 import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
 import { useDatabase } from '@/state/database-access-utils';
-import { withDbAttribute } from '../notebook/wrapAttribute';
+import { wrappedExtension } from './wrapExtension';
 
 interface ReactCellComponentProps {
     node: any;
@@ -75,7 +75,7 @@ const ReactCellNode = Node.create({
     },
 });
 
-const CustomReactCellBase = withDbAttribute(ReactCellNode);
+const CustomReactCellBase = wrappedExtension(ReactCellNode);
 
 export const CustomReactCell = CustomReactCellBase.extend({
     addNodeView() {

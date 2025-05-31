@@ -2,8 +2,8 @@ import type { BaseSqliteRecord } from '../../sqlite/sqlite.type';
 
 export type NotebookCellVariant = 'page' | 'text' | 'heading1' | 'heading2' | 'heading3';
 
-export interface NotebookCellType extends BaseSqliteRecord {
-    type: NotebookCellVariant;
+export interface NotebookCellType<T extends NotebookCellVariant = NotebookCellVariant> extends BaseSqliteRecord {
+    type: T;
 
     // Hierarchical structure
     parentCellId: string | null;
