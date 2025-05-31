@@ -85,13 +85,16 @@ export function Notebook({ notebookId }: { notebookId: string }) {
 
     const debouncedSave = useDebounce(saveNotebook, 1000);
 
-    const editor = useEditor({
-        extensions,
-        content: { type: 'doc', content: [] },
-        onUpdate({ editor }) {
-            debouncedSave(editor);
+    const editor = useEditor(
+        {
+            extensions,
+            content: { type: 'doc', content: [] },
+            onUpdate({ editor }) {
+                debouncedSave(editor);
+            },
         },
-    });
+        [notebookId]
+    );
 
     useEffect(() => {
         if (editor && content.data && !hydrated) {
