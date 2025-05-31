@@ -1,6 +1,6 @@
-import { NotebookPageCellProperties, SqliteTable } from '@abyss/records';
+import { type NotebookPageCellProperties, SqliteTable } from '@abyss/records';
 import { PageNotebook } from '@abyss/ui-components';
-import { BookOpen, NotebookText } from 'lucide-react';
+import { NotebookText } from 'lucide-react';
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Database } from '@/main';

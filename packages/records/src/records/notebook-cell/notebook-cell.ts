@@ -34,7 +34,6 @@ export class ReferencedNotebookCellTable extends ReferencedSqliteTable<NotebookC
     public async saveNotebook(notebookId: string, cells: NotebookCellType[]) {
         const originalCells = await this.getChildren(notebookId);
         const operations = saveNotebook(notebookId, originalCells, cells);
-        console.log('operations', operations);
         for (const cellId of operations.deleteCells) {
             await this.ref(cellId).delete();
         }

@@ -1,4 +1,10 @@
-import type { NotebookCellType } from '@abyss/records';
+import type {
+    NotebookCellType,
+    NotebookHeading1CellProperties,
+    NotebookHeading2CellProperties,
+    NotebookHeading3CellProperties,
+    NotebookTextCellProperties,
+} from '@abyss/records';
 import type { JSONContent } from '@tiptap/core';
 
 export function mapDatabaseCellsToTipTap(cells: NotebookCellType[]): JSONContent {
@@ -10,7 +16,8 @@ export function mapDatabaseCellsToTipTap(cells: NotebookCellType[]): JSONContent
 
 function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
     switch (cell.type) {
-        case 'heading1':
+        case 'heading1': {
+            const heading1Properties: NotebookHeading1CellProperties = cell.propertyData as NotebookHeading1CellProperties;
             return {
                 type: 'headingWrapped',
                 attrs: {
@@ -24,11 +31,13 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                 content: [
                     {
                         type: 'text',
-                        text: (cell.propertyData?.text as string) || '',
+                        text: heading1Properties.text || '',
                     },
                 ],
             };
-        case 'heading2':
+        }
+        case 'heading2': {
+            const heading2Properties: NotebookHeading2CellProperties = cell.propertyData as NotebookHeading2CellProperties;
             return {
                 type: 'headingWrapped',
                 attrs: {
@@ -42,11 +51,13 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                 content: [
                     {
                         type: 'text',
-                        text: (cell.propertyData?.text as string) || '',
+                        text: heading2Properties.text || '',
                     },
                 ],
             };
-        case 'heading3':
+        }
+        case 'heading3': {
+            const heading3Properties: NotebookHeading3CellProperties = cell.propertyData as NotebookHeading3CellProperties;
             return {
                 type: 'headingWrapped',
                 attrs: {
@@ -60,19 +71,17 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                 content: [
                     {
                         type: 'text',
-                        text: (cell.propertyData?.text as string) || '',
+                        text: heading3Properties.text || '',
                     },
                 ],
             };
-        case 'text':
+        }
+        case 'text': {
+            const textProperties: NotebookTextCellProperties = cell.propertyData as NotebookTextCellProperties;
+            const content = textProperties.text ? [{ type: 'text', text: textProperties.text }] : [];
             return {
                 type: 'paragraphWrapped',
-                content: [
-                    {
-                        type: 'text',
-                        text: (cell.propertyData?.text as string) || 'none',
-                    },
-                ],
+                content: content,
                 attrs: {
                     db: JSON.stringify({
                         id: cell.id,
@@ -81,6 +90,7 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                     }),
                 },
             };
+        }
         default:
             throw new Error(`Unknown cell type: ${cell.type}`);
     }
@@ -95,41 +105,46 @@ function mapTipTapToDatabaseCell(cell: JSONContent): NotebookCellType {
     switch (cell.type) {
         case 'headingWrapped':
             if (cell.attrs?.level === 1) {
+                const heading1Properties: NotebookHeading1CellProperties = {
+                    text: cell.content?.[0]?.text || '',
+                };
                 return {
                     type: 'heading1',
-                    propertyData: {
-                        text: cell.content?.[0]?.text || '',
-                    },
+                    propertyData: heading1Properties,
                     ...db,
                 };
             }
             if (cell.attrs?.level === 2) {
+                const heading2Properties: NotebookHeading2CellProperties = {
+                    text: cell.content?.[0]?.text || '',
+                };
                 return {
                     type: 'heading2',
-                    propertyData: {
-                        text: cell.content?.[0]?.text || '',
-                    },
+                    propertyData: heading2Properties,
                     ...db,
                 };
             }
             if (cell.attrs?.level === 3) {
+                const heading3Properties: NotebookHeading3CellProperties = {
+                    text: cell.content?.[0]?.text || '',
+                };
                 return {
                     type: 'heading3',
-                    propertyData: {
-                        text: cell.content?.[0]?.text || '',
-                    },
+                    propertyData: heading3Properties,
                     ...db,
                 };
             }
             throw new Error(`Unknown heading level: ${cell.attrs?.level}`);
-        case 'paragraphWrapped':
+        case 'paragraphWrapped': {
+            const textProperties: NotebookTextCellProperties = {
+                text: cell.content?.[0]?.text || '',
+            };
             return {
                 type: 'text',
-                propertyData: {
-                    text: cell.content?.[0]?.text || '',
-                },
+                propertyData: textProperties,
                 ...db,
             };
+        }
         default:
             throw new Error(`Unknown cell type: ${cell.type}`);
     }
