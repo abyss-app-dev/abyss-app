@@ -23,10 +23,10 @@ export const PageMention = Mention.configure({
     renderHTML({ node }) {
         const pageId = node.attrs.id;
         const page = DUMMY_PAGES.find(p => p.id === pageId);
-        return ['span', { class: 'mention', 'data-page-id': pageId }, `[[${page?.title || 'Unknown Page'}]]`];
+        return ['span', { class: 'mention', 'data-page-id': pageId }, `${page?.title || 'Unknown Page'}`];
     },
     suggestion: {
-        char: '#',
+        char: '@',
         pluginKey: new PluginKey('pageMention'),
 
         command: ({ editor, range, props }) => {

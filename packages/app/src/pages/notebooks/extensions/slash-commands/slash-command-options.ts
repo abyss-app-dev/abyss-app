@@ -1,4 +1,4 @@
-import { Editor } from '@tiptap/core';
+import type { Editor } from '@tiptap/core';
 
 export interface Command {
     title: string;
@@ -38,9 +38,8 @@ export const getSuggestionItems = ({ query }: { query: string }): Command[] => {
         },
         {
             title: 'New Page',
-            icon: '📄',
+            icon: '+',
             command: ({ editor, range }) => {
-                // Insert a mention to a dummy page
                 editor
                     .chain()
                     .focus()
@@ -48,7 +47,7 @@ export const getSuggestionItems = ({ query }: { query: string }): Command[] => {
                     .insertContent([
                         {
                             type: 'mention',
-                            attrs: { id: 'page-new-' + Date.now() },
+                            attrs: { id: Math.random() },
                         },
                         {
                             type: 'text',

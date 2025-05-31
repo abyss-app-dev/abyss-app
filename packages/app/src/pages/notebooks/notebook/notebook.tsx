@@ -11,8 +11,7 @@ import { Database } from '@/main';
 import { useDatabase } from '@/state/database-access-utils';
 import { useDebounce } from '@/state/debounce';
 import { PageMention } from '../extensions/page-mention';
-import { CustomReactCell } from '../extensions/react-cell';
-import SlashCommands from '../extensions/slash-commands';
+import SlashCommands from '../extensions/slash-commands/slash-commands';
 import { mapDatabaseCellsToTipTap, mapTipTapDocumentToDatabaseCell } from './mapping';
 import { withDbAttribute } from './wrapAttribute';
 

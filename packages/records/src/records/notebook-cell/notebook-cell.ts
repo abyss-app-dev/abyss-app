@@ -3,6 +3,7 @@ import { ReferencedSqliteTable } from '../../sqlite/reference-table';
 import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import type { NotebookCellType } from './notebook-cell.type';
+import { newPages } from './operations/populateNewPages';
 import { saveNotebook } from './operations/saveNotebook';
 
 export class ReferencedNotebookCellTable extends ReferencedSqliteTable<NotebookCellType> {
@@ -44,6 +45,10 @@ export class ReferencedNotebookCellTable extends ReferencedSqliteTable<NotebookC
             // biome-ignore lint/correctness/noUnusedVariables: 'id', 'createdAt', and 'updatedAt' are intentionally destructured and unused to collect the 'rest' for cloning.
             const { id, createdAt, updatedAt, ...rest } = cellData;
             await this.create(rest);
+        }
+        const newPageCellsToUpdate = await newPages(this, cells);
+        for (const cell of newPageCellsToUpdate) {
+            await this.ref(cell.id).update(cell);
         }
     }
 }
