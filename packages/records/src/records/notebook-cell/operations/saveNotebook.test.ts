@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { NotebookCellProperties } from '../notebook-cell.type';
 import { saveNotebook } from './saveNotebook';
 import { createMockCell, createMultipleMockCells, mockNotebookCells, newCellStates, testScenarios } from './saveNotebook.mocking';
 
@@ -132,7 +133,7 @@ describe('saveNotebook', () => {
                 const modifiedCells = [
                     mockNotebookCells.modifiedCell1,
                     mockNotebookCells.modifiedCell2,
-                    { ...mockNotebookCells.cell3, propertyData: { content: 'Modified cell 3' } },
+                    { ...mockNotebookCells.cell3, propertyData: { content: 'Modified cell 3' } as unknown as NotebookCellProperties },
                     { ...mockNotebookCells.cell4, type: 'text' as const },
                     mockNotebookCells.cell5,
                 ];
@@ -223,8 +224,8 @@ describe('saveNotebook', () => {
         });
 
         it('handles empty strings and special values in propertyData', () => {
-            const originalCell = { ...mockNotebookCells.cell1, propertyData: { content: '' } };
-            const newCell = { ...mockNotebookCells.cell1, propertyData: { content: '   ' } };
+            const originalCell = { ...mockNotebookCells.cell1, propertyData: { content: '' } as unknown as NotebookCellProperties };
+            const newCell = { ...mockNotebookCells.cell1, propertyData: { content: '   ' } as unknown as NotebookCellProperties };
 
             const result = saveNotebook('notebook', [originalCell], [newCell]);
 

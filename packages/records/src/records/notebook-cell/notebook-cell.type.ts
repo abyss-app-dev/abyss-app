@@ -10,5 +10,32 @@ export interface NotebookCellType extends BaseSqliteRecord {
     orderIndex: number;
 
     // Properties
-    propertyData?: Record<string, unknown>;
+    propertyData?: NotebookCellProperties;
 }
+
+export interface NotebookPageCellProperties {
+    title: string;
+}
+
+export interface NotebookTextCellProperties {
+    text: string;
+}
+
+export interface NotebookHeading1CellProperties {
+    text: string;
+}
+
+export interface NotebookHeading2CellProperties {
+    text: string;
+}
+
+export interface NotebookHeading3CellProperties {
+    text: string;
+}
+
+export type NotebookCellProperties =
+    | NotebookPageCellProperties
+    | NotebookTextCellProperties
+    | NotebookHeading1CellProperties
+    | NotebookHeading2CellProperties
+    | NotebookHeading3CellProperties;

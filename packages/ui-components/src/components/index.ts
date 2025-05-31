@@ -21,4 +21,5 @@ export * from './inputs/InputArea';
 export * from './inputs/SelectDropdown';
 export * from './layout/Center';
 export * from './layout/PageCrumbed';
+export * from './layout/PageNotebook';
 export * from './layout/Sidebar';

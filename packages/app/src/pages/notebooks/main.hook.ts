@@ -1,3 +1,4 @@
+import { NotebookPageCellProperties } from '@abyss/records';
 import { NotebookText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDatabase } from '@/state/database-access-utils';
@@ -21,15 +22,18 @@ export function useNotebookMain() {
         Database.tables.notebookCell.ref(cellId).delete();
     };
 
-    const sidebarItems = (cells.data || []).map(entry => {
-        return {
-            id: entry.id,
-            title: entry.type,
-            icon: NotebookText,
-            url: `/notebooks/id/${entry.id}`,
-            onCancel: () => handleDeleteCell(entry.id),
-        };
-    });
+    const sidebarItems = (cells.data || [])
+        .filter(entry => entry.type === 'page')
+        .map(entry => {
+            const cellData: NotebookPageCellProperties = entry.propertyData as NotebookPageCellProperties;
+            return {
+                id: entry.id,
+                title: cellData.title || 'New Notebook',
+                icon: NotebookText,
+                url: `/notebooks/id/${entry.id}`,
+                onCancel: () => handleDeleteCell(entry.id),
+            };
+        });
 
     return {
         sidebarItems,

@@ -25,7 +25,6 @@ export function Notebook({ notebookId }: { notebookId: string }) {
     const saveNotebook = useCallback(
         (jsonData: JSONContent) => {
             const cells = mapTipTapDocumentToDatabaseCell(jsonData);
-            console.log('saving notebook', cells);
             Database.tables[SqliteTable.notebookCell].saveNotebook(notebookId, cells);
         },
         [notebookId]
@@ -43,8 +42,6 @@ export function Notebook({ notebookId }: { notebookId: string }) {
 
     useEffect(() => {
         if (editor && content.data && !hydrated) {
-            console.log('setting content', content.data);
-
             const json = mapDatabaseCellsToTipTap(content.data);
             editor.commands.setContent(json, false);
             setHydrated(true);

@@ -1,4 +1,4 @@
-import type { NotebookCellType } from '../notebook-cell.type';
+import type { NotebookCellProperties, NotebookCellType } from '../notebook-cell.type';
 
 // Base timestamp for consistent testing
 const baseTimestamp = 1700000000000;
@@ -9,7 +9,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'text',
         parentCellId: 'notebook',
         orderIndex: 0,
-        propertyData: { content: 'First cell content' },
+        propertyData: { content: 'First cell content' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp,
         updatedAt: baseTimestamp,
     },
@@ -18,7 +18,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'heading1',
         parentCellId: 'notebook',
         orderIndex: 1,
-        propertyData: { content: 'Heading 1' },
+        propertyData: { content: 'Heading 1' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp + 1000,
         updatedAt: baseTimestamp + 1000,
     },
@@ -27,7 +27,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'text',
         parentCellId: 'notebook',
         orderIndex: 2,
-        propertyData: { content: 'Third cell content' },
+        propertyData: { content: 'Third cell content' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp + 2000,
         updatedAt: baseTimestamp + 2000,
     },
@@ -36,7 +36,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'heading2',
         parentCellId: 'notebook',
         orderIndex: 3,
-        propertyData: { content: 'Heading 2' },
+        propertyData: { content: 'Heading 2' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp + 3000,
         updatedAt: baseTimestamp + 3000,
     },
@@ -45,7 +45,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'text',
         parentCellId: 'notebook',
         orderIndex: 4,
-        propertyData: { content: 'Fifth cell content' },
+        propertyData: { content: 'Fifth cell content' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp + 4000,
         updatedAt: baseTimestamp + 4000,
     },
@@ -54,7 +54,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'text',
         parentCellId: 'notebook',
         orderIndex: 0,
-        propertyData: { content: 'New first cell' },
+        propertyData: { content: 'New first cell' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp + 5000,
         updatedAt: baseTimestamp + 5000,
     },
@@ -63,7 +63,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'heading3',
         parentCellId: 'notebook',
         orderIndex: 1,
-        propertyData: { content: 'New heading 3' },
+        propertyData: { content: 'New heading 3' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp + 6000,
         updatedAt: baseTimestamp + 6000,
     },
@@ -72,7 +72,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'text',
         parentCellId: 'notebook',
         orderIndex: 0,
-        propertyData: { content: 'Modified first cell content' },
+        propertyData: { content: 'Modified first cell content' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp,
         updatedAt: baseTimestamp + 7000,
     },
@@ -81,7 +81,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
         type: 'heading2', // Changed from heading1
         parentCellId: 'notebook',
         orderIndex: 1,
-        propertyData: { content: 'Modified Heading' },
+        propertyData: { content: 'Modified Heading' } as unknown as NotebookCellProperties,
         createdAt: baseTimestamp + 1000,
         updatedAt: baseTimestamp + 8000,
     },
@@ -139,7 +139,7 @@ export const newCellStates = {
 
     duplicateIds: [
         mockNotebookCells.cell1,
-        { ...mockNotebookCells.cell1, propertyData: { content: 'Duplicate content' } }, // Same ID, different content
+        { ...mockNotebookCells.cell1, propertyData: { content: 'Duplicate content' } as unknown as NotebookCellProperties }, // Same ID, different content
     ],
 
     newCellAtStart: [mockNotebookCells.newCell1, mockNotebookCells.cell1, mockNotebookCells.cell2],
@@ -159,7 +159,7 @@ export function createMockCell(overrides: Partial<NotebookCellType>): NotebookCe
         type: 'text',
         parentCellId: 'notebook',
         orderIndex: 0,
-        propertyData: {},
+        propertyData: {} as unknown as NotebookCellProperties,
         createdAt: Date.now(),
         updatedAt: Date.now(),
         ...overrides,
@@ -171,7 +171,7 @@ export function createMultipleMockCells(count: number, parentId = 'notebook'): N
         createMockCell({
             parentCellId: parentId,
             orderIndex: index,
-            propertyData: { content: `Cell ${index + 1} content` },
+            propertyData: { content: `Cell ${index + 1} content` } as unknown as NotebookCellProperties,
         })
     );
 }
