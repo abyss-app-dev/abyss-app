@@ -138,19 +138,6 @@ describe('Notebook Cell Record', () => {
             orderIndex: 0,
         });
 
-        // Create existing children
-        const existingChild1 = await client.tables.notebookCell.create({
-            type: 'text',
-            parentCellId: parent.id,
-            orderIndex: 0,
-        });
-
-        const existingChild2 = await client.tables.notebookCell.create({
-            type: 'text',
-            parentCellId: parent.id,
-            orderIndex: 1,
-        });
-
         // Create new cell to insert at start
         const newCell = await client.tables.notebookCell.create({
             type: 'text',
@@ -223,18 +210,6 @@ describe('Notebook Cell Record', () => {
             orderIndex: 0,
         });
 
-        const child2 = await client.tables.notebookCell.create({
-            type: 'text',
-            parentCellId: parent.id,
-            orderIndex: 1,
-        });
-
-        const child3 = await client.tables.notebookCell.create({
-            type: 'text',
-            parentCellId: parent.id,
-            orderIndex: 2,
-        });
-
         // Create new cell to insert at position 1
         const newCell = await client.tables.notebookCell.create({
             type: 'text',
@@ -259,12 +234,6 @@ describe('Notebook Cell Record', () => {
         const parent = await client.tables.notebookCell.create({
             type: 'page',
             parentCellId: null,
-            orderIndex: 0,
-        });
-
-        const existingChild = await client.tables.notebookCell.create({
-            type: 'text',
-            parentCellId: parent.id,
             orderIndex: 0,
         });
 

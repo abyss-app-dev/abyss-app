@@ -30,6 +30,7 @@ export function NotebookMainPage() {
             </Sidebar>
             <div className="w-full h-full overflow-y-auto bg-background-transparent">
                 <Outlet />
+                {location.pathname === '/notebooks' && <div className="text-center text-sm text-gray-500 mt-4">Create a new notebook to get started</div>}
             </div>
         </div>
     );

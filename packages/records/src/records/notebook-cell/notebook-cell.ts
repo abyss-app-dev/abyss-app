@@ -3,6 +3,7 @@ import { ReferencedSqliteTable } from '../../sqlite/reference-table';
 import { SqliteTable } from '../../sqlite/sqlite.type';
 import type { SQliteClient } from '../../sqlite/sqlite-client';
 import type { NotebookCellType } from './notebook-cell.type';
+import { saveNotebook } from './operations/saveNotebook';
 
 export class ReferencedNotebookCellTable extends ReferencedSqliteTable<NotebookCellType> {
     constructor(client: SQliteClient) {
@@ -28,6 +29,23 @@ export class ReferencedNotebookCellTable extends ReferencedSqliteTable<NotebookC
     public async getChildrenRecords(parentId: string): Promise<ReferencedNotebookCellRecord[]> {
         const children = await this.getChildren(parentId);
         return children.map(c => new ReferencedNotebookCellRecord(c.id, this.client));
+    }
+
+    public async saveNotebook(notebookId: string, cells: NotebookCellType[]) {
+        const originalCells = await this.getChildren(notebookId);
+        const operations = saveNotebook(notebookId, originalCells, cells);
+        console.log('operations', operations);
+        for (const cellId of operations.deleteCells) {
+            await this.ref(cellId).delete();
+        }
+        for (const [cellId, updateData] of operations.updateCells) {
+            await this.ref(cellId).update(updateData);
+        }
+        for (const cellData of operations.createCells) {
+            // biome-ignore lint/correctness/noUnusedVariables: 'id', 'createdAt', and 'updatedAt' are intentionally destructured and unused to collect the 'rest' for cloning.
+            const { id, createdAt, updatedAt, ...rest } = cellData;
+            await this.create(rest);
+        }
     }
 }
 

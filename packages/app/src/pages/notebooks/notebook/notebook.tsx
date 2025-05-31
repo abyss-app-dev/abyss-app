@@ -1,53 +1,55 @@
-import { EditorProvider } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import './style.scss'
+import { EditorContent, JSONContent, useEditor } from '@tiptap/react';
+import './style.css';
+import { SqliteTable } from '@abyss/records';
+import { Document } from '@tiptap/extension-document';
+import { Heading } from '@tiptap/extension-heading';
+import { Paragraph } from '@tiptap/extension-paragraph';
+import { Text } from '@tiptap/extension-text';
+import { useCallback, useEffect, useState } from 'react';
+import { Database } from '@/main';
+import { useDatabase } from '@/state/database-access-utils';
+import { useDebounce } from '@/state/debounce';
+import { mapDatabaseCellsToTipTap, mapTipTapDocumentToDatabaseCell } from './mapping';
+import { withDbAttribute } from './wrapAttribute';
 
-const extensions = [
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    },
-  }),
-]
+const CustomHeading = withDbAttribute(Heading);
+const CustomParagraph = withDbAttribute(Paragraph);
 
-const content = `
-<h2>
-  Hi there,
-</h2>
-<p>
-  this is a <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-</p>
-<ul>
-  <li>
-    That’s a bullet list with one …
-  </li>
-  <li>
-    … or two list items.
-  </li>
-</ul>
-<p>
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-</p>
-<pre><code class="language-css">body {
-  display: none;
-}</code></pre>
-<p>
-  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-</p>
-<blockquote>
-  Wow, that’s amazing. Good work, boy! 👏
-  <br />
-  — Mom
-</blockquote>
-`
+// Use only the custom extensions - DO NOT include the base ones
+const extensions = [Document, Text, CustomHeading, CustomParagraph];
 
-export default () => {
-  return (
-    <EditorProvider extensions={extensions} content={content} />
-  )
+export function Notebook({ notebookId }: { notebookId: string }) {
+    const content = useDatabase.notebookCell.tableQuery(async cells => cells.getChildren(notebookId));
+    const [hydrated, setHydrated] = useState(false);
+
+    const saveNotebook = useCallback(
+        (jsonData: JSONContent) => {
+            const cells = mapTipTapDocumentToDatabaseCell(jsonData);
+            console.log('saving notebook', cells);
+            Database.tables[SqliteTable.notebookCell].saveNotebook(notebookId, cells);
+        },
+        [notebookId]
+    );
+
+    const debouncedSave = useDebounce(saveNotebook, 1000);
+
+    const editor = useEditor({
+        extensions,
+        content: { type: 'doc', content: [] },
+        onUpdate({ editor }) {
+            debouncedSave(editor.getJSON());
+        },
+    });
+
+    useEffect(() => {
+        if (editor && content.data && !hydrated) {
+            console.log('setting content', content.data);
+
+            const json = mapDatabaseCellsToTipTap(content.data);
+            editor.commands.setContent(json, false);
+            setHydrated(true);
+        }
+    }, [editor, content.data]);
+
+    return <EditorContent editor={editor} className="prose p-4" />;
 }

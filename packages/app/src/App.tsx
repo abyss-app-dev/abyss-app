@@ -14,8 +14,8 @@ import { MetricsPage } from './pages/metrics/metrics.page';
 import { MetricsChartPage } from './pages/metrics/metrics-chart.page';
 import { ModelProfileEditPage } from './pages/models/edit.page';
 import { ModelProfileMainPage } from './pages/models/main.page';
-import { NotebookCreatePage } from './pages/notebooks/create.page';
 import { NotebookMainPage } from './pages/notebooks/main.page';
+import { NotebookPage } from './pages/notebooks/notebook.page';
 import { SettingsPage } from './pages/settings/settings.page';
 import { ViewSnapshotPage } from './pages/snapshots/view-snapshot.page';
 import { ToolsPage } from './pages/tools/tools.page';
@@ -47,7 +47,7 @@ export function App() {
                             <Route path="/chats/id/:id" element={<ChatViewPage />} />
                         </Route>
                         <Route path="/notebooks" element={<NotebookMainPage />}>
-                            <Route path="/notebooks/create" element={<NotebookCreatePage />} />
+                            <Route path="/notebooks/id/:id" element={<NotebookPage />} />
                         </Route>
                         <Route path="/logs/id/:id" element={<LogViewPage />} />
                         <Route path="/snapshots/id/:id" element={<ViewSnapshotPage />} />

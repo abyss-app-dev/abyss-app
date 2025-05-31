@@ -1,20 +1,20 @@
 import { NotebookText } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 
 export function useNotebookMain() {
     const cells = useDatabase.notebookCell.tableQuery(async cells => cells.getRootCells());
-    const location = useLocation();
     const navigate = useNavigate();
 
-    // Redirect to create page if on the base chats path
-    if (location.pathname === '/notebooks') {
-        setTimeout(() => navigate('/notebooks/create'));
-    }
-
-    const handleCreateCell = () => {
-        navigate('/notebooks/create');
+    const handleCreateCell = async () => {
+        const newCell = await Database.tables.notebookCell.create({
+            type: 'page',
+            parentCellId: 'root',
+            orderIndex: 0,
+            propertyData: { title: 'New Notebook' },
+        });
+        navigate(`/notebooks/id/${newCell.id}`);
     };
 
     const handleDeleteCell = (cellId: string) => {
