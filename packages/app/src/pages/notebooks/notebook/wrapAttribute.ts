@@ -13,7 +13,7 @@ export function withDbAttribute(Base: any) {
                         const dbAttr = element.getAttribute('data-db');
                         return dbAttr ? dbAttr : null;
                     },
-                    renderHTML: (attrs: any) => {
+                    renderHTML: (attrs: { db: string }) => {
                         return attrs.db ? { 'data-db': attrs.db } : {};
                     },
                 },

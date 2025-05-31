@@ -7,7 +7,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     cell1: {
         id: 'cell-1',
         type: 'text',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 0,
         propertyData: { content: 'First cell content' },
         createdAt: baseTimestamp,
@@ -16,7 +16,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     cell2: {
         id: 'cell-2',
         type: 'heading1',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 1,
         propertyData: { content: 'Heading 1' },
         createdAt: baseTimestamp + 1000,
@@ -25,7 +25,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     cell3: {
         id: 'cell-3',
         type: 'text',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 2,
         propertyData: { content: 'Third cell content' },
         createdAt: baseTimestamp + 2000,
@@ -34,7 +34,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     cell4: {
         id: 'cell-4',
         type: 'heading2',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 3,
         propertyData: { content: 'Heading 2' },
         createdAt: baseTimestamp + 3000,
@@ -43,7 +43,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     cell5: {
         id: 'cell-5',
         type: 'text',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 4,
         propertyData: { content: 'Fifth cell content' },
         createdAt: baseTimestamp + 4000,
@@ -52,7 +52,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     newCell1: {
         id: 'new-cell-1',
         type: 'text',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 0,
         propertyData: { content: 'New first cell' },
         createdAt: baseTimestamp + 5000,
@@ -61,7 +61,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     newCell2: {
         id: 'new-cell-2',
         type: 'heading3',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 1,
         propertyData: { content: 'New heading 3' },
         createdAt: baseTimestamp + 6000,
@@ -70,7 +70,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     modifiedCell1: {
         id: 'cell-1',
         type: 'text',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 0,
         propertyData: { content: 'Modified first cell content' },
         createdAt: baseTimestamp,
@@ -79,7 +79,7 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
     modifiedCell2: {
         id: 'cell-2',
         type: 'heading2', // Changed from heading1
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 1,
         propertyData: { content: 'Modified Heading' },
         createdAt: baseTimestamp + 1000,
@@ -91,17 +91,17 @@ export const mockNotebookCells: Record<string, NotebookCellType> = {
 export const testScenarios = {
     emptyOriginal: {
         original: [],
-        parentId: 'notebook-1',
+        parentId: 'notebook',
     },
 
     singleCellOriginal: {
         original: [mockNotebookCells.cell1],
-        parentId: 'notebook-1',
+        parentId: 'notebook',
     },
 
     multipleCellsOriginal: {
         original: [mockNotebookCells.cell1, mockNotebookCells.cell2, mockNotebookCells.cell3],
-        parentId: 'notebook-1',
+        parentId: 'notebook',
     },
 
     manyCellsOriginal: {
@@ -112,7 +112,7 @@ export const testScenarios = {
             mockNotebookCells.cell4,
             mockNotebookCells.cell5,
         ],
-        parentId: 'notebook-1',
+        parentId: 'notebook',
     },
 };
 
@@ -157,7 +157,7 @@ export function createMockCell(overrides: Partial<NotebookCellType>): NotebookCe
     return {
         id: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         type: 'text',
-        parentCellId: 'notebook-1',
+        parentCellId: 'notebook',
         orderIndex: 0,
         propertyData: {},
         createdAt: Date.now(),
@@ -166,7 +166,7 @@ export function createMockCell(overrides: Partial<NotebookCellType>): NotebookCe
     };
 }
 
-export function createMultipleMockCells(count: number, parentId = 'notebook-1'): NotebookCellType[] {
+export function createMultipleMockCells(count: number, parentId = 'notebook'): NotebookCellType[] {
     return Array.from({ length: count }, (_, index) =>
         createMockCell({
             parentCellId: parentId,

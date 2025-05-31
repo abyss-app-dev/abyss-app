@@ -59,7 +59,7 @@ export function saveNotebook(parentId: string, originalCells: NotebookCellType[]
             if (originalCellMap.has(newCell.id)) {
                 // This cell existed before
                 referencedOriginalCells.add(newCell.id);
-                const originalCell = originalCellMap.get(newCell.id)!;
+                const originalCell = originalCellMap.get(newCell.id) as NotebookCellType;
 
                 // Check if properties have changed
                 const hasChanges =

@@ -1,5 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
-import type { NotebookCellType } from '../notebook-cell.type';
+import { describe, expect, it } from 'vitest';
 import { saveNotebook } from './saveNotebook';
 import { createMockCell, createMultipleMockCells, mockNotebookCells, newCellStates, testScenarios } from './saveNotebook.mocking';
 
@@ -24,12 +23,12 @@ describe('saveNotebook', () => {
 
             // Check first cell
             expect(result.createCells[0].id).toBe('new-cell-1');
-            expect(result.createCells[0].parentCellId).toBe('notebook-1');
+            expect(result.createCells[0].parentCellId).toBe('notebook');
             expect(result.createCells[0].orderIndex).toBe(0);
 
             // Check second cell
             expect(result.createCells[1].id).toBe('new-cell-2');
-            expect(result.createCells[1].parentCellId).toBe('notebook-1');
+            expect(result.createCells[1].parentCellId).toBe('notebook');
             expect(result.createCells[1].orderIndex).toBe(1);
         });
     });
@@ -56,7 +55,7 @@ describe('saveNotebook', () => {
                 expect(result.createCells).toHaveLength(1);
                 expect(result.createCells[0].id).toBe('new-cell-1');
                 expect(result.createCells[0].orderIndex).toBe(0);
-                expect(result.createCells[0].parentCellId).toBe('notebook-1');
+                expect(result.createCells[0].parentCellId).toBe('notebook');
 
                 // Existing cells should be updated with new order indices
                 expect(result.updateCells.size).toBe(2);
@@ -148,7 +147,7 @@ describe('saveNotebook', () => {
             });
 
             it('when we have insertions of many cells', () => {
-                const newCells = createMultipleMockCells(3, 'notebook-1');
+                const newCells = createMultipleMockCells(3, 'notebook');
                 const result = saveNotebook('notebook', manyOriginal, newCells);
 
                 expect(result.createCells).toHaveLength(3);
@@ -237,7 +236,7 @@ describe('saveNotebook', () => {
 
             const updateData = result.updateCells.get('cell-1');
             expect(updateData).toBeDefined();
-            expect(updateData!.createdAt).toBeUndefined(); // Should not include createdAt in updates
+            expect(updateData?.createdAt).toBeUndefined(); // Should not include createdAt in updates
         });
     });
 });
