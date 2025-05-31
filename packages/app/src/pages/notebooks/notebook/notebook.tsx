@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Database } from '@/main';
 import { useDatabase } from '@/state/database-access-utils';
 import { useDebounce } from '@/state/debounce';
+import { PageMention } from '../extensions/page-mention';
 import { CustomReactCell } from '../extensions/react-cell';
 import SlashCommands from '../extensions/slash-commands';
 import { mapDatabaseCellsToTipTap, mapTipTapDocumentToDatabaseCell } from './mapping';
@@ -19,7 +20,7 @@ const CustomHeading = withDbAttribute(Heading);
 const CustomParagraph = withDbAttribute(Paragraph);
 
 // Use only the custom extensions - DO NOT include the base ones
-const extensions = [Document, Text, CustomHeading, CustomParagraph, CustomReactCell, SlashCommands];
+const extensions = [Document, Text, CustomHeading, CustomParagraph, PageMention, SlashCommands];
 
 export function Notebook({ notebookId }: { notebookId: string }) {
     const content = useDatabase.notebookCell.tableQuery(async cells => cells.getChildren(notebookId));

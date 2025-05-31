@@ -18,7 +18,7 @@ export interface NotebookPageCellProperties {
 }
 
 export interface NotebookTextCellProperties {
-    text: string;
+    textSections: NoteBookTextSectionProperties[];
 }
 
 export interface NotebookHeading1CellProperties {
@@ -39,3 +39,15 @@ export type NotebookCellProperties =
     | NotebookHeading1CellProperties
     | NotebookHeading2CellProperties
     | NotebookHeading3CellProperties;
+
+export interface NoteBookTextSectionTextProperties {
+    type: 'text';
+    text: string;
+}
+
+export interface NoteBookTextSectionMentionPageProperties {
+    type: 'mentionPage';
+    pageId: string;
+}
+
+export type NoteBookTextSectionProperties = NoteBookTextSectionTextProperties | NoteBookTextSectionMentionPageProperties;

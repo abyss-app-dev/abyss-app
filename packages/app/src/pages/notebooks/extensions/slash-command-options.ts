@@ -37,59 +37,67 @@ export const getSuggestionItems = ({ query }: { query: string }): Command[] => {
             },
         },
         {
-            title: 'Example Widget',
-            icon: '🔧',
+            title: 'New Page',
+            icon: '📄',
             command: ({ editor, range }) => {
+                // Insert a mention to a dummy page
                 editor
                     .chain()
                     .focus()
                     .deleteRange(range)
-                    .insertContent({
-                        type: 'reactCellWrapped',
-                        attrs: {
-                            componentType: 'exampleWidget',
-                            componentData: { count: 0, title: 'My Widget' },
+                    .insertContent([
+                        {
+                            type: 'mention',
+                            attrs: { id: 'page-new-' + Date.now() },
                         },
-                    })
+                        {
+                            type: 'text',
+                            text: ' ',
+                        },
+                    ])
                     .run();
             },
         },
-        {
-            title: 'Chart Widget',
-            icon: '📊',
-            command: ({ editor, range }) => {
-                editor
-                    .chain()
-                    .focus()
-                    .deleteRange(range)
-                    .insertContent({
-                        type: 'reactCellWrapped',
-                        attrs: {
-                            componentType: 'chartWidget',
-                            componentData: { chartType: 'line', data: [] },
-                        },
-                    })
-                    .run();
-            },
-        },
-        {
-            title: 'Form Widget',
-            icon: '📝',
-            command: ({ editor, range }) => {
-                editor
-                    .chain()
-                    .focus()
-                    .deleteRange(range)
-                    .insertContent({
-                        type: 'reactCellWrapped',
-                        attrs: {
-                            componentType: 'formWidget',
-                            componentData: { fields: [] },
-                        },
-                    })
-                    .run();
-            },
-        },
+        // React widgets commented out for now
+        // {
+        //     title: 'Example Widget',
+        //     icon: '🔧',
+        //     command: ({ editor, range }) => {
+        //         editor.chain().focus().deleteRange(range).insertContent({
+        //             type: 'reactCellWrapped',
+        //             attrs: {
+        //                 componentType: 'exampleWidget',
+        //                 componentData: { count: 0, title: 'My Widget' }
+        //             }
+        //         }).run();
+        //     },
+        // },
+        // {
+        //     title: 'Chart Widget',
+        //     icon: '📊',
+        //     command: ({ editor, range }) => {
+        //         editor.chain().focus().deleteRange(range).insertContent({
+        //             type: 'reactCellWrapped',
+        //             attrs: {
+        //                 componentType: 'chartWidget',
+        //                 componentData: { chartType: 'line', data: [] }
+        //             }
+        //         }).run();
+        //     },
+        // },
+        // {
+        //     title: 'Form Widget',
+        //     icon: '📝',
+        //     command: ({ editor, range }) => {
+        //         editor.chain().focus().deleteRange(range).insertContent({
+        //             type: 'reactCellWrapped',
+        //             attrs: {
+        //                 componentType: 'formWidget',
+        //                 componentData: { fields: [] }
+        //             }
+        //         }).run();
+        //     },
+        // },
     ];
 
     // Always return all commands if query is empty, null, or undefined

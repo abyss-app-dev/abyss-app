@@ -3,7 +3,6 @@ import type {
     NotebookHeading1CellProperties,
     NotebookHeading2CellProperties,
     NotebookHeading3CellProperties,
-    NotebookReactComponentCellProperties,
     NotebookTextCellProperties,
 } from '@abyss/records';
 import type { JSONContent } from '@tiptap/core';
@@ -67,7 +66,19 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
         }
         case 'text': {
             const textProperties: NotebookTextCellProperties = cell.propertyData as NotebookTextCellProperties;
-            const content = textProperties.text ? [{ type: 'text', text: textProperties.text }] : [];
+            const content: JSONContent[] = [];
+            for (const textSection of textProperties.textSections || []) {
+                if (textSection.type === 'text') {
+                    content.push({ type: 'text', text: textSection.text });
+                } else if (textSection.type === 'mentionPage') {
+                    content.push({
+                        type: 'mention',
+                        attrs: { id: textSection.pageId },
+                    });
+                } else {
+                    throw new Error(`Unknown text section type: ${JSON.stringify(textSection)}`);
+                }
+            }
             return {
                 type: 'paragraphWrapped',
                 content: content,
@@ -80,21 +91,21 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                 },
             };
         }
-        case 'reactComponent': {
-            const reactProperties: NotebookReactComponentCellProperties = cell.propertyData as NotebookReactComponentCellProperties;
-            return {
-                type: 'reactCellWrapped',
-                attrs: {
-                    componentType: reactProperties.componentType,
-                    componentData: reactProperties.componentData,
-                    db: JSON.stringify({
-                        id: cell.id,
-                        orderIndex: cell.orderIndex,
-                        parentCellId: cell.parentCellId,
-                    }),
-                },
-            };
-        }
+        // case 'reactComponent': {
+        //     const reactProperties: NotebookReactComponentCellProperties = cell.propertyData as NotebookReactComponentCellProperties;
+        //     return {
+        //         type: 'reactCellWrapped',
+        //         attrs: {
+        //             componentType: reactProperties.componentType,
+        //             componentData: reactProperties.componentData,
+        //             db: JSON.stringify({
+        //                 id: cell.id,
+        //                 orderIndex: cell.orderIndex,
+        //                 parentCellId: cell.parentCellId,
+        //             }),
+        //         },
+        //     };
+        // }
         default:
             throw new Error(`Unknown cell type: ${cell.type}`);
     }
@@ -141,25 +152,40 @@ function mapTipTapToDatabaseCell(cell: JSONContent): NotebookCellType {
             throw new Error(`Unknown heading level: ${cell.attrs?.level}`);
         case 'paragraphWrapped': {
             const textProperties: NotebookTextCellProperties = {
-                text: cell.content?.[0]?.text || '',
+                textSections: [],
             };
+            for (const content of cell.content || []) {
+                if (content.type === 'text') {
+                    textProperties.textSections.push({
+                        type: 'text',
+                        text: content.text || '',
+                    });
+                } else if (content.type === 'mention') {
+                    textProperties.textSections.push({
+                        type: 'mentionPage',
+                        pageId: content.attrs?.id || '',
+                    });
+                } else {
+                    throw new Error(`Unknown content type: ${content.type}`);
+                }
+            }
             return {
                 type: 'text',
                 propertyData: textProperties,
                 ...db,
             };
         }
-        case 'reactCellWrapped': {
-            const reactProperties: NotebookReactComponentCellProperties = {
-                componentType: cell.attrs?.componentType || 'exampleWidget',
-                componentData: cell.attrs?.componentData || {},
-            };
-            return {
-                type: 'reactComponent',
-                propertyData: reactProperties,
-                ...db,
-            };
-        }
+        // case 'reactCellWrapped': {
+        //     const reactProperties: NotebookReactComponentCellProperties = {
+        //         componentType: cell.attrs?.componentType || 'exampleWidget',
+        //         componentData: cell.attrs?.componentData || {},
+        //     };
+        //     return {
+        //         type: 'reactComponent',
+        //         propertyData: reactProperties,
+        //         ...db,
+        //     };
+        // }
         default:
             throw new Error(`Unknown cell type: ${cell.type}`);
     }
