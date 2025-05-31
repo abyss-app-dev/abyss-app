@@ -3,6 +3,7 @@ import type {
     NotebookHeading1CellProperties,
     NotebookHeading2CellProperties,
     NotebookHeading3CellProperties,
+    NotebookReactComponentCellProperties,
     NotebookTextCellProperties,
 } from '@abyss/records';
 import type { JSONContent } from '@tiptap/core';
@@ -79,6 +80,21 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                 },
             };
         }
+        case 'reactComponent': {
+            const reactProperties: NotebookReactComponentCellProperties = cell.propertyData as NotebookReactComponentCellProperties;
+            return {
+                type: 'reactCellWrapped',
+                attrs: {
+                    componentType: reactProperties.componentType,
+                    componentData: reactProperties.componentData,
+                    db: JSON.stringify({
+                        id: cell.id,
+                        orderIndex: cell.orderIndex,
+                        parentCellId: cell.parentCellId,
+                    }),
+                },
+            };
+        }
         default:
             throw new Error(`Unknown cell type: ${cell.type}`);
     }
@@ -130,6 +146,17 @@ function mapTipTapToDatabaseCell(cell: JSONContent): NotebookCellType {
             return {
                 type: 'text',
                 propertyData: textProperties,
+                ...db,
+            };
+        }
+        case 'reactCellWrapped': {
+            const reactProperties: NotebookReactComponentCellProperties = {
+                componentType: cell.attrs?.componentType || 'exampleWidget',
+                componentData: cell.attrs?.componentData || {},
+            };
+            return {
+                type: 'reactComponent',
+                propertyData: reactProperties,
                 ...db,
             };
         }

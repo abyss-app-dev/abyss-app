@@ -5,7 +5,7 @@
 /* Heading styles */
 .tiptap h1 {
     text-transform: capitalize;
-    font-size: 2.0rem;
+    font-size: 2rem;
 }
 
 .tiptap h2 {
@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 2px;;
+    margin-bottom: 2px;
 }
 
 .slash-menu button:hover,

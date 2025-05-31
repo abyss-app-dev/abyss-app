@@ -36,6 +36,60 @@ export const getSuggestionItems = ({ query }: { query: string }): Command[] => {
                 editor.chain().focus().deleteRange(range).setNode('paragraphWrapped').run();
             },
         },
+        {
+            title: 'Example Widget',
+            icon: '🔧',
+            command: ({ editor, range }) => {
+                editor
+                    .chain()
+                    .focus()
+                    .deleteRange(range)
+                    .insertContent({
+                        type: 'reactCellWrapped',
+                        attrs: {
+                            componentType: 'exampleWidget',
+                            componentData: { count: 0, title: 'My Widget' },
+                        },
+                    })
+                    .run();
+            },
+        },
+        {
+            title: 'Chart Widget',
+            icon: '📊',
+            command: ({ editor, range }) => {
+                editor
+                    .chain()
+                    .focus()
+                    .deleteRange(range)
+                    .insertContent({
+                        type: 'reactCellWrapped',
+                        attrs: {
+                            componentType: 'chartWidget',
+                            componentData: { chartType: 'line', data: [] },
+                        },
+                    })
+                    .run();
+            },
+        },
+        {
+            title: 'Form Widget',
+            icon: '📝',
+            command: ({ editor, range }) => {
+                editor
+                    .chain()
+                    .focus()
+                    .deleteRange(range)
+                    .insertContent({
+                        type: 'reactCellWrapped',
+                        attrs: {
+                            componentType: 'formWidget',
+                            componentData: { fields: [] },
+                        },
+                    })
+                    .run();
+            },
+        },
     ];
 
     // Always return all commands if query is empty, null, or undefined

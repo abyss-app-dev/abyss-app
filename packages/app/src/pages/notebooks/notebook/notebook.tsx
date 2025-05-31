@@ -1,13 +1,8 @@
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
 import './style.css';
 import { SqliteTable } from '@abyss/records';
-import { Blockquote } from '@tiptap/extension-blockquote';
-import { BulletList } from '@tiptap/extension-bullet-list';
-import { CodeBlock } from '@tiptap/extension-code-block';
 import { Document } from '@tiptap/extension-document';
 import { Heading } from '@tiptap/extension-heading';
-import { ListItem } from '@tiptap/extension-list-item';
-import { OrderedList } from '@tiptap/extension-ordered-list';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Text } from '@tiptap/extension-text';
 import { TextSelection } from '@tiptap/pm/state';
@@ -15,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Database } from '@/main';
 import { useDatabase } from '@/state/database-access-utils';
 import { useDebounce } from '@/state/debounce';
+import { CustomReactCell } from '../extensions/react-cell';
 import SlashCommands from '../extensions/slash-commands';
 import { mapDatabaseCellsToTipTap, mapTipTapDocumentToDatabaseCell } from './mapping';
 import { withDbAttribute } from './wrapAttribute';
@@ -23,7 +19,7 @@ const CustomHeading = withDbAttribute(Heading);
 const CustomParagraph = withDbAttribute(Paragraph);
 
 // Use only the custom extensions - DO NOT include the base ones
-const extensions = [Document, Text, CustomHeading, CustomParagraph, SlashCommands];
+const extensions = [Document, Text, CustomHeading, CustomParagraph, CustomReactCell, SlashCommands];
 
 export function Notebook({ notebookId }: { notebookId: string }) {
     const content = useDatabase.notebookCell.tableQuery(async cells => cells.getChildren(notebookId));
