@@ -4,13 +4,72 @@
 
 /* Heading styles */
 .tiptap h1 {
-    font-size: 3.4rem;
+    text-transform: capitalize;
+    font-size: 2.0rem;
 }
 
 .tiptap h2 {
-    font-size: 2.2rem;
+    text-transform: capitalize;
+    font-size: 1.5rem;
 }
 
 .tiptap h3 {
     font-size: 1.1rem;
+    text-transform: capitalize;
+}
+
+/* Slash commands menu styles */
+.slash-menu {
+    position: fixed !important;
+    background: var(--color-background-100);
+    border: 1px solid var(--color-background-400);
+    border-radius: 4px;
+    padding: 4px;
+    box-shadow: 0 4px 16px var(--color-background-400);
+    z-index: 1000;
+    min-width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.slash-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.1s ease;
+    color: var(--color-text-900);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;;
+}
+
+.slash-menu button:hover,
+.slash-menu button.selected {
+    background-color: var(--color-background-300);
+}
+
+.slash-menu-icon {
+    font-size: 12px;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+    border-radius: 4px;
+    padding: 2px;
+    background-color: var(--color-background-600);
+}
+
+.slash-menu-title {
+    flex: 1;
+}
+
+.slash-menu .no-results {
+    padding: 4px 8px;
+    color: var(--color-text-900);
+    font-size: 14px;
 }

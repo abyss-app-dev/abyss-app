@@ -18,6 +18,7 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
     switch (cell.type) {
         case 'heading1': {
             const heading1Properties: NotebookHeading1CellProperties = cell.propertyData as NotebookHeading1CellProperties;
+            const content = heading1Properties.text ? [{ type: 'text', text: heading1Properties.text }] : [];
             return {
                 type: 'headingWrapped',
                 attrs: {
@@ -28,16 +29,12 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                         parentCellId: cell.parentCellId,
                     }),
                 },
-                content: [
-                    {
-                        type: 'text',
-                        text: heading1Properties.text || '',
-                    },
-                ],
+                content: content,
             };
         }
         case 'heading2': {
             const heading2Properties: NotebookHeading2CellProperties = cell.propertyData as NotebookHeading2CellProperties;
+            const content = heading2Properties.text ? [{ type: 'text', text: heading2Properties.text }] : [];
             return {
                 type: 'headingWrapped',
                 attrs: {
@@ -48,16 +45,12 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                         parentCellId: cell.parentCellId,
                     }),
                 },
-                content: [
-                    {
-                        type: 'text',
-                        text: heading2Properties.text || '',
-                    },
-                ],
+                content: content,
             };
         }
         case 'heading3': {
             const heading3Properties: NotebookHeading3CellProperties = cell.propertyData as NotebookHeading3CellProperties;
+            const content = heading3Properties.text ? [{ type: 'text', text: heading3Properties.text }] : [];
             return {
                 type: 'headingWrapped',
                 attrs: {
@@ -68,12 +61,7 @@ function mapDatabaseCellToTipTap(cell: NotebookCellType): JSONContent {
                         parentCellId: cell.parentCellId,
                     }),
                 },
-                content: [
-                    {
-                        type: 'text',
-                        text: heading3Properties.text || '',
-                    },
-                ],
+                content: content,
             };
         }
         case 'text': {
