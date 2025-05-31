@@ -20,9 +20,13 @@ type UseDatabase = {
         record: (id: string | undefined) => UseDatabaseRecordSubscription<K>;
         recordQuery: <IResultType>(
             id: string,
-            handler: (ref: SqliteTableRecordReference[K]) => Promise<IResultType>
+            handler: (ref: SqliteTableRecordReference[K]) => Promise<IResultType>,
+            dependencies?: unknown[]
         ) => UseDatabaseRecordQuery<K, IResultType>;
-        tableQuery: <IResultType>(handler: (ref: SqliteTables[K]) => Promise<IResultType>) => UseDatabaseTableQuery<K, IResultType>;
+        tableQuery: <IResultType>(
+            handler: (ref: SqliteTables[K]) => Promise<IResultType>,
+            dependencies?: unknown[]
+        ) => UseDatabaseTableQuery<K, IResultType>;
     };
 };
 
@@ -31,17 +35,16 @@ export const useDatabase = {} as UseDatabase;
 const tableKeys = Object.keys(SqliteTable) as TableNamesAsStrings[];
 
 for (const tableKey of tableKeys) {
-    useDatabase[tableKey] = {
-        //@ts-ignore
-        scan: () => useDatabaseTableSubscription<typeof tableKey>(tableKey),
-        //@ts-ignore
-        record: (id: string | undefined) => useDatabaseRecordSubscription<typeof tableKey>(tableKey, id),
-        //@ts-ignore
-        recordQuery: <IResultType>(id: string, handler: (ref: SqliteTableRecordReference[typeof tableKey]) => Promise<IResultType>) =>
-            useDatabaseRecordQuery<typeof tableKey, IResultType>(tableKey, id, handler),
-        //@ts-ignore
-        tableQuery: <IResultType>(handler: (ref: SqliteTables[typeof tableKey]) => Promise<IResultType>) =>
-            useDatabaseTableQuery<typeof tableKey, IResultType>(tableKey, handler),
+    (useDatabase as any)[tableKey] = {
+        scan: () => useDatabaseTableSubscription(tableKey),
+        record: (id: string | undefined) => useDatabaseRecordSubscription(tableKey, id),
+        recordQuery: <IResultType>(
+            id: string,
+            handler: (ref: SqliteTableRecordReference[typeof tableKey]) => Promise<IResultType>,
+            dependencies: unknown[] = []
+        ) => useDatabaseRecordQuery(tableKey, id, handler, dependencies),
+        tableQuery: <IResultType>(handler: (ref: SqliteTables[typeof tableKey]) => Promise<IResultType>, dependencies: unknown[] = []) =>
+            useDatabaseTableQuery(tableKey, handler, dependencies),
     };
 }
 

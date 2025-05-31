@@ -1,4 +1,4 @@
-import { Command, getSuggestionItems } from './slash-command-options';
+import { type Command, getSuggestionItems } from './slash-command-options';
 
 export const renderItems = () => {
     let component: HTMLDivElement | null = null;

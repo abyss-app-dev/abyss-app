@@ -54,9 +54,6 @@ async function onCreateNewPage({ editor, range }: { editor: Editor; range: Range
         .chain()
         .focus()
         .deleteRange(range)
-        .insertContent([
-            { type: 'mentionPage', attrs: { id: newPage.id } },
-            { type: 'text', text: ' ' },
-        ])
+        .insertContent([{ type: 'pageWrapped', attrs: { pageId: newPage.id } }])
         .run();
 }

@@ -1,4 +1,4 @@
-import { NotebookPageCellProperties } from '@abyss/records';
+import type { NotebookPageCellProperties } from '@abyss/records';
 import { NotebookText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDatabase } from '@/state/database-access-utils';

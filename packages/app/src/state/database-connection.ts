@@ -1,15 +1,20 @@
 import type { SQliteClient, SqliteTableRecordReference, SqliteTableRecordType, SqliteTables } from '@abyss/records';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Database } from '../main';
 
-function useQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
+function useQuery<T>(callback: (database: SQliteClient) => Promise<T>, dependencies: unknown[] = []) {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
-    const fetchData = async () => {
+    // Store the latest callback in a ref to avoid re-renders
+    const callbackRef = useRef(callback);
+    callbackRef.current = callback;
+
+    const fetchData = useCallback(async () => {
         try {
-            const result = await callback(Database);
+            setLoading(true);
+            const result = await callbackRef.current(Database);
             if (result) {
                 setData(result);
             }
@@ -18,26 +23,26 @@ function useQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [...dependencies]);
 
     // Initial query
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
 
     return { data, loading, error, refetch: fetchData, setData };
 }
 
 export type UseDatabaseSubscription<T> = ReturnType<typeof useDatabaseSubscription<T>>;
 export function useDatabaseSubscription<T>(callback: (database: SQliteClient) => Promise<T>, listeners: unknown[] = []) {
-    const query = useQuery(callback);
-    useEffect(() => Database.subscribeDatabase(() => query.refetch()), [...listeners]);
+    const query = useQuery(callback, listeners);
+    useEffect(() => Database.subscribeDatabase(() => query.refetch()), [query.refetch]);
     return query;
 }
 
 export type UseDatabaseTableSubscription<T extends keyof SqliteTables> = ReturnType<typeof useDatabaseTableSubscription<T>>;
 export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table: T, listeners: unknown[] = []) {
-    const query = useQuery(() => Database.tables[table].list() as unknown as Promise<SqliteTableRecordType[T][]>);
+    const query = useQuery(() => Database.tables[table].list() as unknown as Promise<SqliteTableRecordType[T][]>, [table, ...listeners]);
     useEffect(() => {
         let unsubscribeCallback: () => void = () => {};
         Database.tables[table]
@@ -46,7 +51,7 @@ export function useDatabaseTableSubscription<T extends keyof SqliteTables>(table
                 unsubscribeCallback = unsubscribe;
             });
         return () => unsubscribeCallback();
-    }, [table, ...listeners]);
+    }, [table, query.refetch]);
     return query;
 }
 
@@ -61,7 +66,7 @@ export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(
             return Database.tables[table].get(recordId) as Promise<SqliteTableRecordType[T]>;
         }
         return null;
-    });
+    }, [table, recordId, ...listeners]);
     useEffect(() => {
         if (!recordId) {
             return;
@@ -73,7 +78,7 @@ export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(
                 unsubscribeCallback = unsubscribe;
             });
         return () => unsubscribeCallback();
-    }, [table, recordId, ...listeners]);
+    }, [table, recordId, query.setData]);
     return query;
 }
 
@@ -83,9 +88,14 @@ export function useDatabaseTableQuery<T extends keyof SqliteTables, IResultType>
     query: (database: SqliteTables[T]) => Promise<IResultType>,
     listeners: unknown[] = []
 ) {
+    // Store the latest query function in a ref
+    const queryRef = useRef(query);
+    queryRef.current = query;
+
     const usedQuery = useQuery(async () => {
-        return await query(Database.tables[table]);
-    });
+        return await queryRef.current(Database.tables[table]);
+    }, [table, ...listeners]);
+
     useEffect(() => {
         let unsubscribeCallback: () => void = () => {};
         Database.tables[table]
@@ -94,15 +104,15 @@ export function useDatabaseTableQuery<T extends keyof SqliteTables, IResultType>
                 unsubscribeCallback = unsubscribe;
             });
         return () => unsubscribeCallback();
-    }, [table, ...listeners]);
+    }, [table, usedQuery.refetch]);
     return usedQuery;
 }
 
 export function useDatabaseQuery<T>(callback: (database: SQliteClient) => Promise<T>) {
-    const query = useQuery(callback);
+    const query = useQuery(callback, []);
     useEffect(() => {
         return Database.subscribeDatabase(() => query.refetch());
-    }, []);
+    }, [query.refetch]);
     return query;
 }
 
@@ -110,11 +120,17 @@ export type UseDatabaseRecordQuery<T extends keyof SqliteTables, IResultType> = 
 export function useDatabaseRecordQuery<T extends keyof SqliteTables, IResultType>(
     table: T,
     recordId: string,
-    handler: (ref: SqliteTableRecordReference[T]) => Promise<IResultType>
+    handler: (ref: SqliteTableRecordReference[T]) => Promise<IResultType>,
+    dependencies: unknown[] = []
 ) {
+    // Store the latest handler in a ref
+    const handlerRef = useRef(handler);
+    handlerRef.current = handler;
+
     const query = useQuery(async () => {
-        return await handler(Database.tables[table].ref(recordId) as SqliteTableRecordReference[T]);
-    });
+        return await handlerRef.current(Database.tables[table].ref(recordId) as SqliteTableRecordReference[T]);
+    }, [table, recordId, ...dependencies]);
+
     useEffect(() => {
         if (!recordId) {
             return;
@@ -126,6 +142,6 @@ export function useDatabaseRecordQuery<T extends keyof SqliteTables, IResultType
                 unsubscribeCallback = unsubscribe;
             });
         return () => unsubscribeCallback();
-    }, [recordId, table]);
+    }, [recordId, table, query.refetch]);
     return query;
 }

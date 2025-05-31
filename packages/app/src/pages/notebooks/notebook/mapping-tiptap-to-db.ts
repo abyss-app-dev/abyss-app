@@ -35,6 +35,10 @@ function mapTipTapToDatabaseCell(cell: JSONContent): NotebookCellType {
         return mapParagraphCell(cell, db);
     }
 
+    if (cell.type === 'pageWrapped') {
+        return mapPageCell(cell, db);
+    }
+
     throw new Error(`Unknown cell type: ${cell.type}`);
 }
 
@@ -95,6 +99,13 @@ function mapParagraphCell(cell: JSONContent, db: TipTapDBType): NotebookCellType
     return {
         type: 'text',
         propertyData: textProperties,
+        ...db,
+    };
+}
+
+function mapPageCell(_cell: JSONContent, db: TipTapDBType): NotebookCellType<'page'> {
+    return {
+        type: 'page',
         ...db,
     };
 }
