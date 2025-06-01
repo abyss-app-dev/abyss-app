@@ -1,0 +1,250 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useQuery hook > call refetch to reload data 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": "initial data",
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": "initial data",
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useQuery hook > call setData to manually update state 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": "initial data",
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": "manually set data",
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useQuery hook > load data from database using a query 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748745105407,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748745105407,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useQuery hook > query has dependencies that change 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 1,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 1,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 1,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 2,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useQuery hook > query has handler which changes 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 1,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 1,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 1,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 2,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useQuery hook > query results in error 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Query failed],
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useQuery hook > transition from data to failure 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": "successful data",
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": "successful data",
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Query now fails],
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useQuery hook > transition from failure to data 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Initial failure],
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Initial failure],
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Initial failure],
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": "recovered data",
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;

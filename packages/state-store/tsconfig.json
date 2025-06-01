@@ -14,7 +14,6 @@
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
         "rootDir": "./src",
-        "types": ["node"],
         "jsx": "react-jsx"
     },
     "include": ["src/**/*.ts", "src/**/*.tsx"],

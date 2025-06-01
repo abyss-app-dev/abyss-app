@@ -6,6 +6,8 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "test": "rm -rf .test-artifacts && vitest run",
+        "test:no-update": "rm -rf .test-artifacts && VITEST_UPDATE_SNAPSHOTS=false vitest run",
+        "test:watch": "rm -rf .test-artifacts && vitest",
         "build": "tsc && npm run build:esbuild",
         "build:esbuild": "npx esbuild src/index.ts --bundle --platform=node --format=esm --target=node14 --outfile=dist/index.js --external:react --external:react-dom --external:@abyss/records",
         "watch": "concurrently \"tsc-watch --noClear\" \"npm run build:esbuild --watch\""
@@ -24,7 +26,9 @@
     },
     "peerDependencies": {
         "react": "^18.2.0",
-        "react-dom": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "dependencies": {
         "@abyss/records": "file:../records"
     }
 }

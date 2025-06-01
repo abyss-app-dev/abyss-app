@@ -1,7 +1,6 @@
 import type { SQliteClient } from '@abyss/records';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDatabase } from '../context/DatabaseContext';
-import { useOnce } from './useOnce';
 
 export type DbQuery<T> = (database: SQliteClient) => Promise<T>;
 export type Dependencies = unknown[];
@@ -17,16 +16,18 @@ export function useQuery<T>(callback: DbQuery<T>, dependencies: Dependencies = [
             setLoading(true);
             const result = await callback(database);
             setData(result);
+            setError(null);
+            setLoading(false);
         } catch (error) {
             setError(error as Error);
             setData(null);
-        } finally {
             setLoading(false);
         }
-    }, [callback, database, ...dependencies]);
+    }, [database, ...dependencies]);
 
-    // Initial query called 1x
-    useOnce(fetchData, [callback, database, ...dependencies]);
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     return { data, loading, error, refetch: fetchData, setData };
 }

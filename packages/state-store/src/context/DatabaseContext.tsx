@@ -5,9 +5,7 @@ interface DatabaseContextType {
     database: SQliteClient | null;
 }
 
-const DatabaseContext = createContext<DatabaseContextType>({
-    database: null,
-});
+const DatabaseContext = createContext<DatabaseContextType>({ database: null });
 
 interface DatabaseProviderProps {
     database: SQliteClient;
