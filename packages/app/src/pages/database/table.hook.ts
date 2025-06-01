@@ -1,12 +1,12 @@
+import { useDatabaseTable } from '@abyss/state-store';
 import { useNavigate, useParams } from 'react-router';
-import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 
 export function useTable() {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    const scanTable = useDatabase[id as keyof typeof Database.tables].scan();
+    const scanTable = useDatabaseTable(id as keyof typeof Database.tables);
 
     const breadcrumbs = [
         { name: 'Home', onClick: () => navigate('/') },

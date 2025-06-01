@@ -1,16 +1,16 @@
 import { type NotebookPageCellProperties, SqliteTable } from '@abyss/records';
+import { useDatabaseRecord } from '@abyss/state-store';
 import { PageNotebook } from '@abyss/ui-components';
 import { NotebookText } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Database } from '@/main';
-import { useDatabase } from '@/state/database-access-utils';
 import { Notebook } from './notebook/notebook';
 
 export function NotebookPage() {
     const { id } = useParams();
-    const cell = useDatabase.notebookCell.record(id as string);
-    const cellParent = useDatabase.notebookCell.record(cell.data?.parentCellId as string);
+    const cell = useDatabaseRecord(SqliteTable.notebookCell, id as string);
+    const cellParent = useDatabaseRecord(SqliteTable.notebookCell, cell.data?.parentCellId as string);
     const cellData: NotebookPageCellProperties = cell.data?.propertyData as NotebookPageCellProperties;
     const navigate = useNavigate();
 

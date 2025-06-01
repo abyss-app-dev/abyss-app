@@ -63,11 +63,11 @@ exports[`useQuery hook > load data from database using a query 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749984371,
+      "createdAt": 1748759090873,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749984371,
+      "updatedAt": 1748759090873,
     },
     "error": null,
     "loading": false,

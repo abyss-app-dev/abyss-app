@@ -1,16 +1,21 @@
 import { SqliteTable } from '@abyss/records';
-import { useState } from 'react';
+import { useDatabaseRecord } from '@abyss/state-store';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Database } from '@/main';
-import { useDatabase } from '@/state/database-access-utils';
 import { chatWithAgentGraph, chatWithAiModel } from '../../state/operations';
 
 export function useChatView() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const thread = useDatabase.messageThread.record(id);
-    const turns = useDatabase.messageThread.recordQuery(id || '', ref => ref.getTurns());
+    const thread = useDatabaseRecord(SqliteTable.messageThread, id);
+    const turns = useMemo(() => {
+        if (thread.data) {
+            return Database.tables.messageThread.ref(thread.data.id).getTurns();
+        }
+        return [];
+    }, [thread.data]);
 
     const [message, setMessage] = useState('');
 

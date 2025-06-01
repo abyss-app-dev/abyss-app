@@ -1,7 +1,8 @@
 import type { NotebookPageCellProperties } from '@abyss/records';
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseRecord } from '@abyss/state-store';
 import { NodeViewWrapper } from '@tiptap/react';
 import { useNavigate } from 'react-router-dom';
-import { useDatabase } from '@/state/database-access-utils';
 
 interface PageComponentProps {
     node: any;
@@ -11,7 +12,7 @@ interface PageComponentProps {
 
 export const PageComponent: React.FC<PageComponentProps> = ({ node }) => {
     const db = JSON.parse(node.attrs.db);
-    const page = useDatabase.notebookCell.record(db.id);
+    const page = useDatabaseRecord(SqliteTable.notebookCell, db.id);
     const navigate = useNavigate();
     const pageData = page.data?.propertyData as NotebookPageCellProperties | undefined;
 

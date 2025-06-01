@@ -1,8 +1,8 @@
 import { SqliteTable } from '@abyss/records';
+import { useDatabaseTableQuery } from '@abyss/state-store';
 import { formatDistanceToNow } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDatabaseTableQuery } from '../../state/database-connection';
 
 export function useMetrics() {
     const navigate = useNavigate();

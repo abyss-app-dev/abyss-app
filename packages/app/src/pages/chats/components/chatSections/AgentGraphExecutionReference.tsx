@@ -1,6 +1,7 @@
 import type { AgentGraphExecutionReferencePartial } from '@abyss/records';
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseRecord } from '@abyss/state-store';
 import { ChatMessageExecutionReference } from '@abyss/ui-components';
-import { useDatabase } from '@/state/database-access-utils';
 
 interface AgentGraphExecutionReferenceProps {
     message: AgentGraphExecutionReferencePartial;
@@ -8,8 +9,8 @@ interface AgentGraphExecutionReferenceProps {
 }
 
 export function AgentGraphExecutionReference({ message, navigate }: AgentGraphExecutionReferenceProps) {
-    const execution = useDatabase.agentGraphExecution.record(message.payloadData.agentGraphExecutionId);
-    const agentGraph = useDatabase.agentGraph.record(execution.data?.agentGraphId);
+    const execution = useDatabaseRecord(SqliteTable.agentGraphExecution, message.payloadData.agentGraphExecutionId);
+    const agentGraph = useDatabaseRecord(SqliteTable.agentGraph, execution.data?.agentGraphId);
 
     return (
         <ChatMessageExecutionReference

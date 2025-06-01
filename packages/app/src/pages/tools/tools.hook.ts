@@ -1,5 +1,6 @@
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseTable } from '@abyss/state-store';
 import { useNavigate } from 'react-router';
-import { useDatabase } from '@/state/database-access-utils';
 
 export function useToolsPage() {
     // Navigation
@@ -9,7 +10,7 @@ export function useToolsPage() {
         { name: 'Tools', onClick: () => navigate('/tools') },
     ];
 
-    const tools = useDatabase.toolDefinition.scan();
+    const tools = useDatabaseTable(SqliteTable.toolDefinition);
     const systemTools = tools.data?.filter(tool => tool.handlerType === 'abyss');
 
     return { breadcrumbs: pageBreadcrumbs, tools, systemTools };

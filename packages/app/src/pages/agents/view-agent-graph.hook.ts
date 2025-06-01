@@ -1,8 +1,9 @@
 import { type AgentGraphDefinition, type GraphEdgeDefinition, type GraphNodeDefinition, NodeHandler } from '@abyss/intelligence';
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseRecord } from '@abyss/state-store';
 import { addEdge, type Connection, useEdgesState, useNodesState } from '@xyflow/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 import type { RenderedGraphEdge, RenderedGraphNode } from './graph-components/graph.types';
 
@@ -11,7 +12,7 @@ export function useViewAgent() {
     const navigate = useNavigate();
 
     // Agent data
-    const agent = useDatabase.agentGraph.record(id || '');
+    const agent = useDatabaseRecord(SqliteTable.agentGraph, id || '');
     const [hasDoneInitialLoad, setHasDoneInitialLoad] = useState(false);
 
     // Graph data

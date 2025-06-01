@@ -55,11 +55,6 @@ export function App() {
                         <Route path="/agents/id/:id" element={<ViewAgentGraphPage />} />
                         <Route path="/tools" element={<ToolsPage />} />
                     </Route>
-                    {/* 
-                        <Route path="/logs" element={<LogListPage />} />
-                        <Route path="/documents" element={<DocumentsPage />} />
-                    */}
-
                     <Route path="*" element={<MainPage />} />
                 </Routes>
             </BrowserRouter>

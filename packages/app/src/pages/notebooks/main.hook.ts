@@ -1,11 +1,11 @@
-import type { NotebookPageCellProperties } from '@abyss/records';
+import { type NotebookPageCellProperties, SqliteTable } from '@abyss/records';
+import { useDatabaseTableQuery } from '@abyss/state-store';
 import { NotebookText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 
 export function useNotebookMain() {
-    const cells = useDatabase.notebookCell.tableQuery(async cells => cells.getRootCells());
+    const cells = useDatabaseTableQuery(SqliteTable.notebookCell, async cells => cells.getRootCells());
     const navigate = useNavigate();
 
     const handleCreateCell = async () => {

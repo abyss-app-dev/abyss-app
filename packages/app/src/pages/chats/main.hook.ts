@@ -1,10 +1,11 @@
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseTable } from '@abyss/state-store';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDatabase } from '@/state/database-access-utils';
 import { getIconForSourceType } from '../../library/references';
 import { Database } from '../../main';
 
 export function useChatMain() {
-    const threads = useDatabase.messageThread.scan();
+    const threads = useDatabaseTable(SqliteTable.messageThread);
     const location = useLocation();
     const navigate = useNavigate();
 

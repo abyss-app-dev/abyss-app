@@ -1,9 +1,10 @@
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseTable } from '@abyss/state-store';
 import { useNavigate } from 'react-router-dom';
-import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 
 export function useAgentsPage() {
-    const agents = useDatabase.agentGraph.scan();
+    const agents = useDatabaseTable(SqliteTable.agentGraph);
     const navigate = useNavigate();
 
     const onOpenRecordStr = (record: string) => {

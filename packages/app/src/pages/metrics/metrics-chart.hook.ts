@@ -1,8 +1,8 @@
 import { SqliteTable } from '@abyss/records';
+import { useDatabaseTableQuery } from '@abyss/state-store';
 import { addDays, addHours, addMinutes, format, subDays, subHours, subMonths } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDatabaseTableQuery } from '../../state/database-connection';
 
 // Define time bucket options
 export type TimeBucketOption = {
@@ -119,9 +119,7 @@ export function useMetricsChart() {
     );
 
     // Fetch metrics data
-    const metrics = useDatabaseTableQuery(SqliteTable.metric, async metrics => metrics.queryMetrics(metricName || '', selectedDimensions), [
-        metricName,
-    ]);
+    const metrics = useDatabaseTableQuery(SqliteTable.metric, async metrics => metrics.queryMetrics(metricName || '', selectedDimensions));
 
     // Navigation functions
     const navigateToHome = () => {

@@ -1,7 +1,7 @@
-import type { ModelConnectionType } from '@abyss/records';
+import { type ModelConnectionType, SqliteTable } from '@abyss/records';
+import { useDatabaseRecord } from '@abyss/state-store';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 
 export function useModelProfileCreate() {
@@ -9,7 +9,7 @@ export function useModelProfileCreate() {
     const navigate = useNavigate();
 
     // Load model profile and then update it if we see the one on disk change
-    const modelProfile = useDatabase.modelConnection.record(id || '');
+    const modelProfile = useDatabaseRecord(SqliteTable.modelConnection, id || '');
     const [modelMetadata, setModelMetadata] = useState<Partial<ModelConnectionType>>({});
 
     useEffect(() => {

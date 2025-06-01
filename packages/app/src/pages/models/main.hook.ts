@@ -1,8 +1,9 @@
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseTable } from '@abyss/state-store';
 import { useNavigate } from 'react-router-dom';
-import { useDatabase } from '@/state/database-access-utils';
 
 export function useModelProfileMain() {
-    const modelProfiles = useDatabase.modelConnection.scan();
+    const modelProfiles = useDatabaseTable(SqliteTable.modelConnection);
     const navigate = useNavigate();
 
     const handleCreateNew = () => {

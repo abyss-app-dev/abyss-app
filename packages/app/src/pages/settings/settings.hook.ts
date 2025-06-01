@@ -1,5 +1,6 @@
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseTableQuery } from '@abyss/state-store';
 import { useNavigate } from 'react-router';
-import { useDatabaseSettings } from '@/state/database-access-utils';
 import { Database } from '../../main';
 
 export function useSettingsPage() {
@@ -11,7 +12,7 @@ export function useSettingsPage() {
     ];
 
     // Settings
-    const settings = useDatabaseSettings();
+    const settings = useDatabaseTableQuery(SqliteTable.settings, async table => table.default());
 
     // Theme
     const onChangeAppTheme = (theme: string) => {

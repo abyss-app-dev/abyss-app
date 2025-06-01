@@ -1,14 +1,14 @@
 import { SqliteTable } from '@abyss/records';
+import { useDatabaseTable } from '@abyss/state-store';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDatabase } from '@/state/database-access-utils';
 import { Database } from '../../main';
 import { chatWithAgentGraph, chatWithAiModel } from '../../state/operations';
 
 export function useChatCreate() {
     const navigate = useNavigate();
-    const allModels = useDatabase.modelConnection.scan();
-    const allAgents = useDatabase.agentGraph.scan();
+    const allModels = useDatabaseTable(SqliteTable.modelConnection);
+    const allAgents = useDatabaseTable(SqliteTable.agentGraph);
 
     const [chatType, setChatType] = useState<'model' | 'agent'>('model');
     const [selectedModel, setSelectedModel] = useState<string>('');

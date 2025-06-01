@@ -1,11 +1,12 @@
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
 import './style.css';
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseTableQuery } from '@abyss/state-store';
 import { Document } from '@tiptap/extension-document';
 import { Heading } from '@tiptap/extension-heading';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Text } from '@tiptap/extension-text';
 import { useCallback, useEffect, useState } from 'react';
-import { useDatabase } from '@/state/database-access-utils';
 import { useDebounce } from '@/state/debounce';
 import { PageMentionExtension } from '../extensions/mention/page-mention';
 import { CustomPage } from '../extensions/page/page-extension';
@@ -20,7 +21,7 @@ const CustomParagraph = wrappedExtension(Paragraph);
 const extensions = [Document, Text, CustomHeading, CustomParagraph, CustomPage, PageMentionExtension, SlashCommands];
 
 export function Notebook({ notebookId }: { notebookId: string }) {
-    const content = useDatabase.notebookCell.tableQuery(async cells => cells.getChildren(notebookId), [notebookId]);
+    const content = useDatabaseTableQuery(SqliteTable.notebookCell, async cells => cells.getChildren(notebookId));
     const [hydrated, setHydrated] = useState(false);
 
     const saveNotebook = useCallback((editor: Editor) => onSaveNotebook(notebookId, editor), [notebookId]);

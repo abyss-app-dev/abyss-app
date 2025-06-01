@@ -1,4 +1,4 @@
-import type { SqliteTables } from '@abyss/records';
+import type { SqliteTableRecordType, SqliteTables } from '@abyss/records';
 import { useEffect } from 'react';
 import { useDatabase } from '../context/DatabaseContext';
 import { useQuery } from './useQuery';
@@ -6,8 +6,9 @@ import { useQuery } from './useQuery';
 export function useDatabaseTable<T extends keyof SqliteTables>(table: T) {
     const database = useDatabase();
 
-    const query = useQuery(async () => {
-        return database.tables[table].list();
+    const query = useQuery<SqliteTableRecordType[T][]>(async () => {
+        const tableRef = database.tables[table];
+        return (await tableRef.list()) as SqliteTableRecordType[T][];
     }, [table]);
 
     useEffect(() => {

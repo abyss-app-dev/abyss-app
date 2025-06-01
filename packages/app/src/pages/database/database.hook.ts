@@ -1,5 +1,5 @@
+import { useDatabaseQuery } from '@abyss/state-store';
 import { useNavigate } from 'react-router-dom';
-import { useDatabaseTables } from '../../state/database-access-utils';
 
 export function useDatabasePage() {
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ export function useDatabasePage() {
     ];
 
     // Data fetching
-    const allTables = useDatabaseTables();
+    const allTables = useDatabaseQuery(async database => database.describeTables());
 
     // Actions
     const openDbFolder = () => {

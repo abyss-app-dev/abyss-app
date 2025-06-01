@@ -1,5 +1,6 @@
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseTable } from '@abyss/state-store';
 import { ChevronDown } from 'lucide-react';
-import { useDatabase } from '@/state/database-access-utils';
 
 export interface ChatModelSelectorProps {
     color: string;
@@ -8,7 +9,7 @@ export interface ChatModelSelectorProps {
 }
 
 export function ChatModelSelector(props: ChatModelSelectorProps) {
-    const models = useDatabase.modelConnection.scan();
+    const models = useDatabaseTable(SqliteTable.modelConnection);
 
     if (!props.value && models.data && models.data.length) {
         props.onSelect(models.data[0].id);

@@ -82,10 +82,10 @@ exports[`useDatabaseTable hook > multiple table subscriptions work independently
   {
     "bothReady": false,
     "changeStep": 0,
-    "settings1HasData": false,
-    "settings1Loading": true,
-    "settings2HasData": true,
-    "settings2Loading": false,
+    "settings1HasData": true,
+    "settings1Loading": false,
+    "settings2HasData": false,
+    "settings2Loading": true,
   },
   {
     "bothReady": true,

@@ -1,10 +1,11 @@
+import { SqliteTable } from '@abyss/records';
+import { useDatabaseRecord } from '@abyss/state-store';
 import { useNavigate, useParams } from 'react-router';
-import { useDatabase } from '@/state/database-access-utils';
 
 export function useSnapshotsPage() {
     const { id } = useParams();
 
-    const snapshot = useDatabase.chatSnapshot.record(id);
+    const snapshot = useDatabaseRecord(SqliteTable.chatSnapshot, id);
 
     const navigate = useNavigate();
     const pageBreadcrumbs = [{ name: 'Home', onClick: () => navigate('/') }, { name: 'Snapshots' }, { name: id }];

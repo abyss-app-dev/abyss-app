@@ -1,7 +1,8 @@
 import type { UserToolsetConfig } from '@abyss/intelligence';
+import { SqliteTable } from '@abyss/records';
+import { useDatabase, useDatabaseTable } from '@abyss/state-store';
 import { CheckIcon, SquareDashedIcon } from 'lucide-react';
 import React from 'react';
-import { useDatabase } from '@/state/database-access-utils';
 
 export interface ToolSetSelectorProps {
     color: string;
@@ -21,7 +22,7 @@ export function ToolSetSelector(props: ToolSetSelectorProps) {
     const [selectedTools, setSelectedTools] = React.useState<string[]>(
         props.value ? parseToolConfig(props.value).tools.map(tool => tool.id) : []
     );
-    const { data: tools } = useDatabase.toolDefinition.scan();
+    const { data: tools } = useDatabaseTable(SqliteTable.toolDefinition);
 
     const handleToolToggle = (toolId: string) => {
         const newSelectedTools = selectedTools.includes(toolId) ? selectedTools.filter(id => id !== toolId) : [...selectedTools, toolId];

@@ -49,11 +49,11 @@ exports[`useDatabaseRecord hook > loads record with valid ID 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749984384,
+      "createdAt": 1748759090879,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749984384,
+      "updatedAt": 1748759090879,
     },
     "error": null,
     "loading": false,
@@ -62,11 +62,11 @@ exports[`useDatabaseRecord hook > loads record with valid ID 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749984384,
+      "createdAt": 1748759090879,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749984384,
+      "updatedAt": 1748759090879,
     },
     "error": null,
     "loading": false,
@@ -88,11 +88,11 @@ exports[`useDatabaseRecord hook > manual refetch functionality 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985501,
+      "createdAt": 1748759091978,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985501,
+      "updatedAt": 1748759091978,
     },
     "error": null,
     "hasRefetched": false,
@@ -102,11 +102,11 @@ exports[`useDatabaseRecord hook > manual refetch functionality 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985501,
+      "createdAt": 1748759091978,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985501,
+      "updatedAt": 1748759091978,
     },
     "error": null,
     "hasRefetched": true,
@@ -116,25 +116,11 @@ exports[`useDatabaseRecord hook > manual refetch functionality 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985501,
+      "createdAt": 1748759091978,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985501,
-    },
-    "error": null,
-    "hasRefetched": true,
-    "loading": false,
-    "refetch": [Function],
-    "setData": [Function],
-  },
-  {
-    "data": {
-      "createdAt": 1748749985501,
-      "id": "settings::default",
-      "lastPage": "/",
-      "theme": "",
-      "updatedAt": 1748749985501,
+      "updatedAt": 1748759091978,
     },
     "error": null,
     "hasRefetched": true,
@@ -144,11 +130,25 @@ exports[`useDatabaseRecord hook > manual refetch functionality 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985501,
+      "createdAt": 1748759091978,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985501,
+      "updatedAt": 1748759091978,
+    },
+    "error": null,
+    "hasRefetched": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748759091978,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748759091978,
     },
     "error": null,
     "hasRefetched": true,
@@ -195,11 +195,11 @@ exports[`useDatabaseRecord hook > record ID changes dynamically 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985232,
+      "createdAt": 1748759091711,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985232,
+      "updatedAt": 1748759091711,
     },
     "error": null,
     "loading": false,
@@ -209,11 +209,11 @@ exports[`useDatabaseRecord hook > record ID changes dynamically 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985232,
+      "createdAt": 1748759091711,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985232,
+      "updatedAt": 1748759091711,
     },
     "error": null,
     "loading": false,
@@ -236,11 +236,11 @@ exports[`useDatabaseRecord hook > subscription receives updates 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985775,
+      "createdAt": 1748759092242,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985775,
+      "updatedAt": 1748759092242,
     },
     "error": null,
     "hasSetData": false,
@@ -250,11 +250,11 @@ exports[`useDatabaseRecord hook > subscription receives updates 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985775,
+      "createdAt": 1748759092242,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985775,
+      "updatedAt": 1748759092242,
     },
     "error": null,
     "hasSetData": true,
@@ -264,11 +264,11 @@ exports[`useDatabaseRecord hook > subscription receives updates 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985775,
+      "createdAt": 1748759092242,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749985775,
+      "updatedAt": 1748759092242,
     },
     "error": null,
     "hasSetData": true,
@@ -278,11 +278,11 @@ exports[`useDatabaseRecord hook > subscription receives updates 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749985775,
+      "createdAt": 1748759092242,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "updated-theme",
-      "updatedAt": 1748749985775,
+      "updatedAt": 1748759092242,
     },
     "error": null,
     "hasSetData": true,
@@ -307,11 +307,11 @@ exports[`useDatabaseRecord hook > subscription tracks multiple record state chan
   },
   {
     "data": {
-      "createdAt": 1748749986301,
+      "createdAt": 1748759092766,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986301,
+      "updatedAt": 1748759092766,
     },
     "error": null,
     "loading": false,
@@ -323,11 +323,11 @@ exports[`useDatabaseRecord hook > subscription tracks multiple record state chan
   },
   {
     "data": {
-      "createdAt": 1748749986301,
+      "createdAt": 1748759092766,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986301,
+      "updatedAt": 1748759092766,
     },
     "error": null,
     "loading": false,
@@ -341,11 +341,11 @@ exports[`useDatabaseRecord hook > subscription tracks multiple record state chan
   },
   {
     "data": {
-      "createdAt": 1748749986301,
+      "createdAt": 1748759092766,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986301,
+      "updatedAt": 1748759092766,
     },
     "error": null,
     "loading": false,
@@ -359,11 +359,11 @@ exports[`useDatabaseRecord hook > subscription tracks multiple record state chan
   },
   {
     "data": {
-      "createdAt": 1748749986301,
+      "createdAt": 1748759092766,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986301,
+      "updatedAt": 1748759092766,
     },
     "error": null,
     "loading": false,
@@ -377,11 +377,11 @@ exports[`useDatabaseRecord hook > subscription tracks multiple record state chan
   },
   {
     "data": {
-      "createdAt": 1748749986301,
+      "createdAt": 1748759092766,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986301,
+      "updatedAt": 1748759092766,
     },
     "error": null,
     "loading": false,
@@ -412,11 +412,11 @@ exports[`useDatabaseRecord hook > subscription updates when database record is m
   {
     "currentTheme": "",
     "data": {
-      "createdAt": 1748749986038,
+      "createdAt": 1748759092505,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986038,
+      "updatedAt": 1748759092505,
     },
     "error": null,
     "hasUpdatedDb": false,
@@ -428,11 +428,11 @@ exports[`useDatabaseRecord hook > subscription updates when database record is m
   {
     "currentTheme": "",
     "data": {
-      "createdAt": 1748749986038,
+      "createdAt": 1748759092505,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986038,
+      "updatedAt": 1748759092505,
     },
     "error": null,
     "hasUpdatedDb": true,
@@ -444,11 +444,11 @@ exports[`useDatabaseRecord hook > subscription updates when database record is m
   {
     "currentTheme": "",
     "data": {
-      "createdAt": 1748749986038,
+      "createdAt": 1748759092505,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986038,
+      "updatedAt": 1748759092505,
     },
     "error": null,
     "hasUpdatedDb": true,
@@ -460,11 +460,11 @@ exports[`useDatabaseRecord hook > subscription updates when database record is m
   {
     "currentTheme": "",
     "data": {
-      "createdAt": 1748749986038,
+      "createdAt": 1748759092505,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749986038,
+      "updatedAt": 1748759092505,
     },
     "error": null,
     "hasUpdatedDb": true,

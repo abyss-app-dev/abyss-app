@@ -6,6 +6,7 @@ import { CaptureMetric } from './state/metrics';
 import { loadFromLastPage } from './state/page-history';
 import { applyTheme } from './state/theme-state';
 import './style.css';
+import { DatabaseProvider } from '@abyss/state-store';
 import { defineDefaults } from './defaults';
 
 // @ts-ignore
@@ -27,7 +28,9 @@ async function main() {
 
     ReactDOM.createRoot(root).render(
         <React.StrictMode>
-            <App />
+            <DatabaseProvider database={Database}>
+                <App />
+            </DatabaseProvider>
         </React.StrictMode>
     );
 }

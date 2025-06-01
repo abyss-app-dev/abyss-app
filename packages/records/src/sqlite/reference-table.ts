@@ -6,13 +6,15 @@ export class ReferencedSqliteTable<IRecordType extends BaseSqliteRecord = BaseSq
     public readonly tableId: keyof SqliteTables;
     public readonly client: SQliteClient;
     public readonly description: string;
-    public readonly tables: SqliteTables;
 
     constructor(tableId: keyof SqliteTables, description: string, client: SQliteClient) {
         this.tableId = tableId;
         this.client = client;
         this.description = description;
-        this.tables = client.tables;
+    }
+
+    public get tables(): SqliteTables {
+        return this.client.tables;
     }
 
     public static serialize<T extends BaseSqliteRecord>(record: T): Record<string, unknown> {
