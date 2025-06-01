@@ -1,4 +1,10 @@
-import { type ReferencedMessageThreadRecord, RichDocument, RichDocumentTemplate, type ToolCallRequestPartial } from '@abyss/records';
+import {
+    type ReferencedMessageThreadRecord,
+    RichDocument,
+    RichDocumentTemplate,
+    serializeNotebookCellsWithHierarchy,
+    type ToolCallRequestPartial,
+} from '@abyss/records';
 import type { MessageThreadRenderedTurn } from '@abyss/records/dist/records/chat-snapshot/chat-snapshot.type';
 import { systemErrorPrompt } from './errors.prompt';
 import { toolCallRequestPrompt, toolCallResponsePrompt, toolUseInstructionsPrompt } from './toolCall.prompt';
@@ -44,6 +50,21 @@ export async function buildConversationPrompt(thread: ReferencedMessageThreadRec
                     const rendered = RichDocument.render(richDocument.cells);
                     prompt.addHeader3(document.name);
                     prompt.addCode(rendered);
+                }
+            }
+        }
+        if (message.type === 'readonly-notebook-cells') {
+            const cells = await db.tables.notebookCell.getMany(message.payloadData.cellIds);
+            if (cells.length > 0) {
+                prompt.addHeader2('Additional Context').addText('The following notebook content has been added for your reference:');
+
+                // Use hierarchical serialization to include child content
+                const serializedContent = await serializeNotebookCellsWithHierarchy(cells, (parentId: string) =>
+                    db.tables.notebookCell.getChildren(parentId)
+                );
+
+                if (serializedContent.trim().length > 0) {
+                    prompt.addText(serializedContent);
                 }
             }
         }

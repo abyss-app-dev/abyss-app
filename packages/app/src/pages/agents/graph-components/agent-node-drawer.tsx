@@ -1,7 +1,7 @@
 import { Nodes } from '@abyss/intelligence';
 import type { GraphNodeDefinition } from '@abyss/intelligence/dist/state-machine/type-definition.type';
 import { Sidebar, SidebarButton, SidebarSection } from '@abyss/ui-components';
-import { CircleDot, HammerIcon, MessageCircle, Sparkles } from 'lucide-react';
+import { CircleDot, FileText, HammerIcon, MessageCircle, Sparkles } from 'lucide-react';
 
 interface AgentNodeDrawerProps {
     onAddNode: (node: GraphNodeDefinition) => void;
@@ -41,6 +41,18 @@ export function AgentNodeDrawer({ onAddNode }: AgentNodeDrawerProps) {
                     label="Set Thread Tools"
                     icon={HammerIcon}
                     onClick={() => onAddNode(Nodes.SetToolsInThread.getDefinition())}
+                />
+
+                <SidebarSection title="Documents" />
+                <SidebarButton
+                    label="Reference Documentset"
+                    icon={CircleDot}
+                    onClick={() => onAddNode(Nodes.ConstDocumentset.getDefinition())}
+                />
+                <SidebarButton
+                    label="Set Context Documents"
+                    icon={FileText}
+                    onClick={() => onAddNode(Nodes.SetContextDocumentsInThread.getDefinition())}
                 />
 
                 <SidebarSection title="Models" />

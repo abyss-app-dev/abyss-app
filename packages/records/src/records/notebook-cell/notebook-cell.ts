@@ -84,3 +84,6 @@ export class ReferencedNotebookCellRecord extends ReferencedSqliteRecord<Noteboo
         await Promise.all(promises);
     }
 }
+
+// Export serialization functions
+export * from './serialize/serialize';

@@ -148,6 +148,20 @@ export class ReferencedMessageThreadRecord extends ReferencedSqliteRecord<Messag
         return missingDocuments;
     }
 
+    public async getDeltaReadonlyNotebookCells(cellIds: string[]) {
+        const messages = await this.getAllMessages();
+        const foundCells: Set<string> = new Set();
+        for (const message of messages) {
+            if (message.type === 'readonly-notebook-cells') {
+                for (const cellId of message.payloadData.cellIds) {
+                    foundCells.add(cellId);
+                }
+            }
+        }
+        const missingCells = cellIds.filter(id => !foundCells.has(id));
+        return missingCells;
+    }
+
     public async getUnprocessedToolCalls(): Promise<ToolCallRequestPartial[]> {
         const messages = await this.getAllMessages();
         const getUnprocessedToolCalls: Record<string, ReferencedMessageRecord> = {};

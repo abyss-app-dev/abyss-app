@@ -1,5 +1,5 @@
 // Every connection has a data type that is used to determine if it is valid
-export type GraphDataType = 'string' | 'number' | 'boolean' | 'thread' | 'model' | 'signal' | 'tools';
+export type GraphDataType = 'string' | 'number' | 'boolean' | 'thread' | 'model' | 'signal' | 'tools' | 'documents';
 
 // Signal ports trigger the nodes themselves
 // Where as data ports are used to pass data between nodes

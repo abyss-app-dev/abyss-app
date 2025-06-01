@@ -5,6 +5,7 @@ import { AgentGraphExecutionReference } from './chatSections/AgentGraphExecution
 import { AiMessageTextSection } from './chatSections/AiMessageTextSection';
 import { NewToolDefinition } from './chatSections/NewToolDefinition';
 import { ReadonlyDocumentSection } from './chatSections/ReadonlyDocumentSection';
+import { ReadonlyNotebookCellsSection } from './chatSections/ReadonlyNotebookCellsSection';
 import { RemovedToolDefinition } from './chatSections/RemovedToolDefinition';
 import { SystemErrorMessageSection } from './chatSections/SystemErrorMessageSection';
 import { SystemTextMessageSection } from './chatSections/SystemTextMessageSection';
@@ -77,6 +78,12 @@ export function ChatHistoryRenderer({ turns }: { turns: MessageThreadTurn[] | nu
                     if (message.payloadData.documentIds.length > 0) {
                         elementsThisTurn.push(
                             <ReadonlyDocumentSection key={`readonly-document-${i}-${j}`} message={message} navigate={navigate} />
+                        );
+                    }
+                } else if (message.type === 'readonly-notebook-cells') {
+                    if (message.payloadData.cellIds.length > 0) {
+                        elementsThisTurn.push(
+                            <ReadonlyNotebookCellsSection key={`readonly-notebook-cells-${i}-${j}`} message={message} navigate={navigate} />
                         );
                     }
                 } else if (message.type === 'agent-graph-execution-reference') {
