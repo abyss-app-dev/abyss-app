@@ -19,7 +19,7 @@ export function ChatViewPage() {
             actions={headerReference}
             breadcrumbs={breadcrumbs}
         >
-            <ChatHistoryRenderer turns={turns.data} />
+            <ChatHistoryRenderer turns={turns} />
             <br />
             <br />
             {thread.data?.blockerId && <div className="text-sm text-gray-500">Chat is responding...</div>}
