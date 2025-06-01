@@ -10,7 +10,6 @@ export async function applyTheme() {
 
 export async function useTheme() {
     const userSettings = useDatabaseTableQuery(SqliteTable.settings, async table => table.default());
-    console.log(userSettings);
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', userSettings?.data?.theme || 'abyss');
     }, [userSettings?.data?.theme]);

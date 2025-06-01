@@ -17,8 +17,6 @@ export function useChatView() {
         }
     }, [thread.data]);
 
-    console.log(turns);
-
     const [message, setMessage] = useState('');
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
