@@ -9,6 +9,7 @@ import { Notebook } from './notebook/notebook';
 
 export function NotebookPage() {
     const { id } = useParams();
+
     const cell = useDatabaseRecord(SqliteTable.notebookCell, id as string);
     const cellParent = useDatabaseRecord(SqliteTable.notebookCell, cell.data?.parentCellId as string);
     const cellData: NotebookPageCellProperties = cell.data?.propertyData as NotebookPageCellProperties;
@@ -33,8 +34,6 @@ export function NotebookPage() {
                   onClick: () => navigate(`/notebooks/id/${cellParent.data?.id}`),
               }
             : undefined;
-
-    console.log(lastPage, cell.data?.parentCellId, cellParent);
 
     return (
         <PageNotebook

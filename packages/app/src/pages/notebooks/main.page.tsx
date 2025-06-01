@@ -1,4 +1,4 @@
-import { Button, Sidebar, SidebarButton } from '@abyss/ui-components';
+import { Button, Center, Sidebar, SidebarButton } from '@abyss/ui-components';
 import { Plus } from 'lucide-react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useNotebookMain } from './main.hook';
@@ -31,7 +31,9 @@ export function NotebookMainPage() {
             <div className="w-full h-full overflow-y-auto bg-background-transparent">
                 <Outlet />
                 {location.pathname === '/notebooks' && (
-                    <div className="text-center text-sm text-gray-500 mt-4">Create a new notebook to get started</div>
+                    <Center className="h-full bg-background-200">
+                        <div className="text-center text-sm text-gray-500 mt-4">Create a new notebook to get started</div>
+                    </Center>
                 )}
             </div>
         </div>

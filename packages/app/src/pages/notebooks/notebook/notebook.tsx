@@ -21,7 +21,7 @@ const CustomParagraph = wrappedExtension(Paragraph);
 const extensions = [Document, Text, CustomHeading, CustomParagraph, CustomPage, PageMentionExtension, SlashCommands];
 
 export function Notebook({ notebookId }: { notebookId: string }) {
-    const content = useDatabaseTableQuery(SqliteTable.notebookCell, async cells => cells.getChildren(notebookId));
+    const content = useDatabaseTableQuery(SqliteTable.notebookCell, async cells => cells.getChildren(notebookId), [notebookId]);
     const [hydrated, setHydrated] = useState(false);
 
     const saveNotebook = useCallback((editor: Editor) => onSaveNotebook(notebookId, editor), [notebookId]);

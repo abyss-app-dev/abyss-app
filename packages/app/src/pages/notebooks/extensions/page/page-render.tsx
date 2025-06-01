@@ -2,6 +2,7 @@ import type { NotebookPageCellProperties } from '@abyss/records';
 import { SqliteTable } from '@abyss/records';
 import { useDatabaseRecord } from '@abyss/state-store';
 import { NodeViewWrapper } from '@tiptap/react';
+import { FileInputIcon, TextIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface PageComponentProps {
@@ -23,10 +24,13 @@ export const PageComponent: React.FC<PageComponentProps> = ({ node }) => {
     return (
         <NodeViewWrapper className="page-node">
             <div
-                className="inline-flex items-center px-2 py-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded cursor-pointer"
+                className="inline-flex items-center px-2 bg-primary-300 hover:bg-primary-100 border border-primary-500 rounded cursor-pointer"
                 onClick={handleClick}
             >
-                <span className="text-blue-800 font-medium">{pageData?.title || 'Untitled Page'}</span>
+                <TextIcon className="w-4 h-4 mr-2" />
+                <span className="text-primary-800" style={{ fontSize: '12px' }}>
+                    {pageData?.title || 'Untitled Page'}
+                </span>
             </div>
         </NodeViewWrapper>
     );

@@ -5,15 +5,24 @@ import { useQuery } from './useQuery';
 
 export type DatabaseTableQueryFunction<T extends keyof SqliteTables, R> = (table: SqliteTables[T]) => R | Promise<R>;
 
-export function useDatabaseTableQuery<T extends keyof SqliteTables, R>(table: T, queryFunction: DatabaseTableQueryFunction<T, R>) {
+export function useDatabaseTableQuery<T extends keyof SqliteTables, R>(
+    table: T,
+    queryFunction: DatabaseTableQueryFunction<T, R>,
+    deps: unknown[] = []
+) {
     const database = useDatabase();
 
     // Use ref to store the latest query function to avoid dependency issues
     const queryFunctionRef = useRef(queryFunction);
     queryFunctionRef.current = queryFunction;
 
+    // Update the query function when the deps change
+    useEffect(() => {
+        queryFunctionRef.current = queryFunction;
+    }, [queryFunction, ...deps]);
+
     // Stabilize the query function to prevent infinite re-renders
-    const stableQueryFunction = useCallback((tableInstance: SqliteTables[T]) => queryFunctionRef.current(tableInstance), []);
+    const stableQueryFunction = useCallback((tableInstance: SqliteTables[T]) => queryFunctionRef.current(tableInstance), deps);
 
     const query = useQuery(async () => {
         return stableQueryFunction(database.tables[table]);
