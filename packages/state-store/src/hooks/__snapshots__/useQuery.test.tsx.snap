@@ -63,11 +63,11 @@ exports[`useQuery hook > load data from database using a query 1`] = `
   },
   {
     "data": {
-      "createdAt": 1748749550396,
+      "createdAt": 1748749984371,
       "id": "settings::default",
       "lastPage": "/",
       "theme": "",
-      "updatedAt": 1748749550396,
+      "updatedAt": 1748749984371,
     },
     "error": null,
     "loading": false,
@@ -104,6 +104,13 @@ exports[`useQuery hook > query has dependencies that change 1`] = `
     "data": 1,
     "error": null,
     "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": 2,
+    "error": null,
+    "loading": false,
     "refetch": [Function],
     "setData": [Function],
   },

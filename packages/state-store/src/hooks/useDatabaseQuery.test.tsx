@@ -78,7 +78,7 @@ describe('useDatabaseQuery hook', () => {
                             try {
                                 const settingsRecord = await database.tables[SqliteTable.settings].default();
                                 return `Found settings: ${settingsRecord.id}`;
-                            } catch (error) {
+                            } catch (_error) {
                                 return 'No settings found';
                             }
                         });
@@ -99,8 +99,8 @@ describe('useDatabaseQuery hook', () => {
 
                         const queryFn =
                             version === 1
-                                ? (database: any) => `v1-tables: ${Object.keys(database.tables).length}`
-                                : (database: any) => `v2-db-info: ${typeof database}`;
+                                ? (database: SQliteClient) => `v1-tables: ${Object.keys(database.tables).length}`
+                                : (database: SQliteClient) => `v2-db-info: ${typeof database}`;
 
                         const result = useDatabaseQuery(queryFn);
 
@@ -267,7 +267,7 @@ describe('useDatabaseQuery hook', () => {
                                     recordTheme: defaultRecord?.theme,
                                     queryTime: Date.now(),
                                 };
-                            } catch (error) {
+                            } catch (_error) {
                                 return { error: 'Failed to query database', queryTime: Date.now() };
                             }
                         });

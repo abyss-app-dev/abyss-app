@@ -167,7 +167,7 @@ describe('useDatabaseRecord hook', () => {
                                 setHasUpdatedDb(true);
                                 setTimeout(async () => {
                                     // Create a new settings record that should trigger subscription
-                                    const newRecord = await db.tables[SqliteTable.settings].default();
+                                    const _newRecord = await db.tables[SqliteTable.settings].default();
                                     // This will trigger database updates
                                 }, 50);
                             }

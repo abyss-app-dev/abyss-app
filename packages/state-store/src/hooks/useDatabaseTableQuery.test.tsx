@@ -1,4 +1,4 @@
-import { buildTestDB, type SQliteClient, SqliteTable } from '@abyss/records';
+import { buildTestDB, type ReferencedSettingsTable, type SQliteClient, SqliteTable } from '@abyss/records';
 import { useEffect, useState } from 'react';
 import { beforeEach, describe, test } from 'vitest';
 import { DatabaseProvider } from '../context/DatabaseContext';
@@ -77,8 +77,8 @@ describe('useDatabaseTableQuery hook', () => {
 
                         const queryFn =
                             version === 1
-                                ? (table: any) => `v1-${table.constructor.name}`
-                                : (table: any) => `v2-meta-${table.constructor.name}`;
+                                ? (table: ReferencedSettingsTable) => `v1-${table.constructor.name}`
+                                : (table: ReferencedSettingsTable) => `v2-meta-${table.constructor.name}`;
 
                         const result = useDatabaseTableQuery(SqliteTable.settings, queryFn);
 

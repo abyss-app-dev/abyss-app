@@ -1,4 +1,4 @@
-import { buildTestDB, type SQliteClient, SqliteTable } from '@abyss/records';
+import { buildTestDB, type SettingsType, type SQliteClient, SqliteTable } from '@abyss/records';
 import { useEffect, useState } from 'react';
 import { beforeEach, describe, test } from 'vitest';
 import { DatabaseProvider } from '../context/DatabaseContext';
@@ -104,8 +104,8 @@ describe('useDatabaseRecordQuery hook', () => {
 
                         const queryFn =
                             version === 1
-                                ? (record: any) => (record ? `v1-${record.theme}` : 'v1-no-record')
-                                : (record: any) => (record ? `v2-${record.id}` : 'v2-no-record');
+                                ? (record: SettingsType | null) => (record ? `v1-${record.theme}` : 'v1-no-record')
+                                : (record: SettingsType | null) => (record ? `v2-${record.id}` : 'v2-no-record');
 
                         const result = useDatabaseRecordQuery(SqliteTable.settings, defaultRecord.id, queryFn);
 
