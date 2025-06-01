@@ -1,30 +1,22 @@
 import type { SqliteTables } from '@abyss/records';
 import { useEffect } from 'react';
 import { useDatabase } from '../context/DatabaseContext';
-import { type Dependencies, useQuery } from './useQuery';
+import { useQuery } from './useQuery';
 
-export type UseDatabaseTableQuery<T extends keyof SqliteTables, IResultType> = ReturnType<typeof useDatabaseTableQuery<T, IResultType>>;
+export type DatabaseTableQueryFunction<T extends keyof SqliteTables, R> = (table: SqliteTables[T]) => R | Promise<R>;
 
-export function useDatabaseTableQuery<T extends keyof SqliteTables, IResultType>(
-    table: T,
-    query: (database: SqliteTables[T]) => Promise<IResultType>,
-    dependencies: Dependencies = []
-) {
+export function useDatabaseTableQuery<T extends keyof SqliteTables, R>(table: T, queryFunction: DatabaseTableQueryFunction<T, R>) {
     const database = useDatabase();
 
-    const usedQuery = useQuery(async () => {
-        return await query(database.tables[table]);
-    }, [table, ...dependencies]);
+    const query = useQuery(async () => {
+        return queryFunction(database.tables[table]);
+    }, [table, queryFunction]);
 
     useEffect(() => {
-        let unsubscribeCallback: () => void = () => {};
-        database.tables[table]
-            .subscribe(() => usedQuery.refetch())
-            .then(unsubscribe => {
-                unsubscribeCallback = unsubscribe;
-            });
-        return () => unsubscribeCallback();
-    }, [database, table, usedQuery.refetch]);
+        return database.tables[table].subscribe(async () => {
+            query.refetch();
+        });
+    }, [database, table, queryFunction, query.setData]);
 
-    return usedQuery;
+    return query;
 }

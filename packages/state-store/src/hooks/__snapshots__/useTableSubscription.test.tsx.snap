@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useTableSubscription hook > callback function reference changes 1`] = `
+[
+  {
+    "callbackVersion": 1,
+    "updates": [],
+  },
+  {
+    "callbackVersion": 2,
+    "updates": [],
+  },
+]
+`;
+
+exports[`useTableSubscription hook > handles different table types 1`] = `
+[
+  {
+    "settingsUpdates": [],
+    "version": 1,
+  },
+  {
+    "settingsUpdates": [],
+    "version": 2,
+  },
+]
+`;
+
+exports[`useTableSubscription hook > multiple subscriptions to same table work independently 1`] = `
+[
+  {
+    "subscription1Count": 0,
+    "subscription2Count": 0,
+  },
+]
+`;
+
+exports[`useTableSubscription hook > subscribes to table updates 1`] = `
+[
+  {
+    "tableUpdates": [],
+  },
+]
+`;
+
+exports[`useTableSubscription hook > subscription persists across re-renders 1`] = `
+[
+  {
+    "renderCount": 1,
+    "updates": [],
+  },
+  {
+    "renderCount": 2,
+    "updates": [],
+  },
+  {
+    "renderCount": 3,
+    "updates": [],
+  },
+]
+`;

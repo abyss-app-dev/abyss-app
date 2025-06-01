@@ -127,8 +127,8 @@ export class ReferencedSqliteTable<IRecordType extends BaseSqliteRecord = BaseSq
         return (raw as { count: number }[])[0].count > 0;
     }
 
-    async subscribe(callback: () => void) {
-        return await this.client.events.subscribeTable(this.tableId, callback);
+    subscribe(callback: () => void) {
+        return this.client.events.subscribeTable(this.tableId, callback);
     }
 
     async subscribeRecord(id: string, callback: (record: IRecordType) => void) {

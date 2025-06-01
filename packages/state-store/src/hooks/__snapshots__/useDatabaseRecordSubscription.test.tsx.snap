@@ -1,0 +1,425 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useDatabaseRecordSubscription hook > handle null record ID 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecordSubscription hook > manually call refetch once 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552000,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552000,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552000,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552000,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552000,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552000,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552000,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552000,
+    },
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552000,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552000,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecordSubscription hook > manually call setData 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552265,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552265,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552265,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552265,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552265,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552265,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749552267,
+      "id": "settings::default",
+      "lastPage": "/manual",
+      "theme": "manually-set-theme",
+      "updatedAt": 1748749552267,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecordSubscription hook > record ID changes from null to valid 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551202,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551202,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551202,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551202,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecordSubscription hook > record ID changes from valid to null 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551471,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551471,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551471,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551471,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551471,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551471,
+    },
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551471,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551471,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecordSubscription hook > subscribe to existing record with known ID 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749550399,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749550399,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749550399,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749550399,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecordSubscription hook > subscribe to non-existent record 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Record with id settings::nonexistent not found in table settings],
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecordSubscription hook > subscription with dependencies that change 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551740,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551740,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551740,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551740,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551740,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551740,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551740,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551740,
+    },
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551740,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551740,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;

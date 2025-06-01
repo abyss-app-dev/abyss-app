@@ -1,0 +1,161 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useRecordSubscription hook > callback function reference changes 1`] = `
+[
+  {
+    "callbackVersion": 1,
+    "updates": [],
+  },
+  {
+    "callbackVersion": 1,
+    "updates": [
+      {
+        "callbackVersion": 1,
+        "record": {
+          "createdAt": 1748747510987,
+          "id": "settings::default",
+          "lastPage": "/",
+          "theme": "",
+          "updatedAt": 1748747510987,
+        },
+        "timestamp": 1748747510990,
+      },
+    ],
+  },
+  {
+    "callbackVersion": 2,
+    "updates": [
+      {
+        "callbackVersion": 1,
+        "record": {
+          "createdAt": 1748747510987,
+          "id": "settings::default",
+          "lastPage": "/",
+          "theme": "",
+          "updatedAt": 1748747510987,
+        },
+        "timestamp": 1748747510990,
+      },
+    ],
+  },
+]
+`;
+
+exports[`useRecordSubscription hook > handles null record ID gracefully 1`] = `
+[
+  {
+    "recordId": undefined,
+    "updates": [],
+  },
+]
+`;
+
+exports[`useRecordSubscription hook > subscribes to existing record updates 1`] = `
+[
+  {
+    "recordId": "settings::default",
+    "updates": [],
+  },
+  {
+    "recordId": "settings::default",
+    "updates": [
+      {
+        "record": {
+          "createdAt": 1748747510188,
+          "id": "settings::default",
+          "lastPage": "/",
+          "theme": "",
+          "updatedAt": 1748747510188,
+        },
+        "timestamp": 1748747510196,
+      },
+    ],
+  },
+]
+`;
+
+exports[`useRecordSubscription hook > subscription persists across re-renders 1`] = `
+[
+  {
+    "renderCount": 1,
+    "updates": [],
+  },
+  {
+    "renderCount": 1,
+    "updates": [
+      {
+        "record": {
+          "createdAt": 1748747511252,
+          "id": "settings::default",
+          "lastPage": "/",
+          "theme": "",
+          "updatedAt": 1748747511252,
+        },
+        "renderCount": 1,
+        "timestamp": 1748747511254,
+      },
+    ],
+  },
+  {
+    "renderCount": 2,
+    "updates": [
+      {
+        "record": {
+          "createdAt": 1748747511252,
+          "id": "settings::default",
+          "lastPage": "/",
+          "theme": "",
+          "updatedAt": 1748747511252,
+        },
+        "renderCount": 1,
+        "timestamp": 1748747511254,
+      },
+    ],
+  },
+  {
+    "renderCount": 3,
+    "updates": [
+      {
+        "record": {
+          "createdAt": 1748747511252,
+          "id": "settings::default",
+          "lastPage": "/",
+          "theme": "",
+          "updatedAt": 1748747511252,
+        },
+        "renderCount": 1,
+        "timestamp": 1748747511254,
+      },
+    ],
+  },
+]
+`;
+
+exports[`useRecordSubscription hook > updates callback when record ID changes 1`] = `
+[
+  {
+    "recordId": undefined,
+    "updates": [],
+  },
+  {
+    "recordId": "settings::default",
+    "updates": [],
+  },
+  {
+    "recordId": "settings::default",
+    "updates": [
+      {
+        "forRecordId": "settings::default",
+        "record": {
+          "createdAt": 1748747510723,
+          "id": "settings::default",
+          "lastPage": "/",
+          "theme": "",
+          "updatedAt": 1748747510723,
+        },
+        "timestamp": 1748747510728,
+      },
+    ],
+  },
+]
+`;

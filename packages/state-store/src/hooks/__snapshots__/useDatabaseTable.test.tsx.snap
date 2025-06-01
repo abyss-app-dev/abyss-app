@@ -1,0 +1,194 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useDatabaseTable hook > handles different table types 1`] = `
+[
+  {
+    "hasSettingsTable": false,
+    "settingsError": null,
+    "settingsLoading": true,
+    "settingsTableName": undefined,
+  },
+  {
+    "hasSettingsTable": true,
+    "settingsError": null,
+    "settingsLoading": false,
+    "settingsTableName": "Array",
+  },
+]
+`;
+
+exports[`useDatabaseTable hook > loads table instance 1`] = `
+[
+  {
+    "error": null,
+    "hasTable": false,
+    "loading": true,
+    "tableName": undefined,
+  },
+  {
+    "error": null,
+    "hasTable": true,
+    "loading": false,
+    "tableName": "Array",
+  },
+]
+`;
+
+exports[`useDatabaseTable hook > manual refetch functionality 1`] = `
+[
+  {
+    "error": null,
+    "hasRefetched": false,
+    "hasTable": false,
+    "loading": true,
+  },
+  {
+    "error": null,
+    "hasRefetched": false,
+    "hasTable": true,
+    "loading": false,
+  },
+  {
+    "error": null,
+    "hasRefetched": true,
+    "hasTable": true,
+    "loading": false,
+  },
+  {
+    "error": null,
+    "hasRefetched": true,
+    "hasTable": true,
+    "loading": true,
+  },
+  {
+    "error": null,
+    "hasRefetched": true,
+    "hasTable": true,
+    "loading": false,
+  },
+]
+`;
+
+exports[`useDatabaseTable hook > multiple table subscriptions work independently 1`] = `
+[
+  {
+    "bothReady": false,
+    "changeStep": 0,
+    "settings1HasData": false,
+    "settings1Loading": true,
+    "settings2HasData": false,
+    "settings2Loading": true,
+  },
+  {
+    "bothReady": false,
+    "changeStep": 0,
+    "settings1HasData": true,
+    "settings1Loading": false,
+    "settings2HasData": false,
+    "settings2Loading": true,
+  },
+  {
+    "bothReady": true,
+    "changeStep": 0,
+    "settings1HasData": true,
+    "settings1Loading": false,
+    "settings2HasData": true,
+    "settings2Loading": false,
+  },
+  {
+    "bothReady": true,
+    "changeStep": 1,
+    "settings1HasData": true,
+    "settings1Loading": false,
+    "settings2HasData": true,
+    "settings2Loading": false,
+  },
+]
+`;
+
+exports[`useDatabaseTable hook > subscription receives table updates 1`] = `
+[
+  {
+    "error": null,
+    "hasSetData": false,
+    "hasTable": false,
+    "loading": true,
+  },
+  {
+    "error": null,
+    "hasSetData": false,
+    "hasTable": true,
+    "loading": false,
+  },
+  {
+    "error": null,
+    "hasSetData": true,
+    "hasTable": true,
+    "loading": false,
+  },
+  {
+    "error": null,
+    "hasSetData": true,
+    "hasTable": true,
+    "loading": false,
+  },
+]
+`;
+
+exports[`useDatabaseTable hook > subscription updates when database table changes 1`] = `
+[
+  {
+    "dataLength": 0,
+    "error": null,
+    "hasTable": false,
+    "hasTriggeredChange": false,
+    "loading": true,
+    "refetchCount": 0,
+  },
+  {
+    "dataLength": 0,
+    "error": null,
+    "hasTable": true,
+    "hasTriggeredChange": false,
+    "loading": false,
+    "refetchCount": 0,
+  },
+  {
+    "dataLength": 0,
+    "error": null,
+    "hasTable": true,
+    "hasTriggeredChange": true,
+    "loading": false,
+    "refetchCount": 1,
+  },
+]
+`;
+
+exports[`useDatabaseTable hook > table subscription persists across re-renders 1`] = `
+[
+  {
+    "error": null,
+    "hasTable": false,
+    "loading": true,
+    "renderCount": 1,
+  },
+  {
+    "error": null,
+    "hasTable": false,
+    "loading": true,
+    "renderCount": 2,
+  },
+  {
+    "error": null,
+    "hasTable": true,
+    "loading": false,
+    "renderCount": 2,
+  },
+  {
+    "error": null,
+    "hasTable": true,
+    "loading": false,
+    "renderCount": 3,
+  },
+]
+`;

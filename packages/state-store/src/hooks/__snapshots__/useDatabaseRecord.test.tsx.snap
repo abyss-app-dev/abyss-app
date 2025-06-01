@@ -1,0 +1,477 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useDatabaseRecord hook > handles non-existent record ID 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Record with id settings::nonexistent not found in table settings],
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecord hook > handles null record ID 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecord hook > loads record with valid ID 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749550394,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749550394,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749550394,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749550394,
+    },
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecord hook > manual refetch functionality 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "hasRefetched": false,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551463,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551463,
+    },
+    "error": null,
+    "hasRefetched": false,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551463,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551463,
+    },
+    "error": null,
+    "hasRefetched": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551463,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551463,
+    },
+    "error": null,
+    "hasRefetched": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551463,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551463,
+    },
+    "error": null,
+    "hasRefetched": true,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551463,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551463,
+    },
+    "error": null,
+    "hasRefetched": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecord hook > record ID changes dynamically 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "recordId": undefined,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": false,
+    "recordId": undefined,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": false,
+    "recordId": "settings::default",
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "recordId": "settings::default",
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551196,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551196,
+    },
+    "error": null,
+    "loading": false,
+    "recordId": "settings::default",
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551196,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551196,
+    },
+    "error": null,
+    "loading": false,
+    "recordId": "settings::default",
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecord hook > subscription receives updates 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "hasSetData": false,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551734,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551734,
+    },
+    "error": null,
+    "hasSetData": false,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551734,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551734,
+    },
+    "error": null,
+    "hasSetData": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551734,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551734,
+    },
+    "error": null,
+    "hasSetData": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+  {
+    "data": {
+      "createdAt": 1748749551734,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "updated-theme",
+      "updatedAt": 1748749551734,
+    },
+    "error": null,
+    "hasSetData": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+  },
+]
+`;
+
+exports[`useDatabaseRecord hook > subscription tracks multiple record state changes 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "modifications": [],
+    "modificationsCount": 0,
+    "refetch": [Function],
+    "setData": [Function],
+    "step": 0,
+  },
+  {
+    "data": {
+      "createdAt": 1748749552256,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552256,
+    },
+    "error": null,
+    "loading": false,
+    "modifications": [],
+    "modificationsCount": 0,
+    "refetch": [Function],
+    "setData": [Function],
+    "step": 0,
+  },
+  {
+    "data": {
+      "createdAt": 1748749552256,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552256,
+    },
+    "error": null,
+    "loading": false,
+    "modifications": [
+      "loaded-",
+    ],
+    "modificationsCount": 1,
+    "refetch": [Function],
+    "setData": [Function],
+    "step": 1,
+  },
+  {
+    "data": {
+      "createdAt": 1748749552256,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552256,
+    },
+    "error": null,
+    "loading": false,
+    "modifications": [
+      "loaded-",
+    ],
+    "modificationsCount": 1,
+    "refetch": [Function],
+    "setData": [Function],
+    "step": 2,
+  },
+  {
+    "data": {
+      "createdAt": 1748749552256,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552256,
+    },
+    "error": null,
+    "loading": false,
+    "modifications": [
+      "loaded-",
+    ],
+    "modificationsCount": 1,
+    "refetch": [Function],
+    "setData": [Function],
+    "step": 2,
+  },
+  {
+    "data": {
+      "createdAt": 1748749552256,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749552256,
+    },
+    "error": null,
+    "loading": false,
+    "modifications": [
+      "loaded-",
+      "loaded-",
+    ],
+    "modificationsCount": 2,
+    "refetch": [Function],
+    "setData": [Function],
+    "step": 2,
+  },
+]
+`;
+
+exports[`useDatabaseRecord hook > subscription updates when database record is modified 1`] = `
+[
+  {
+    "currentTheme": undefined,
+    "data": null,
+    "error": null,
+    "hasUpdatedDb": false,
+    "loading": true,
+    "refetch": [Function],
+    "setData": [Function],
+    "updateCount": 0,
+  },
+  {
+    "currentTheme": "",
+    "data": {
+      "createdAt": 1748749551995,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551995,
+    },
+    "error": null,
+    "hasUpdatedDb": false,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+    "updateCount": 0,
+  },
+  {
+    "currentTheme": "",
+    "data": {
+      "createdAt": 1748749551995,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551995,
+    },
+    "error": null,
+    "hasUpdatedDb": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+    "updateCount": 1,
+  },
+  {
+    "currentTheme": "",
+    "data": {
+      "createdAt": 1748749551995,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551995,
+    },
+    "error": null,
+    "hasUpdatedDb": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+    "updateCount": 1,
+  },
+  {
+    "currentTheme": "",
+    "data": {
+      "createdAt": 1748749551995,
+      "id": "settings::default",
+      "lastPage": "/",
+      "theme": "",
+      "updatedAt": 1748749551995,
+    },
+    "error": null,
+    "hasUpdatedDb": true,
+    "loading": false,
+    "refetch": [Function],
+    "setData": [Function],
+    "updateCount": 2,
+  },
+]
+`;

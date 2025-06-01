@@ -1,5 +1,5 @@
 import type { SqliteTableRecordType, SqliteTables } from '@abyss/records';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDatabase } from '../context/DatabaseContext';
 import { type Dependencies, useQuery } from './useQuery';
 
@@ -20,17 +20,23 @@ export function useDatabaseRecordSubscription<T extends keyof SqliteTables>(
         return null;
     }, [table, recordId, ...dependencies]);
 
+    // Stable callback for subscription updates
+    const updateData = useCallback(
+        (data: unknown) => {
+            query.setData(data as SqliteTableRecordType[T] | null);
+        },
+        [query.setData]
+    );
+
     // Subscribe to our record itself and update our data on change
     useEffect(() => {
         if (!recordId) return;
         let unsubscribeCallback: () => void = () => {};
-        database.tables[table]
-            .subscribeRecord(recordId, data => query.setData(data as SqliteTableRecordType[T] | null))
-            .then(unsubscribe => {
-                unsubscribeCallback = unsubscribe;
-            });
+        database.tables[table].subscribeRecord(recordId, updateData).then(unsubscribe => {
+            unsubscribeCallback = unsubscribe;
+        });
         return () => unsubscribeCallback();
-    }, [database, table, recordId, query.setData, ...dependencies]);
+    }, [database, table, recordId, updateData]);
 
     return query;
 }

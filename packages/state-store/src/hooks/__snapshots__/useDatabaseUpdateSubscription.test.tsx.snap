@@ -1,0 +1,65 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useDatabaseUpdateSubscription hook > callback function reference changes 1`] = `
+[
+  {
+    "callbackVersion": 1,
+    "updateCounts": {},
+  },
+  {
+    "callbackVersion": 2,
+    "updateCounts": {},
+  },
+]
+`;
+
+exports[`useDatabaseUpdateSubscription hook > multiple subscriptions work independently 1`] = `
+[
+  {
+    "subscription1Count": 0,
+    "subscription2Count": 0,
+  },
+]
+`;
+
+exports[`useDatabaseUpdateSubscription hook > receives database update notifications 1`] = `
+[
+  {
+    "lastUpdate": null,
+    "updateCount": 0,
+  },
+]
+`;
+
+exports[`useDatabaseUpdateSubscription hook > subscription cleanup works correctly 1`] = `
+[
+  {
+    "active": true,
+    "updateCount": 0,
+  },
+  {
+    "active": false,
+    "updateCount": 0,
+  },
+]
+`;
+
+exports[`useDatabaseUpdateSubscription hook > subscription persists across re-renders 1`] = `
+[
+  {
+    "renderCount": 1,
+    "updateCount": 0,
+    "updatesPerRender": {},
+  },
+  {
+    "renderCount": 2,
+    "updateCount": 0,
+    "updatesPerRender": {},
+  },
+  {
+    "renderCount": 3,
+    "updateCount": 0,
+    "updatesPerRender": {},
+  },
+]
+`;

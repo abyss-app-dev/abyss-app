@@ -5,6 +5,9 @@ import { useQuery } from './useQuery';
 
 export type UseDatabaseSubscription<T> = ReturnType<typeof useDatabaseSubscription<T>>;
 
+export type DatabaseUpdateCallback = () => void;
+
+// Original hook that uses refetch
 export function useDatabaseSubscription<T>(callback: DbQuery<T>, listeners: Dependencies = []) {
     const database = useDatabase();
     const query = useQuery(callback, listeners);

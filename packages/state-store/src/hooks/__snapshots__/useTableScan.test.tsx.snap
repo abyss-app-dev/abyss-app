@@ -1,0 +1,249 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useTableScan hook > handles query errors gracefully 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "scan": [Function],
+  },
+  {
+    "data": null,
+    "error": [Error: Test query error],
+    "loading": false,
+    "refetch": [Function],
+    "scan": [Function],
+  },
+]
+`;
+
+exports[`useTableScan hook > loading states transition correctly 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "scan": [Function],
+    "slowQuery": false,
+  },
+  {
+    "data": [
+      {
+        "createdAt": 1748747483105,
+        "id": "settings::default",
+        "lastPage": "/",
+        "theme": "",
+        "updatedAt": 1748747483105,
+      },
+    ],
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "scan": [Function],
+    "slowQuery": false,
+  },
+  {
+    "data": [
+      {
+        "createdAt": 1748747483105,
+        "id": "settings::default",
+        "lastPage": "/",
+        "theme": "",
+        "updatedAt": 1748747483105,
+      },
+    ],
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "scan": [Function],
+    "slowQuery": true,
+  },
+]
+`;
+
+exports[`useTableScan hook > manual refetch functionality 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "hasRefetched": false,
+    "loading": true,
+    "refetch": [Function],
+    "scan": null,
+  },
+  {
+    "data": [],
+    "error": null,
+    "hasRefetched": false,
+    "loading": false,
+    "refetch": [Function],
+    "scan": null,
+  },
+  {
+    "data": [],
+    "error": null,
+    "hasRefetched": true,
+    "loading": false,
+    "refetch": [Function],
+    "scan": null,
+  },
+  {
+    "data": [],
+    "error": null,
+    "hasRefetched": true,
+    "loading": false,
+    "refetch": [Function],
+    "scan": null,
+  },
+]
+`;
+
+exports[`useTableScan hook > query function changes dynamically 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "queryVersion": 1,
+    "refetch": [Function],
+    "scan": [Function],
+  },
+  {
+    "data": [
+      {
+        "createdAt": 1748747482305,
+        "id": "settings::default",
+        "lastPage": "/",
+        "theme": "",
+        "updatedAt": 1748747482305,
+      },
+    ],
+    "error": null,
+    "loading": false,
+    "queryVersion": 1,
+    "refetch": [Function],
+    "scan": [Function],
+  },
+  {
+    "data": [
+      {
+        "createdAt": 1748747482305,
+        "id": "settings::default",
+        "lastPage": "/",
+        "theme": "",
+        "updatedAt": 1748747482305,
+      },
+    ],
+    "error": null,
+    "loading": false,
+    "queryVersion": 2,
+    "refetch": [Function],
+    "scan": [Function],
+  },
+]
+`;
+
+exports[`useTableScan hook > scans table with auto-subscription disabled 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "scan": null,
+  },
+  {
+    "data": [],
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "scan": null,
+  },
+]
+`;
+
+exports[`useTableScan hook > scans table with custom query 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "scan": [Function],
+  },
+  {
+    "data": [
+      {
+        "createdAt": 1748747481767,
+        "id": "settings::default",
+        "lastPage": "/",
+        "theme": "",
+        "updatedAt": 1748747481767,
+      },
+    ],
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "scan": [Function],
+  },
+]
+`;
+
+exports[`useTableScan hook > scans table with default query (all records) 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "scan": null,
+  },
+  {
+    "data": [],
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "scan": null,
+  },
+]
+`;
+
+exports[`useTableScan hook > subscription auto-updates when table changes 1`] = `
+[
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "scan": [Function],
+    "updateCount": 0,
+  },
+  {
+    "data": null,
+    "error": null,
+    "loading": true,
+    "refetch": [Function],
+    "scan": [Function],
+    "updateCount": 1,
+  },
+  {
+    "data": [
+      {
+        "createdAt": 1748747483368,
+        "id": "settings::default",
+        "lastPage": "/",
+        "theme": "",
+        "updatedAt": 1748747483368,
+      },
+    ],
+    "error": null,
+    "loading": false,
+    "refetch": [Function],
+    "scan": [Function],
+    "updateCount": 1,
+  },
+]
+`;
