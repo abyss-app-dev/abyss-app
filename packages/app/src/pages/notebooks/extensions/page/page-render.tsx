@@ -10,13 +10,13 @@ interface PageComponentProps {
 }
 
 export const PageComponent: React.FC<PageComponentProps> = ({ node }) => {
-    const pageId = node.attrs.pageId;
-    const page = useDatabase.notebookCell.record(pageId);
+    const db = JSON.parse(node.attrs.db);
+    const page = useDatabase.notebookCell.record(db.id);
     const navigate = useNavigate();
     const pageData = page.data?.propertyData as NotebookPageCellProperties | undefined;
 
     const handleClick = () => {
-        navigate(`/notebooks/id/${pageId}`);
+        navigate(`/notebooks/id/${db.id}`);
     };
 
     return (

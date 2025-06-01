@@ -41,9 +41,7 @@ export function Notebook({ notebookId }: { notebookId: string }) {
     }, [notebookId]);
 
     useEffect(() => {
-        console.log('content', content, window.location.pathname, notebookId);
         if (editor && !content.loading && content.data && !hydrated) {
-            console.log('setting content', content.data, window.location.pathname, notebookId);
             const json = mapDatabaseCellsToTipTap(content.data);
             editor.commands.setContent(json, false);
             setHydrated(true);

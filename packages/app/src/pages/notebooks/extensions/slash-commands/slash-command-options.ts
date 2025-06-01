@@ -1,6 +1,7 @@
 import { SqliteTable } from '@abyss/records';
 import type { Editor, Range } from '@tiptap/core';
 import { Database } from '@/main';
+import { TipTapDBType } from '../../notebook/types';
 
 export interface Command {
     title: string;
@@ -50,10 +51,19 @@ async function onCreateNewPage({ editor, range }: { editor: Editor; range: Range
             title: 'New Page',
         },
     });
+
+    const dbData = {
+        id: newPage.id,
+        parentCellId: null,
+        orderIndex: 0,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        propertyData: newPage.propertyData,
+    };
     editor
         .chain()
         .focus()
         .deleteRange(range)
-        .insertContent([{ type: 'pageWrapped', attrs: { pageId: newPage.id } }])
+        .insertContent([{ type: 'pageWrapped', attrs: { db: JSON.stringify(dbData) } }])
         .run();
 }

@@ -118,11 +118,14 @@ function mapTextCell(cell: NotebookCellType<'text'>, db: TipTapDBType): JSONCont
     };
 }
 
-function mapPageCell(_cell: NotebookCellType<'page'>, db: TipTapDBType): JSONContent {
+function mapPageCell(cell: NotebookCellType<'page'>, db: TipTapDBType): JSONContent {
     return {
         type: 'pageWrapped',
         attrs: {
-            db: JSON.stringify(db),
+            db: JSON.stringify({
+                ...db,
+                propertyData: cell.propertyData,
+            }),
         },
     };
 }

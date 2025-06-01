@@ -1,4 +1,4 @@
-import { Book, Loader2 } from 'lucide-react';
+import { Book, ChevronLeft, Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -35,6 +35,13 @@ export interface PageNotebookProps {
      * Callback when title changes
      */
     onTitleChange?: (newTitle: string) => void;
+    /**
+     * Last page navigation option
+     */
+    lastPage?: {
+        name: string;
+        onClick: () => void;
+    };
 }
 
 export const PageNotebook: React.FC<PageNotebookProps> = ({
@@ -46,6 +53,7 @@ export const PageNotebook: React.FC<PageNotebookProps> = ({
     loading = false,
     isEditable = false,
     onTitleChange,
+    lastPage,
 }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(title);
@@ -92,6 +100,18 @@ export const PageNotebook: React.FC<PageNotebookProps> = ({
     return (
         <div className="flex flex-col text-text-300 h-full w-full bg-background-300 overflow-hidden base-font p-6">
             <div className="">
+                {lastPage && (
+                    <div className="mb-2">
+                        <button
+                            type="button"
+                            onClick={lastPage.onClick}
+                            className="flex items-center text-sm text-text-400 hover:text-primary-500 transition-colors cursor-pointer"
+                        >
+                            <ChevronLeft className="h-4 w-4 mr-1" />
+                            {lastPage.name}
+                        </button>
+                    </div>
+                )}
                 <div className="flex justify-between items-center">
                     <div className="flex items-center">
                         {icon ? <div className="mr-2">{icon}</div> : <Book className="mr-2 h-5 w-5" />}
