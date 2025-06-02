@@ -1,16 +1,118 @@
 import { type Command, getSuggestionItems } from './slash-command-options';
 
+interface MenuState {
+    items: Command[];
+    selectedIndex: number;
+    title?: string;
+    parent?: MenuState;
+}
+
 export const renderItems = () => {
     let component: HTMLDivElement | null = null;
-    let selectedIndex = 0;
-    let items: Command[] = [];
     let commandFunction: any = null;
+    let currentMenuState: MenuState = {
+        items: [],
+        selectedIndex: 0,
+    };
+    let isLoading = false;
 
     const updateSelection = () => {
         if (!component) return;
         const buttons = component.querySelectorAll('button');
         buttons.forEach((button, index) => {
-            button.className = index === selectedIndex ? 'selected' : '';
+            button.className = index === currentMenuState.selectedIndex ? 'selected' : '';
+        });
+    };
+
+    const renderMenu = (menuState: MenuState) => {
+        if (!component) return;
+
+        component.innerHTML = '';
+
+        // Add back button if this is a submenu
+        if (menuState.parent) {
+            const backButton = document.createElement('button');
+            backButton.className = '';
+            backButton.innerHTML = `
+                <span class="slash-menu-icon">←</span>
+                <span class="slash-menu-title">Back</span>
+            `;
+            backButton.addEventListener('click', () => {
+                if (menuState.parent) {
+                    currentMenuState = menuState.parent;
+                    renderMenu(currentMenuState);
+                }
+            });
+            component.appendChild(backButton);
+        }
+
+        // Add title if this is a submenu
+        if (menuState.title) {
+            const titleEl = document.createElement('div');
+            titleEl.className = 'slash-menu-title-header';
+            titleEl.textContent = menuState.title;
+            component.appendChild(titleEl);
+        }
+
+        if (isLoading) {
+            const loadingEl = document.createElement('div');
+            loadingEl.className = 'slash-menu-loading';
+            loadingEl.textContent = 'Loading...';
+            component.appendChild(loadingEl);
+            return;
+        }
+
+        if (menuState.items.length === 0) {
+            const noResults = document.createElement('div');
+            noResults.className = 'no-results';
+            noResults.textContent = 'No results';
+            component.appendChild(noResults);
+            return;
+        }
+
+        menuState.items.forEach((item: Command, index: number) => {
+            const button = document.createElement('button');
+            const adjustedIndex = menuState.parent ? index + 1 : index; // Account for back button
+            button.className = adjustedIndex === currentMenuState.selectedIndex ? 'selected' : '';
+
+            const hasSubCommands = !!item.subCommands;
+            const rightIcon = hasSubCommands ? ' <span class="slash-menu-arrow">→</span>' : '';
+
+            button.innerHTML = `
+                <span class="slash-menu-icon">${item.icon}</span>
+                <span class="slash-menu-title">${item.title}</span>
+                ${rightIcon}
+            `;
+
+            button.addEventListener('click', async () => {
+                if (item.subCommands) {
+                    // Load submenu
+                    isLoading = true;
+                    renderMenu(currentMenuState);
+
+                    try {
+                        const subCommands = await item.subCommands();
+                        const subMenuState: MenuState = {
+                            items: subCommands,
+                            selectedIndex: 0,
+                            title: item.title,
+                            parent: currentMenuState,
+                        };
+                        currentMenuState = subMenuState;
+                        isLoading = false;
+                        renderMenu(currentMenuState);
+                    } catch (error) {
+                        console.error('Error loading submenu:', error);
+                        isLoading = false;
+                        renderMenu(currentMenuState);
+                    }
+                } else if (item.command) {
+                    commandFunction(item);
+                }
+            });
+            if (component) {
+                component.appendChild(button);
+            }
         });
     };
 
@@ -20,22 +122,15 @@ export const renderItems = () => {
             component.className = 'slash-menu';
             document.body.appendChild(component);
 
-            // Immediately populate with all commands
+            // Initialize with all commands
             const allCommands = getSuggestionItems({ query: '' });
-            items = allCommands;
-            selectedIndex = 0;
+            currentMenuState = {
+                items: allCommands,
+                selectedIndex: 0,
+            };
             commandFunction = props.command;
 
-            allCommands.forEach((item: Command, index: number) => {
-                const button = document.createElement('button');
-                button.className = index === 0 ? 'selected' : '';
-                button.innerHTML = `
-                    <span class="slash-menu-icon">${item.icon}</span>
-                    <span class="slash-menu-title">${item.title}</span>
-                `;
-                button.addEventListener('click', () => commandFunction(item));
-                component!.appendChild(button);
-            });
+            renderMenu(currentMenuState);
 
             // Position the popup
             const { clientRect } = props;
@@ -50,30 +145,14 @@ export const renderItems = () => {
             if (!component) return;
 
             const { items: newItems, command, clientRect } = props;
-            items = newItems;
-            selectedIndex = Math.min(selectedIndex, items.length - 1);
-            commandFunction = command;
 
-            component.innerHTML = '';
-
-            if (items.length === 0) {
-                const noResults = document.createElement('div');
-                noResults.className = 'no-results';
-                noResults.textContent = 'No results';
-                component.appendChild(noResults);
-                return;
+            // Only update if we're in the root menu (not a submenu)
+            if (!currentMenuState.parent) {
+                currentMenuState.items = newItems;
+                currentMenuState.selectedIndex = Math.min(currentMenuState.selectedIndex, newItems.length - 1);
+                commandFunction = command;
+                renderMenu(currentMenuState);
             }
-
-            items.forEach((item: Command, index: number) => {
-                const button = document.createElement('button');
-                button.className = index === selectedIndex ? 'selected' : '';
-                button.innerHTML = `
-                    <span class="slash-menu-icon">${item.icon}</span>
-                    <span class="slash-menu-title">${item.title}</span>
-                `;
-                button.addEventListener('click', () => commandFunction(item));
-                component!.appendChild(button);
-            });
 
             // Position the popup relative to the cursor
             if (clientRect) {
@@ -111,27 +190,75 @@ export const renderItems = () => {
 
         onKeyDown(props: any) {
             const { event } = props;
+            const maxIndex = currentMenuState.parent
+                ? currentMenuState.items.length // Include back button
+                : currentMenuState.items.length - 1;
 
             if (event.key === 'ArrowDown') {
-                selectedIndex = (selectedIndex + 1) % items.length;
+                currentMenuState.selectedIndex = (currentMenuState.selectedIndex + 1) % (maxIndex + 1);
                 updateSelection();
                 return true;
             }
 
             if (event.key === 'ArrowUp') {
-                selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+                currentMenuState.selectedIndex = (currentMenuState.selectedIndex - 1 + maxIndex + 1) % (maxIndex + 1);
                 updateSelection();
                 return true;
             }
 
+            if (event.key === 'ArrowLeft' && currentMenuState.parent) {
+                // Go back to parent menu
+                currentMenuState = currentMenuState.parent;
+                renderMenu(currentMenuState);
+                return true;
+            }
+
             if (event.key === 'Enter') {
-                if (items[selectedIndex] && commandFunction) {
-                    commandFunction(items[selectedIndex]);
+                if (currentMenuState.parent && currentMenuState.selectedIndex === 0) {
+                    // Back button selected
+                    currentMenuState = currentMenuState.parent;
+                    renderMenu(currentMenuState);
+                    return true;
+                }
+
+                const itemIndex = currentMenuState.parent ? currentMenuState.selectedIndex - 1 : currentMenuState.selectedIndex;
+
+                const selectedItem = currentMenuState.items[itemIndex];
+
+                if (selectedItem) {
+                    if (selectedItem.subCommands) {
+                        // Load submenu
+                        selectedItem
+                            .subCommands()
+                            .then(subCommands => {
+                                const subMenuState: MenuState = {
+                                    items: subCommands,
+                                    selectedIndex: 0,
+                                    title: selectedItem.title,
+                                    parent: currentMenuState,
+                                };
+                                currentMenuState = subMenuState;
+                                renderMenu(currentMenuState);
+                            })
+                            .catch(error => {
+                                console.error('Error loading submenu:', error);
+                            });
+                    } else if (selectedItem.command && commandFunction) {
+                        commandFunction(selectedItem);
+                    }
                 }
                 return true;
             }
 
             if (event.key === 'Escape') {
+                if (currentMenuState.parent) {
+                    // Go back to parent menu instead of closing
+                    currentMenuState = currentMenuState.parent;
+                    renderMenu(currentMenuState);
+                    return true;
+                }
+
+                // Close menu if we're at root level
                 if (component) {
                     component.remove();
                     component = null;

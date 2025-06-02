@@ -5,6 +5,7 @@ import type {
     NotebookHeading3CellProperties,
     NotebookPageCellProperties,
     NotebookTextCellProperties,
+    NotebookToolCellProperties,
 } from '../notebook-cell.type';
 
 export function serializeNotebookCells(cells: NotebookCellType[]): string {
@@ -20,6 +21,8 @@ export function serializeNotebookCells(cells: NotebookCellType[]): string {
                 return renderHeading2Cell(cell as NotebookCellType<'heading2'>);
             case 'heading3':
                 return renderHeading3Cell(cell as NotebookCellType<'heading3'>);
+            case 'tool':
+                return renderToolCell(cell as NotebookCellType<'tool'>);
             default:
                 return '';
         }
@@ -51,6 +54,9 @@ export async function serializeNotebookCellsWithHierarchy(
                     break;
                 case 'heading3':
                     content = renderHeading3Cell(cell as NotebookCellType<'heading3'>);
+                    break;
+                case 'tool':
+                    content = renderToolCell(cell as NotebookCellType<'tool'>);
                     break;
                 default:
                     content = '';
@@ -117,4 +123,10 @@ function renderHeading3Cell(cell: NotebookCellType<'heading3'>): string {
     const properties = cell.propertyData as NotebookHeading3CellProperties;
     const text = properties?.text || '';
     return text.trim().length > 0 ? `\n\n### ${text}` : '';
+}
+
+function renderToolCell(cell: NotebookCellType<'tool'>): string {
+    const properties = cell.propertyData as NotebookToolCellProperties;
+    const toolId = properties?.toolId || 'Unknown Tool';
+    return `[[Tool Reference: ${toolId}]]`;
 }

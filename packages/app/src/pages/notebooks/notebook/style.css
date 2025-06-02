@@ -47,6 +47,7 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 2px;
+    position: relative;
 }
 
 .slash-menu button:hover,
@@ -66,6 +67,29 @@
 
 .slash-menu-title {
     flex: 1;
+}
+
+.slash-menu-arrow {
+    font-size: 10px;
+    color: var(--color-text-500);
+    margin-left: auto;
+}
+
+.slash-menu-title-header {
+    padding: 8px 8px 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-700);
+    border-bottom: 1px solid var(--color-background-300);
+    margin-bottom: 4px;
+}
+
+.slash-menu-loading {
+    padding: 8px;
+    text-align: center;
+    color: var(--color-text-500);
+    font-style: italic;
+    font-size: 14px;
 }
 
 .slash-menu .no-results {

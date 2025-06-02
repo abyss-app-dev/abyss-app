@@ -11,6 +11,7 @@ import { useDebounce } from '@/state/debounce';
 import { PageMentionExtension } from '../extensions/mention/page-mention';
 import { CustomPage } from '../extensions/page/page-extension';
 import { SlashCommands } from '../extensions/slash-commands/slash-commands';
+import { CustomTool } from '../extensions/tool/tool-extension';
 import { wrappedExtension } from '../extensions/wrapExtension';
 import { mapDatabaseCellsToTipTap } from './mapping-db-to-tiptap';
 import { onSaveNotebook } from './onSaveNotebook';
@@ -18,7 +19,7 @@ import { onSaveNotebook } from './onSaveNotebook';
 // Build the extensions we need
 const CustomHeading = wrappedExtension(Heading);
 const CustomParagraph = wrappedExtension(Paragraph);
-const extensions = [Document, Text, CustomHeading, CustomParagraph, CustomPage, PageMentionExtension, SlashCommands];
+const extensions = [Document, Text, CustomHeading, CustomParagraph, CustomPage, CustomTool, PageMentionExtension, SlashCommands];
 
 export function Notebook({ notebookId }: { notebookId: string }) {
     const content = useDatabaseTableQuery(SqliteTable.notebookCell, async cells => cells.getChildren(notebookId), [notebookId]);

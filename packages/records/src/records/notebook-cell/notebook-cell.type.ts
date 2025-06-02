@@ -1,6 +1,6 @@
 import type { BaseSqliteRecord } from '../../sqlite/sqlite.type';
 
-export type NotebookCellVariant = 'page' | 'text' | 'heading1' | 'heading2' | 'heading3';
+export type NotebookCellVariant = 'page' | 'text' | 'heading1' | 'heading2' | 'heading3' | 'tool';
 
 export interface NotebookCellType<T extends NotebookCellVariant = NotebookCellVariant> extends BaseSqliteRecord {
     type: T;
@@ -33,12 +33,17 @@ export interface NotebookHeading3CellProperties {
     text: string;
 }
 
+export interface NotebookToolCellProperties {
+    toolId: string;
+}
+
 export type NotebookCellProperties =
     | NotebookPageCellProperties
     | NotebookTextCellProperties
     | NotebookHeading1CellProperties
     | NotebookHeading2CellProperties
-    | NotebookHeading3CellProperties;
+    | NotebookHeading3CellProperties
+    | NotebookToolCellProperties;
 
 export interface NoteBookTextSectionTextProperties {
     type: 'text';

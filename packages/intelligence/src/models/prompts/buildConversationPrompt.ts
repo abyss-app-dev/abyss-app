@@ -64,7 +64,7 @@ export async function buildConversationPrompt(thread: ReferencedMessageThreadRec
                 );
 
                 if (serializedContent.trim().length > 0) {
-                    prompt.addText(serializedContent);
+                    prompt.addCode(serializedContent);
                 }
             }
         }

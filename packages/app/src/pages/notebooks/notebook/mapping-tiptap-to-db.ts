@@ -39,6 +39,10 @@ function mapTipTapToDatabaseCell(cell: JSONContent): NotebookCellType {
         return mapPageCell(cell, db);
     }
 
+    if (cell.type === 'toolWrapped') {
+        return mapToolCell(cell, db);
+    }
+
     throw new Error(`Unknown cell type: ${cell.type}`);
 }
 
@@ -106,6 +110,13 @@ function mapParagraphCell(cell: JSONContent, db: TipTapDBType): NotebookCellType
 function mapPageCell(_cell: JSONContent, db: TipTapDBType): NotebookCellType<'page'> {
     return {
         type: 'page',
+        ...db,
+    };
+}
+
+function mapToolCell(_cell: JSONContent, db: TipTapDBType): NotebookCellType<'tool'> {
+    return {
+        type: 'tool',
         ...db,
     };
 }
