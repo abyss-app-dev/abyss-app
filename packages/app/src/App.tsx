@@ -18,6 +18,7 @@ import { NotebookMainPage } from './pages/notebooks/main.page';
 import { NotebookPage } from './pages/notebooks/notebook.page';
 import { SettingsPage } from './pages/settings/settings.page';
 import { ViewSnapshotPage } from './pages/snapshots/view-snapshot.page';
+import { AddMcpPage } from './pages/tools/add-mcp.page';
 import { ToolsPage } from './pages/tools/tools.page';
 import { WithAppSidebar } from './pages/withSidebar';
 import { useTheme } from './state/theme-state';
@@ -54,6 +55,7 @@ export function App() {
                         <Route path="/agents" element={<AgentsPage />} />
                         <Route path="/agents/id/:id" element={<ViewAgentGraphPage />} />
                         <Route path="/tools" element={<ToolsPage />} />
+                        <Route path="/tools/mcp" element={<AddMcpPage />} />
                     </Route>
                     <Route path="*" element={<MainPage />} />
                 </Routes>

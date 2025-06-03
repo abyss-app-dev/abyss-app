@@ -6,6 +6,7 @@ import { ReferencedAgentGraphExecutionTable } from '../records/agent-graph-execu
 import { ReferencedChatSnapshotTable } from '../records/chat-snapshot/chat-snapshot';
 import { ReferencedDocumentTable } from '../records/document/databaseDocument';
 import { LogStream } from '../records/logstream/logstream';
+import { ReferencedMcpConnectionTable } from '../records/mcp-connection/mcp-connection';
 import { ReferencedMessageTable } from '../records/message/message';
 import { ReferencedMessageThreadTable } from '../records/message-thread/message-thread';
 import { ReferencedMetricTable } from '../records/metric/metric';
@@ -44,6 +45,7 @@ export class SQliteClient {
         this.tables = {
             settings: new ReferencedSettingsTable(this),
             modelConnection: new ReferencedModelConnectionTable(this),
+            mcpConnection: new ReferencedMcpConnectionTable(this),
             agentGraph: new ReferencedAgentGraphTable(this),
             messageThread: new ReferencedMessageThreadTable(this),
             metric: new ReferencedMetricTable(this),

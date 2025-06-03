@@ -9,6 +9,8 @@ import type { ReferencedChatSnapshotRecord, ReferencedChatSnapshotTable } from '
 import type { ChatSnapshotType } from '../records/chat-snapshot/chat-snapshot.type';
 import type { ReferencedDocumentRecord, ReferencedDocumentTable } from '../records/document/databaseDocument';
 import type { DatabaseDocumentType } from '../records/document/document.type';
+import type { ReferencedMcpConnectionRecord, ReferencedMcpConnectionTable } from '../records/mcp-connection/mcp-connection';
+import type { McpConnectionType } from '../records/mcp-connection/mcp-connection.type';
 import type { ReferencedMessageRecord, ReferencedMessageTable } from '../records/message/message';
 import type { MessageType } from '../records/message/message.type';
 import type { ReferencedMessageThreadRecord, ReferencedMessageThreadTable } from '../records/message-thread/message-thread';
@@ -53,6 +55,7 @@ export type NewRecord<T extends BaseSqliteRecord> = Omit<T, 'id' | 'createdAt' |
 export enum SqliteTable {
     settings = 'settings',
     modelConnection = 'modelConnection',
+    mcpConnection = 'mcpConnection',
     agentGraph = 'agentGraph',
     messageThread = 'messageThread',
     metric = 'metric',
@@ -67,6 +70,7 @@ export enum SqliteTable {
 export interface SqliteTables {
     [SqliteTable.settings]: ReferencedSettingsTable;
     [SqliteTable.modelConnection]: ReferencedModelConnectionTable;
+    [SqliteTable.mcpConnection]: ReferencedMcpConnectionTable;
     [SqliteTable.agentGraph]: ReferencedAgentGraphTable;
     [SqliteTable.messageThread]: ReferencedMessageThreadTable;
     [SqliteTable.metric]: ReferencedMetricTable;
@@ -81,6 +85,7 @@ export interface SqliteTables {
 export interface SqliteTableRecordReference {
     [SqliteTable.settings]: ReferencedSettingsRecord;
     [SqliteTable.modelConnection]: ReferencedModelConnectionRecord;
+    [SqliteTable.mcpConnection]: ReferencedMcpConnectionRecord;
     [SqliteTable.agentGraph]: ReferencedAgentGraphRecord;
     [SqliteTable.messageThread]: ReferencedMessageThreadRecord;
     [SqliteTable.metric]: ReferencedMetricRecord;
@@ -95,6 +100,7 @@ export interface SqliteTableRecordReference {
 export interface SqliteTableRecordType {
     [SqliteTable.settings]: SettingsType;
     [SqliteTable.modelConnection]: ModelConnectionType;
+    [SqliteTable.mcpConnection]: McpConnectionType;
     [SqliteTable.agentGraph]: AgentGraphType;
     [SqliteTable.messageThread]: MessageThreadType;
     [SqliteTable.metric]: MetricType;

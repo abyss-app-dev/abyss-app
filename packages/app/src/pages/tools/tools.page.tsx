@@ -1,9 +1,9 @@
-import { IconSection, PageCrumbed, Tile, TileGrid } from '@abyss/ui-components';
-import { Box, Hammer } from 'lucide-react';
+import { Button, IconSection, PageCrumbed, Tile, TileGrid } from '@abyss/ui-components';
+import { Box, Globe, Hammer, Plus } from 'lucide-react';
 import { useToolsPage } from './tools.hook';
 
 export function ToolsPage() {
-    const { breadcrumbs, systemTools } = useToolsPage();
+    const { breadcrumbs, systemTools, mcpConnections, navigate } = useToolsPage();
 
     return (
         <PageCrumbed
@@ -23,6 +23,25 @@ export function ToolsPage() {
                             No system tools defined currently, this is an odd state as abyss should create these for you.
                         </div>
                     )}
+                </TileGrid>
+            </IconSection>
+
+            <IconSection
+                icon={Globe}
+                title="MCP Connections"
+                subtitle="Connect to Model Context Protocol servers"
+                action={
+                    <Button variant="secondary" icon={Plus} onClick={() => navigate('/tools/mcp')}>
+                        Add MCP Connection
+                    </Button>
+                }
+            >
+                <TileGrid>
+                    {mcpConnections.data?.map(connection => (
+                        <Tile key={connection.id} title={connection.name} icon={<Box className="w-4 h-4" />}>
+                            {connection.name}
+                        </Tile>
+                    ))}
                 </TileGrid>
             </IconSection>
         </PageCrumbed>

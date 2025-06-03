@@ -9,6 +9,8 @@ export * from './records/document/richDocument.types';
 export * from './records/document/richDocumentTemplate';
 export * from './records/logstream/logstream';
 export * from './records/logstream/logstream.type';
+export * from './records/mcp-connection/mcp-connection';
+export * from './records/mcp-connection/mcp-connection.type';
 export * from './records/message/message';
 export * from './records/message/message.type';
 export * from './records/message-thread/message-thread';
