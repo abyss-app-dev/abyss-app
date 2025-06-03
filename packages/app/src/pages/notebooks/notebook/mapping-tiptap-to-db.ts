@@ -1,4 +1,5 @@
 import type {
+    NotebookAgentCellProperties,
     NotebookCellType,
     NotebookHeading1CellProperties,
     NotebookHeading2CellProperties,
@@ -41,6 +42,10 @@ function mapTipTapToDatabaseCell(cell: JSONContent): NotebookCellType {
 
     if (cell.type === 'toolWrapped') {
         return mapToolCell(cell, db);
+    }
+
+    if (cell.type === 'agentWrapped') {
+        return mapAgentCell(cell, db);
     }
 
     throw new Error(`Unknown cell type: ${cell.type}`);
@@ -117,6 +122,19 @@ function mapPageCell(_cell: JSONContent, db: TipTapDBType): NotebookCellType<'pa
 function mapToolCell(_cell: JSONContent, db: TipTapDBType): NotebookCellType<'tool'> {
     return {
         type: 'tool',
+        ...db,
+    };
+}
+
+function mapAgentCell(cell: JSONContent, db: TipTapDBType): NotebookCellType<'agent'> {
+    const content = cell.content?.map(c => c.text || '').join('') || '';
+    const agentProperties: NotebookAgentCellProperties = {
+        agentId: db.propertyData?.agentId || '',
+        content: content,
+    };
+    return {
+        type: 'agent',
+        propertyData: agentProperties,
         ...db,
     };
 }

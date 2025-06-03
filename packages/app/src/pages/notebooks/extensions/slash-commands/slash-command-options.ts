@@ -17,6 +17,7 @@ export const getSuggestionItems = ({ query }: { query: string }): Command[] => {
         { title: 'Paragraph', icon: 'P', command: onCreateParagraph },
         { title: 'New Page', icon: '+', command: onCreateNewPage },
         { title: 'Tool Reference', icon: 'ϟ', subCommands: getToolCommands },
+        { title: 'Agent', icon: '🤖', subCommands: getAgentCommands },
     ];
 
     if (!query || query.trim() === '') {
@@ -46,6 +47,28 @@ async function getToolCommands(): Promise<Command[]> {
         title: tool.name,
         icon: '🔧',
         command: ({ editor, range }) => onCreateToolReference({ editor, range, toolId: tool.id }),
+    }));
+}
+
+async function getAgentCommands(): Promise<Command[]> {
+    const agents = await Database.tables[SqliteTable.agentGraph].list();
+
+    if (agents.length === 0) {
+        return [
+            {
+                title: 'No agents available',
+                icon: '⚠️',
+                command: () => {
+                    console.log('No agents available');
+                },
+            },
+        ];
+    }
+
+    return agents.map(agent => ({
+        title: agent.name,
+        icon: '🤖',
+        command: ({ editor, range }) => onCreateAgentReference({ editor, range, agentId: agent.id }),
     }));
 }
 
@@ -114,5 +137,32 @@ async function onCreateToolReference({ editor, range, toolId }: { editor: Editor
         .focus()
         .deleteRange(range)
         .insertContent([{ type: 'toolWrapped', attrs: { db: JSON.stringify(dbData) } }])
+        .run();
+}
+
+async function onCreateAgentReference({ editor, range, agentId }: { editor: Editor; range: Range; agentId: string }) {
+    const newAgentCell = await Database.tables[SqliteTable.notebookCell].create({
+        type: 'agent',
+        parentCellId: null,
+        orderIndex: 0,
+        propertyData: {
+            agentId: agentId,
+            content: '',
+        },
+    });
+
+    const dbData = {
+        id: newAgentCell.id,
+        parentCellId: null,
+        orderIndex: 0,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        propertyData: newAgentCell.propertyData,
+    };
+    editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent([{ type: 'agentWrapped', attrs: { db: JSON.stringify(dbData) } }])
         .run();
 }

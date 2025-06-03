@@ -8,6 +8,7 @@ import { Paragraph } from '@tiptap/extension-paragraph';
 import { Text } from '@tiptap/extension-text';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from '@/state/debounce';
+import { CustomAgent } from '../extensions/agent/agent-extension';
 import { PageMentionExtension } from '../extensions/mention/page-mention';
 import { CustomPage } from '../extensions/page/page-extension';
 import { SlashCommands } from '../extensions/slash-commands/slash-commands';
@@ -19,7 +20,17 @@ import { onSaveNotebook } from './onSaveNotebook';
 // Build the extensions we need
 const CustomHeading = wrappedExtension(Heading);
 const CustomParagraph = wrappedExtension(Paragraph);
-const extensions = [Document, Text, CustomHeading, CustomParagraph, CustomPage, CustomTool, PageMentionExtension, SlashCommands];
+const extensions = [
+    Document,
+    Text,
+    CustomHeading,
+    CustomParagraph,
+    CustomPage,
+    CustomTool,
+    CustomAgent,
+    PageMentionExtension,
+    SlashCommands,
+];
 
 export function Notebook({ notebookId }: { notebookId: string }) {
     const content = useDatabaseTableQuery(SqliteTable.notebookCell, async cells => cells.getChildren(notebookId), [notebookId]);

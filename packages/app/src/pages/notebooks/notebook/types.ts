@@ -4,4 +4,5 @@ export interface TipTapDBType {
     orderIndex: number;
     createdAt: number;
     updatedAt: number;
+    propertyData?: any;
 }

@@ -178,3 +178,52 @@
     flex: 1;
     font-weight: 500;
 }
+
+/* Agent Cell styles */
+.agent-node {
+    margin: 8px 0;
+}
+
+.agent-cell {
+    border: 2px solid var(--color-primary-500);
+    border-radius: 8px;
+    background-color: var(--color-primary-50);
+    overflow: hidden;
+}
+
+.agent-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--color-primary-500);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.agent-name {
+    flex: 1;
+}
+
+.agent-content {
+    padding: 12px;
+}
+
+.agent-input {
+    min-height: 40px;
+    outline: none;
+    color: var(--color-text-900);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.agent-input:empty::before {
+    content: attr(data-placeholder);
+    color: var(--color-text-500);
+    font-style: italic;
+}
+
+.agent-input:focus::before {
+    display: none;
+}
