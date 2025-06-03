@@ -3,9 +3,8 @@
 # Abyss
 
 The Best AI Desktop Client
-![Abyss](./assets/agent.png)
 
-![Demo](./docs/demo.mp4)
+<video src="./docs/demo.mp4"  controls></video>
 
 ## Features
 
