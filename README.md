@@ -5,7 +5,7 @@
 The Best AI Desktop Client
 ![Abyss](./assets/agent.png)
 
-![Demo](./assets/demo.mp4)
+![Demo](./docs/demo.mp4)
 
 ## Features
 
