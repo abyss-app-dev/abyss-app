@@ -4,7 +4,7 @@
 
 The Best AI Desktop Client
 
-<video src="./docs/demo.mp4"  controls></video>
+[CLICK HERE FOR THE DEMO](https://drive.google.com/file/d/1NWx8J5KGczYzaeEkpS6q5sYdTmwzIr6A/view?usp=sharing)
 
 ## Features
 
