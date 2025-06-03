@@ -5,6 +5,8 @@
 The Best AI Desktop Client
 ![Abyss](./assets/agent.png)
 
+![Demo](./assets/demo.mp4)
+
 ## Features
 
 -   Fully open source, no login, no accounts, no tracking. Its yours.
@@ -32,6 +34,7 @@ If you want to run the app locally, you can do so by running the following comma
 git clone https://github.com/anonymous-apps/Abyss
 cd Abyss
 npm i
+npm run build
 
 # Boot the app!
 npm run dev

@@ -1,5 +1,5 @@
 import { IconOption } from '@abyss/ui-components';
-import { Box, DatabaseIcon, MessageCircle, Play, Settings } from 'lucide-react';
+import { Box, DatabaseIcon, FileText, MessageCircle, Play, Settings, Wrench } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AbyssAnimation } from '../../library/abyss-animation';
@@ -48,23 +48,23 @@ export function MainPage() {
             >
                 <div className="max-w-2xl w-full space-y-4 transition-all duration-[1s]" style={{ opacity: contentOpacity }}>
                     <IconOption title="Models" icon={Box} onClick={() => handleNavigation('/models')}>
-                        Connect to AI models locally using Ollama or cloud providers like OpenAI or Aws Bedrock
+                        Connect to AI models to your choice of AI providers, bring your own key, and own your data.
+                    </IconOption>
+
+                    <IconOption title="Documents" icon={FileText} onClick={() => handleNavigation('/documents')}>
+                        A rich document cellular editor allows you to work with agents in a collaborative way.
                     </IconOption>
 
                     <IconOption title="Chats" icon={MessageCircle} onClick={() => handleNavigation('/chats')}>
-                        Chat with AI models directly or with custom agents you build
+                        Chat with AI models directly or with custom agents you build and manage locally.
                     </IconOption>
 
-                    <IconOption title="Tools" icon={Play} onClick={() => handleNavigation('/tools')}>
-                        Connect to MCP servers and leverage their tools to automate your workflows, or build your own tools.
+                    <IconOption title="Tools" icon={Wrench} onClick={() => handleNavigation('/tools')}>
+                        Connect to MCP servers and leverage their tools or use the built in tools to automate your workflows.
                     </IconOption>
 
                     <IconOption title="Database" icon={DatabaseIcon} onClick={() => handleNavigation('/database')}>
                         View saved data stored on your machine. All data is stored locally in sqlite and can be accessed by you at any time.
-                    </IconOption>
-
-                    <IconOption title="Settings" icon={Settings} onClick={() => handleNavigation('/settings')}>
-                        Configure application settings, themes, and other preferences.
                     </IconOption>
                 </div>
             </div>
