@@ -14,16 +14,7 @@ The Best AI Desktop Client
 -   Agent builder with drag and drop interface
 
 ![Abyss](./assets/chat.png)
-
-## [Download](https://github.com/anonymous-apps/abyss/releases)
-
-See our releases page for the latest builds.
-
-1. Download the latest ZIP
-2. Unzip it and put in Applications **IT MUST BE IN APPLICATIONS OR IT WILL NOT WORK**
-3. Run the app!
-
-Support for MacOS only currently.
+![Abyss](./assets/agent.png)
 
 ### Development
 
